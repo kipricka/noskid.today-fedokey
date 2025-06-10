@@ -41,3 +41,6 @@ Thanks to all the [contributors](https://github.com/douxxtech/noskid.today/graph
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
 </a>
+
+---
+Oh yea, i forgot to tell ya, i also hate CI/CD.
