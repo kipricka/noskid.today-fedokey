@@ -3,7 +3,7 @@
 
 require_once '../config.php';
 
-$filename = 'lastest.txt';
+$filename = 'latest.txt';
 
 if (!file_exists($filename)) {
     file_put_contents($filename, 'aaaaaa');
