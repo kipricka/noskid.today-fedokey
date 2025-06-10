@@ -9,7 +9,7 @@ let quizQuestions = [];
 
 async function loadQuestions() {
   try {
-    const response = await fetch('/api/certificate');
+    const response = await fetch('/api/certificate/');
     const data = await response.json();
 
     if (!data.success) {
@@ -122,7 +122,7 @@ async function checkQuizResponses() {
       params.append(questionId, userAnswers[questionId]);
     });
 
-    const response = await fetch(`/api/certificate?${params}`);
+    const response = await fetch(`/api/certificate/?${params}`);
     const data = await response.json();
 
     if (!data.success) {
@@ -282,7 +282,7 @@ function offerCertificate(percentage, userAnswers) {
         params.append('turnstile_token', turnstileToken);
       }
 
-      const downloadUrl = `/api/certificate?${params}`;
+      const downloadUrl = `/api/certificate/?${params}`;
 
       downloadButton.disabled = true;
       downloadButton.textContent = 'Downloading...';

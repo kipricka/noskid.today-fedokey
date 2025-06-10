@@ -36,7 +36,7 @@ async function checkForUpdates() {
     try {
         const storedVersion = localStorage.lastest || localStorage?.getItem?.('lastest');
 
-        const response = await fetch('/api/lastest');
+        const response = await fetch('/api/lastest/'); //its latest, not lastest, needs to be fixed
 
         if (!response.ok) {
             log(`Error while checking for updates: ${response.statusText}`, 'error');
