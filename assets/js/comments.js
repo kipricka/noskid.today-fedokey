@@ -31,7 +31,7 @@ function spawnCommentSystem(event) {
 }
 
 function loadComments(commentwin) {
-    fetch('/api/comments')
+    fetch('/api/comments/')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network error when fetching comments');
@@ -132,7 +132,7 @@ function formatDate(dateString) {
 }
 
 function handleReaction(commentId, reactionType) {
-    fetch(`/api/comments?action=${reactionType}&id=${commentId}`) //to lazy to mess with post requests
+    fetch(`/api/comments/?action=${reactionType}&id=${commentId}`) //to lazy to mess with post requests
         .then(response => {
             if (!response.ok) {
                 return response.json().then(data => {
