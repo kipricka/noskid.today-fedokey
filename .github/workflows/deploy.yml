@@ -72,9 +72,27 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
     
-    - name: Deploy to server
-      id: deploy
+    - name: Deploy to server (1st attempt)
+      id: deploy1
       if: steps.build.outputs.build-success == 'true'
+      uses: ./.github/actions/deploy-ftp
+      continue-on-error: true
+      with:
+        build-dir: ${{ steps.build.outputs.build-dir }}
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        ftp-server-dir: ${{ secrets.FTP_SERVER_DIR }}
+
+    - name: Wait before retry (if needed)
+      if: steps.deploy1.outputs.deploy-success != 'true'
+      run: |
+        echo "[i] Waiting 30 seconds before retrying FTP deployment..."
+        sleep 30
+
+    - name: Deploy to server (2nd attempt)
+      id: deploy2
+      if: steps.build.outputs.build-success == 'true' && steps.deploy1.outputs.deploy-success != 'true'
       uses: ./.github/actions/deploy-ftp
       with:
         build-dir: ${{ steps.build.outputs.build-dir }}
@@ -82,23 +100,22 @@ jobs:
         ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
         ftp-server-dir: ${{ secrets.FTP_SERVER_DIR }}
-    
+
     - name: Update API version
       id: api-update
       if: |
         steps.build.outputs.build-success == 'true' && 
-        steps.deploy.outputs.deploy-success == 'true'
+        (steps.deploy1.outputs.deploy-success == 'true' || steps.deploy2.outputs.deploy-success == 'true')
       uses: ./.github/actions/update-api
       with:
         commit-hash: ${{ steps.build.outputs.commit-hash }}
         api-password: ${{ secrets.API_PASSWORD }}
         retry-count: '3'
     
-    
     - name: Success
       if: |
-        steps.build.outputs.build-success == 'true' && 
-        steps.deploy.outputs.deploy-success == 'true' &&
+        steps.build.outputs.build-success == 'true' &&
+        (steps.deploy1.outputs.deploy-success == 'true' || steps.deploy2.outputs.deploy-success == 'true') &&
         steps.api-update.outputs.update-success == 'true'
       run: |
         echo "::notice title=Deployment Success::[OK] Deployment completed successfully!"
@@ -109,12 +126,11 @@ jobs:
           echo "::notice title=Full Deploy::[OK] Version ${{ steps.build.outputs.commit-hash }} deployed successfully!"
         fi
       
-        
         echo "[i] Deployment Summary:"
         echo "   - Commit: ${{ steps.build.outputs.commit-hash }}"
         echo "   - API Only: ${{ needs.analyze-changes.outputs.api-only }}"
         echo "   - Build Success: ${{ steps.build.outputs.build-success }}"
-        echo "   - Deploy Success: ${{ steps.deploy.outputs.deploy-success }}"
+        echo "   - Deploy Success: ${{ steps.deploy1.outputs.deploy-success == 'true' && 'deploy1' || 'deploy2' }}"
         echo "   - API Update: ${{ steps.api-update.outputs.update-success }}"
     
     - name: Failure
@@ -124,8 +140,8 @@ jobs:
         
         if [ "${{ steps.build.outputs.build-success }}" != "true" ]; then
           echo "::error title=Build Failed::❌ Build process failed"
-        elif [ "${{ steps.deploy.outputs.deploy-success }}" != "true" ]; then
-          echo "::error title=Deploy Failed::❌ FTP deployment failed"
+        elif [ "${{ steps.deploy1.outputs.deploy-success }}" != "true" ] && [ "${{ steps.deploy2.outputs.deploy-success }}" != "true" ]; then
+          echo "::error title=Deploy Failed::❌ FTP deployment failed after retry"
         elif [ "${{ steps.api-update.outputs.update-success }}" = "false" ]; then
           echo "::error title=API Update Failed::❌ Failed to update API version"
           echo "API Response: ${{ steps.api-update.outputs.response-body }}"

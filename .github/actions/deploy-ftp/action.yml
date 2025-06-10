@@ -77,48 +77,25 @@ runs:
         TOTAL_FILES=$(find upload -type f | wc -l)
         echo "[i] Total files to upload: $TOTAL_FILES"
         
-        # Calculate total size including zip
         TOTAL_SIZE=$(du -sh upload | cut -f1)
         echo "[i] Total upload size: $TOTAL_SIZE"
     
-    - name: Deploy to server via FTP with retry
+    - name: Deploy to server via FTP
       id: deploy
-      shell: bash
-      run: |
-        set -e
-
-        RETRY_DELAY=30
-        MAX_ATTEMPTS=2
-        ATTEMPT=1
-
-        while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-          echo "[i] Attempt $ATTEMPT to deploy via FTP..."
-
-          if npx ftp-deploy --server "${{ inputs.ftp-server }}" \
-                            --username "${{ inputs.ftp-username }}" \
-                            --password "${{ inputs.ftp-password }}" \
-                            --local "./upload/" \
-                            --remote "${{ inputs.ftp-server-dir }}" \
-                            --exclude '**/.git*' '**/.git*/**' '**/*.md' '**/*.log' '**/api/config.php' ${{ inputs.exclude-patterns }}
-          then
-            echo "[✓] FTP deployment successful on attempt $ATTEMPT"
-            echo "success=true" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "[!] FTP deployment failed on attempt $ATTEMPT"
-            if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-              echo "[i] Retrying in ${RETRY_DELAY}s..."
-              sleep $RETRY_DELAY
-            fi
-          fi
-
-          ATTEMPT=$((ATTEMPT + 1))
-        done
-
-        echo "[X] Deployment failed after $MAX_ATTEMPTS attempts"
-        echo "success=false" >> $GITHUB_OUTPUT
-        exit 1
-
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ inputs.ftp-server }}
+        username: ${{ inputs.ftp-username }}
+        password: ${{ inputs.ftp-password }}
+        local-dir: ./upload/
+        server-dir: ${{ inputs.ftp-server-dir }}
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/*.md
+          **/*.log
+          **/api/config.php
+          ${{ inputs.exclude-patterns }}
     
     - name: Set deployment status
       id: deploy-status
