@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS comments_blocked_ips (
 header('Content-Type: application/json');
 
 require_once '../config.php';
+require_once '../files/getip.php';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -98,7 +99,7 @@ function censorBadWords($text) {
 
 
 function getUserFingerprint() {
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = getRequesterIp();
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
     return md5($ip . $userAgent);
 }
@@ -121,7 +122,7 @@ function blockIp($conn, $ip) {
 }
 
 $userFingerprint = getUserFingerprint();
-$ip = $_SERVER['REMOTE_ADDR'];
+$ip = getRequesterIp();
 
 if (isIpBlocked($conn, $ip)) {
     http_response_code(403);

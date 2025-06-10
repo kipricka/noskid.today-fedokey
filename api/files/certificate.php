@@ -5,6 +5,8 @@ header('Access-Control-Allow-Methods: GET, POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
 require_once '../config.php';
+require_once '../files/getip.php';
+
 
 if (!isset($questions)) {
     http_response_code(500);
@@ -160,7 +162,7 @@ function downloadCertificate() {
 
     $name = $_GET['name'];
     $turnstileToken = $_GET['turnstile_token'] ?? null;
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = getRequesterIp();
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
     $currentTime = time();
 
