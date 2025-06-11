@@ -55,7 +55,7 @@ jobs:
 
   build-and-deploy:
     name: Build & Deploy
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: analyze-changes
     if: needs.analyze-changes.outputs.changed-files != ''
     
