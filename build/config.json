@@ -24,7 +24,8 @@
     "assets",
     "api",
     "term",
-    "badge"
+    "badge",
+    "errordocs"
   ],
   "excludedExtensions": [
     ".svg",

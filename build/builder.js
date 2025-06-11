@@ -42,6 +42,7 @@ class NoSkidBuilder {
         this.varCounter = 0;
         this.buildDir = '';
         this.buildStartTime = null;
+        this.sourceDir = 'website';
         this.stats = {
             originalSize: 0,
             minifiedSize: 0,
@@ -93,7 +94,7 @@ class NoSkidBuilder {
 
     checkProjectRoot() {
         for (const file of config.requiredFiles) {
-            if (!fs.existsSync(file)) {
+            if (!fs.existsSync(path.join(this.sourceDir, file))) {
                 log(`Missing required file: ${file}`, 'error');
                 this.changeLog.errors.push(`Missing required file: ${file}`);
                 return false;
@@ -177,13 +178,13 @@ class NoSkidBuilder {
     copyFiles() {
         log('Starting file copy and optimization process...', 'info');
 
-        const rootFiles = fs.readdirSync('.');
+        const rootFiles = fs.readdirSync(this.sourceDir);
 
         for (const file of rootFiles) {
-            const lowerFile = file.toLowerCase();
+            const sourcePath = path.join(this.sourceDir, file);
 
             if (file.endsWith('.html')) {
-                const originalContent = fs.readFileSync(file, 'utf8');
+                const originalContent = fs.readFileSync(sourcePath, 'utf8');
                 const optimized = this.minifyHTML(config.commentTag, originalContent);
                 fs.writeFileSync(path.join(this.buildDir, file), optimized);
 
@@ -199,30 +200,25 @@ class NoSkidBuilder {
 
                 log(`Optimized and copied: ${file}`, 'success');
             } else if (file.endsWith('.ico')) {
-                fs.copyFileSync(file, path.join(this.buildDir, file));
+                fs.copyFileSync(sourcePath, path.join(this.buildDir, file));
                 this.changeLog.htmlFiles.processed.push(file);
-                log(`Copied: ${file}`, 'success');
-            } else if (lowerFile === 'license') {
-                fs.copyFileSync(file, path.join(this.buildDir, file));
                 log(`Copied: ${file}`, 'success');
             }
         }
 
         for (const dir of config.directoriesToCopy) {
-            if (fs.existsSync(dir)) {
-                this.copyDir(dir, path.join(this.buildDir, dir));
+            const fullSourceDir = path.join(this.sourceDir, dir);
+            if (fs.existsSync(fullSourceDir)) {
+                this.copyDir(fullSourceDir, path.join(this.buildDir, dir));
                 this.changeLog.assets.directories.push(dir);
                 log(`Copied directory: ${dir}`, 'success');
             }
         }
+        
+        //add license
+        fs.writeFileSync(path.join(this.buildDir, 'LICENSE'), fs.readFileSync("LICENSE", 'utf8'));
+        log(`Copied license file`, 'success');
 
-        const errordocsDir = 'errordocs';
-        if (fs.existsSync(errordocsDir)) {
-            this.copyDir(errordocsDir, path.join(this.buildDir, errordocsDir));
-            this.processErrorDocs();
-            this.changeLog.assets.directories.push(errordocsDir);
-            log(`Copied and processed directory: ${errordocsDir}`, 'success');
-        }
     }
 
     processErrorDocs() {
@@ -671,6 +667,7 @@ class NoSkidBuilder {
         log('Processing JavaScript files...', 'info');
 
         const loaderPath = path.join(this.buildDir, 'assets', 'js', '@loader.js');
+        if (!fs.existsSync(loaderPath)) return;
         const loaderContent = fs.readFileSync(loaderPath, 'utf8');
 
         log('Searching for scripts array in loader...', 'info');
@@ -731,11 +728,10 @@ class NoSkidBuilder {
                     continue;
                 }
             } else {
-                const scriptPath = path.join(this.buildDir, script);
+                const scriptPath = path.join(this.sourceDir, script);
                 if (fs.existsSync(scriptPath)) {
                     content = fs.readFileSync(scriptPath, 'utf8');
                     originalName = path.basename(script);
-                    fs.unlinkSync(scriptPath);
                 } else {
                     const warningMsg = `Local script not found: ${script}`;
                     log(warningMsg, 'warning');
@@ -747,7 +743,8 @@ class NoSkidBuilder {
             const newName = this.generateRandomName() + '.js';
             const minified = this.minifyJS(content, originalName);
 
-            fs.writeFileSync(path.join(this.buildDir, 'assets', 'js', newName), minified);
+            const newScriptPath = path.join(this.buildDir, 'assets', 'js', newName);
+            fs.writeFileSync(newScriptPath, minified);
             newScriptNames.set(script, `assets/js/${newName}`);
 
             log(`Processed: ${originalName} -> ${newName}`, 'success');
@@ -774,14 +771,12 @@ class NoSkidBuilder {
 
     updateIndexHTML(newLoaderName) {
         const indexPath = path.join(this.buildDir, 'index.html');
+        if (!fs.existsSync(indexPath)) return;
+
         let content = fs.readFileSync(indexPath, 'utf8');
-
-        content = content.replace(
-            /assets\/js\/@loader\.js/g,
-            `assets/js/${newLoaderName}`
-        );
-
+        content = content.replace(/assets\/js\/@loader\.js/g, `assets/js/${newLoaderName}`);
         fs.writeFileSync(indexPath, content);
+
         log(`Updated index.html with new loader name: ${newLoaderName}`, 'success');
 
         this.changeLog.references.updated.push({
@@ -808,11 +803,8 @@ class NoSkidBuilder {
 
         this.createBuildDir();
         this.copyFiles();
-
         this.processAssets();
-
         await this.processJSFiles();
-
         this.updateAssetReferences();
 
         const endTime = performance.now();

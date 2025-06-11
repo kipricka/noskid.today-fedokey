@@ -5,26 +5,14 @@
 !build/*
 build/*/
 
-# dont ignore main files
-
-!assets/
-!assets/**
-!term/
-!term/**
-!index.html
-!maintenance.html
-!favicon.ico
+# dont ignore website files
+!website/
+!website/**
 
 # API
-!api/
-!api/**
-api/lastest/lastest.txt
-api/config.php
-!badges/
+website/api/latest/latest.txt
+website/api/config.php
 
-#error docs
-!errordocs/
-!errordocs/**
 
 # misc
 !LICENSE
