@@ -50,6 +50,11 @@ const keyBindings = [
         keys: ['Shift', 'K'],
         action: showKonata,
         description: 'Bailando bailando'
+    },
+    {
+        keys: ['Shift', 'W'],
+        action: toggleWebSocketMode,
+        description: 'Don\'t be alone !'
     }
 ];
 

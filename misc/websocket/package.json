@@ -1,0 +1,11 @@
+{
+  "name": "noskid-websocket",
+  "version": "1.0.0",
+  "description": "WebSocket servre for noskid",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.2"
+  }
+}

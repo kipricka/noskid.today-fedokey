@@ -13,7 +13,6 @@ build/*/
 website/api/latest/latest.txt
 website/api/config.php
 
-
 # misc
 !LICENSE
 !/README.md

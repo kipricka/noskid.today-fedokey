@@ -21,6 +21,39 @@ function log(message, type = 'info') {
     });
 }
 
+
+function showNotification(innerHTML) {
+    const existing = document.getElementById('notification');
+    if (existing) {
+        existing.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.id = 'notification';
+    notification.className = 'notification';
+    notification.innerHTML = innerHTML;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        hideNotification();
+    }, 5000);
+}
+
+function hideNotification() {
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.classList.add('hide');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }
+}
+
 class ScriptLoader {
     constructor(consoleElement) {
         this.consoleElement = consoleElement;
@@ -56,6 +89,7 @@ class ScriptLoader {
             'assets/js/update.js',
             'assets/js/url.js',
             'assets/js/warning.js',
+            'assets/js/websocket.js',
             'assets/js/zkeys.js',
         ];
         this.loadedCount = 0;
