@@ -71,7 +71,6 @@ runs:
       shell: bash
       run: |
         echo "[i] Final upload summary:"
-        find upload -type f | head -20
         TOTAL_FILES=$(find upload -type f | wc -l)
         echo "[i] Total files to upload: $TOTAL_FILES"
         
