@@ -48,6 +48,7 @@
     "userAgent",
     "devtools",
     "total_requests",
-    "unique_views"
+    "unique_views",
+    "terminal"
   ]
 }

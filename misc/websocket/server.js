@@ -33,7 +33,7 @@ function displayLogo() {
 setInterval(() => {
     clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-            const clientIP = client._socket.remoteAddress;
+            const clientIP = client.realIP || client._socket.remoteAddress;
             client.send(JSON.stringify({ type: 'healthcheck', data: 'ping' }));
 
             const timer = setTimeout(() => {
@@ -53,7 +53,9 @@ wss.on('listening', () => {
 });
 
 wss.on('connection', (ws, req) => {
-    const clientIP = req.socket.remoteAddress;
+    const clientIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
+    ws.realIP = clientIP;
+
 
     if (clients.size >= 50) {
         log(`Connection refused: server full (50 clients max). Attempt from ${clientIP}`, 'warning');
