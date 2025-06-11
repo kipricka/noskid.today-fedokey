@@ -42,8 +42,6 @@ runs:
         rsync -av \
           "$BUILD_DIR/" upload/
         
-        echo "[i] Files prepared for upload:"
-        find upload -type f | head -20
         TOTAL_FILES=$(find upload -type f | wc -l)
         echo "[i] Total files to upload: $TOTAL_FILES"
         
