@@ -1,7 +1,7 @@
 %TITLE%No Skid - Light Edition
 %META:viewport=width=device-width, initial-scale=1.0
 %META:description=Please Don't Talk When You Don't Know :]
-%ICON:favicon.ico
+%ICON:favicon.svg
 %OG:title=noskid.today - Light Edition
 %OG:description=Please Don't Talk When You Don't Know :]
 %OG:type=website
@@ -94,5 +94,5 @@ Check the %LINK>https://github.com/douxxtech/noskid.today/tree/light%github%KNIL
 Style inspired by %LINK>https://tpho.dk%tpho.dk%KNIL%
 Visit the %LINK>https://noskid.today%original noskid.today (way heavier)%KNIL%
 
-
+Funfact: This webpage takes around 30Kb to load; Thats ~85 times less than google.com !
 =======================================================================
