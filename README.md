@@ -1,37 +1,21 @@
-# No skid today - please don't talk when you don't know
+## Noskid.today -- light edition
 
-![togp thing](https://togp.xyz?owner=douxxtech&repo=noskid.today&theme=json-dark-all&cache=false)
+We don't like skids. (and ressources heavy websites)
 
-We dont like skids.
-
-A website based on [nohello.net](https://nohello.net), but heavily modified with rich features !
-
-> [!NOTE]
-> New feature ! @is.notaskid.ong mails !:  
-> Check the [website](https://im.notaskid.ong) ! 
->  
-> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=douxxtech/noskid.today)](https://noskid.today)
+A website based on [noskid.today](https://noskid.today), but heavily lightned with no more bloat!
 
 
 ## Hosting this website
-> [!TIP]
-> To ensure high-quality production content, we recommend building the website from source before deploying it to a web server.
-> > Check out the [build README](build/readme.md) for detailed instructions.
-
-It's a php-dependent site, except if you dont want to use the API (that would be sad).  
-You also need to install the package `librsvg2-bin` to convert SVG into PNG, and php must have the exec() function allowed.
+This is a php-dependant website.
 
 Installation: 
 ```shell
-git clone https://github.com/douxxtech/noskid.today
+git clone -b light https://github.com/douxxtech/noskid.today
 cd noskid.today
 php -S 0.0.0.0:80
 ```
 (or use something like apache with php-fpm)
 
-> [!TIP]
-> This website contains a lot (and really, a lot) of hidden features, find them by looking at the console ! (Shift + ESC)  
-> E.G: use [Shift + T to open the comments !](https://noskid.today/#spawnCommentSystem)
 
 ## Yapyap
 Licensed under the [NSDv1.0 License](LICENSE)
@@ -41,6 +25,3 @@ Thanks to all the [contributors](https://github.com/douxxtech/noskid.today/graph
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
 </a>
-
----
-Oh yea, i forgot to tell ya, i also hate CI/CD.

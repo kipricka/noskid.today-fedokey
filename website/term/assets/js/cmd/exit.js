@@ -1,3 +1,0 @@
-function exit() {
-    window.close();
-}

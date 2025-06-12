@@ -1,0 +1,98 @@
+%TITLE%No Skid - Light Edition
+%META:viewport=width=device-width, initial-scale=1.0
+%META:description=Please Don't Talk When You Don't Know :]
+%ICON:favicon.ico
+%OG:title=noskid.today - Light Edition
+%OG:description=Please Don't Talk When You Don't Know :]
+%OG:type=website
+%OG:url=https://light.noskid.today
+%OG:image=https://light.noskid.today/icon.png
+                    .
+     _______           _/\ .           _______              _______   
+    /  /    \       . /  /   .        /  /    \            /    \  \    
+   /  /  /\  \        \_/ .          /  /  /\  \          /  /\  \  \   
+î-/î-/__/  \__\-î    _.x._        î-/î-/__/  \__\-î    î-/__/  \__\-î-î
+=======================================================================
+
+  _   _  ____     _____ _  _______ _____  
+ | \ | |/ __ \   / ____| |/ /_   _|  __ \ 
+ |  \| | |  | | | (___ | ' /  | | | |  | |
+ | . ` | |  | |  \___ \|  <   | | | |  | |
+ | |\  | |__| |  ____) | . \ _| |_| |__| |
+ |_| \_|\____/  |_____/|_|\_\_____|_____/ 
+
+            - Light Edition -
+=======================================================================
+
+Please Don't Talk When You Don't Know — PDTWYDK
+
+=> %BOLD%Imagine calling someone just to drop a %ITALIC%"You're living in {{country}}"%CILATI% line, just to feel interesting... 🤦‍♀️%DOLB%
+
+┌──────────────────┐
+│ ❌ Don't do this  │
+│                  └────────────────┐
+│                                   │
+│ [kratza] | 8:58 PM                │ Note that kratza just found a random IP and
+│ What if I tell you I will do      │  wants to harm the person owning this IP to
+│ a DDoS attack on your IP          │  get someone interested in him.
+│ ----                              │
+│                                   │ People who do this are generally trying to be
+│ [iame] | 9:01 PM                  │  scary by dropping random information, like
+│ OK.                               │  %ITALIC%"Your city is {{city}}"%CILATI% that they just found by typing
+│ ----                              │  {{ip}} into %LINK>https://ip-api.com%ip-api.com%KNIL%.
+│                                   │
+│ [kratza] | 8:13 AM                │ The same goes for:
+│ nmap -T4 192.168.1.108            │  ❌ "YOU LEAKED YOUR IP!!!"
+│ That's how I will find your ports │  ❌ "I'm going to SWAT you 😈😈😈"
+│ ----                              │  ❌ "Gonna boot you"
+│                                   │  ❌ "Your ISP is {{isp}}"
+│ [iame] | 10:10 AM                 │  ❌ etc.
+│ You're funny dude                 │
+│                                   │ %EXTRABOLD%YOU AIN'T SCARY DUDE 😫%DOLBARTXE%
+└───────────────────────────────────┘
+
+
+┌──────────────────────┐
+│ ✅ Instead try this  │
+│                      └────────────┐
+│                                   │
+│ [lzoai] | 2:15 PM                 │ If you need any help with a normal thing, just
+│ Hey! Quick question, is your      │  ask nicely without being provocative! It will
+│ server still running?             │  always be a pleasure to help you!
+│ ----                              │
+│                                   │ For example:
+│ [douxxpi] | 2:15 PM               │  ✅ "Hey man, what's up? Can I get any help with my server?"
+│ Yep, let me know if you run       │  ✅ "Hi there! Hope you're well. Is your Minecraft server still up? :)"
+│ into anything                     │  ✅ "Hey, if you're not busy, could you upload a new video?"
+│ ----                              │  ✅ tc.
+│                                   │
+│ [lzoai] | 2:15 AM                 │
+│ Awesome, thanks!                  │ %EXTRABOLD%When done right - everyone's happy! 🎉%DOLBARTXE%
+│ ----                              │
+│                                   │
+│ [douxxpi] | 2:16 AM               │
+│ Np!                               │
+│                                   │
+└───────────────────────────────────┘
+
+
+=======================================================================
+This is 100% serious. Stop being a cringe skid in the big 2025.
+That said, if you see this site's URL as someone's status/bio, be prepared to be ignored if you say "YOUR ISP IS {{ispupper}}"
+Check the %LINK>https://github.com/douxxtech/noskid.today/tree/light%github%KNIL% repo! Made by %LINK>https://douxx.tech%douxx.tech%KNIL%.
+
+
+
+
+
+
+ |\__/,|   (`\
+ |_ _  |.--.) )
+ ( T   )     /
+(((^_(((/(((_/
+
+Style inspired by %LINK>https://tpho.dk%tpho.dk%KNIL%
+Visit the %LINK>https://noskid.today%original noskid.today (way heavier)%KNIL%
+
+
+=======================================================================
