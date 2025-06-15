@@ -15,12 +15,10 @@ website/api/config.php
 
 # misc
 !LICENSE
-!/README.md
 !/package.json
-!/badges.md
-!/noskid-services.md
 !/.gitignore
 !.github/
 !.github/**
 !misc/
 !misc/**
+!**.md
