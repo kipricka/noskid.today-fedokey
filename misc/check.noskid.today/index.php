@@ -3,6 +3,9 @@
 // This server caches valid certificates permanently and invalid ones for 24 hours
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type');
 
 define('DB_HOST', 'localhost');
 define('DB_USER', 'username');
