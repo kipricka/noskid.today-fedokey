@@ -10,4 +10,7 @@ Explain how the NoSkid FailOver works
 The websocket server for wss://ws.noskid.today
   
 `check.noskid.today/`:  
-Faster certificate check service than noskid.today/api/checkcert
+Faster certificate check service than noskid.today/api/checkcert, on check.noskid.today
+  
+`nskd-lbr/`:  
+Libraries to do different actions related to noskid

@@ -1,0 +1,23 @@
+{
+  "name": "nskd-lbr",
+  "version": "1.0.0",
+  "description": "A JavaScript library for working with NoSkid certificates.",
+  "main": "src/nskd-lbr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douxxtech/noskid.today.git"
+  },
+  "keywords": [
+    "noskid",
+    "certificate"
+  ],
+  "author": "Douxx",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/douxxtech/noskid.today/issues"
+  },
+  "homepage": "https://github.com/douxxtech/noskid.today#readme"
+}
