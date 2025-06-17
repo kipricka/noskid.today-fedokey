@@ -8,3 +8,6 @@ Explain how the NoSkid FailOver works
   
 `websocket/`:  
 The websocket server for wss://ws.noskid.today
+  
+`check.noskid.today/`:  
+Faster certificate check service than noskid.today/api/checkcert
