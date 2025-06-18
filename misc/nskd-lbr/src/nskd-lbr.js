@@ -32,7 +32,7 @@ class NskdLbr {
         if (this.debug) {
             const timestamp = new Date().toLocaleTimeString();
             const prefix = `[${timestamp}] NoSkid:`;
-            
+
             switch (level) {
                 case 'error':
                     console.error(prefix, message);
@@ -41,10 +41,10 @@ class NskdLbr {
                     console.warn(prefix, message);
                     break;
                 case 'success':
-                    console.nskdLbrLog(`%c${prefix} ${message}`, 'color: green');
+                    console.log(`%c${prefix} ${message}`, 'color: green');
                     break;
                 default:
-                    console.nskdLbrLog(prefix, message);
+                    console.log(prefix, message);
             }
         }
 
@@ -61,7 +61,7 @@ class NskdLbr {
     async loadFromFile(file) {
         try {
             this.nskdLbrLog('Starting certificate verification process...', 'info');
-            
+
             if (!file) {
                 throw new Error('No file provided');
             }
@@ -73,7 +73,7 @@ class NskdLbr {
             this.nskdLbrLog(`Processing certificate file: ${file.name}`, 'info');
 
             const arrayBuffer = await this.readFileAsArrayBuffer(file);
-            
+
             const extractedText = await this.extractTextFromPng(arrayBuffer);
             if (!extractedText) {
                 throw new Error('Could not extract verification data from file');
@@ -134,8 +134,19 @@ class NskdLbr {
      * @returns {Object|null} Certificate data or null if not loaded/verified
      */
     getCertificateData() {
-        return this.certificateData;
+        if (!this.certificateData) {
+            return null;
+        }
+
+        return {
+            ...this.certificateData,
+            key: this.verificationKey,
+            localUsername: this.localData ? this.localData.username : null,
+            localCreationDate: this.localData ? this.localData.creationDate : null
+        };
     }
+
+
 
     /**
      * Check if the certificate is valid
