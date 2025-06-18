@@ -8,9 +8,9 @@ header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'username');
-define('DB_PASS', 'pwd');
-define('DB_NAME', 'name');
+define('DB_USER', 'isaweb_noskid');
+define('DB_PASS', 'wn0Atw3_lOKpSD&H');
+define('DB_NAME', 'isaweb_noskid');
 
 if (!isset($_GET['key']) || empty($_GET['key'])) {
     echo json_encode([
@@ -133,7 +133,8 @@ function cleanUsername($originalUsername, $certId) {
 
 if ($apiData['success']) {
     $data = $apiData['data'];
-    $cleanedUsername = cleanUsername($data['username'], $data['certificate_number']);
+    $originalUsername = $data['username'];
+    $cleanedUsername = cleanUsername($originalUsername, $data['certificate_number']);
     
     $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, certificate_number, username, nickname, percentage, creation_date, country, country_code, cached_at) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE username = VALUES(username), nickname = VALUES(nickname), cached_at = NOW()");
 
