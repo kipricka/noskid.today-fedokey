@@ -18,3 +18,11 @@ Registration is handled via: [https://im.notaskid.ong](https://im.notaskid.ong)
 
 Use NoSkid badges in your READMEs, websites, or anywhere else you want to display your NoSkid status.
 Doc : [badges.md](badges.md)
+
+
+## Developer services
+
+### NSKD-LBR
+-> Get informations about a NoSkid certificate
+-> Login with NoSkid
+> [README.md](misc/nskd-lbr/README.md)
