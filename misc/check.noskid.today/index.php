@@ -8,9 +8,9 @@ header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'isaweb_noskid');
-define('DB_PASS', 'wn0Atw3_lOKpSD&H');
-define('DB_NAME', 'isaweb_noskid');
+define('DB_USER', 'username');
+define('DB_PASS', 'password');
+define('DB_NAME', 'name');
 
 if (!isset($_GET['key']) || empty($_GET['key'])) {
     echo json_encode([
