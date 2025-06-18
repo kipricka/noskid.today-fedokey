@@ -6,6 +6,7 @@ CREATE TABLE cert_cache (
     is_valid TINYINT(1) NOT NULL DEFAULT 0,
     certificate_number VARCHAR(10) NULL,
     username VARCHAR(255) NULL,
+    nickname VARCHAR(255) NULL,
     percentage VARCHAR(10) NULL,
     creation_date VARCHAR(50) NULL,
     country VARCHAR(100) NULL,

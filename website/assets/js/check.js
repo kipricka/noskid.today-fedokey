@@ -62,16 +62,7 @@ async function processCertificateFile(file) {
             return;
         }
 
-        log('Successfully extracted verification key', 'success');
-
         const certData = nskd.getCertificateData();
-        if (certData) {
-            log('Local certificate data:', 'warning');
-            log(`Username: ${certData.username}`, 'warning');
-            log(`Creation Date: ${certData.creationDate}`, 'warning');
-        }
-
-        log('Verifying certificate with server...', 'warning');
 
         if (result.valid) {
             log('Certificate is VALID!', 'success');

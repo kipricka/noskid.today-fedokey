@@ -29,6 +29,10 @@ php -S 0.0.0.0:80
 ```
 (or use something like apache with php-fpm)
 
+> [!WARNING]
+> We recently changed our API ! We recommand looking at the change notes:
+> [api-changes.md](misc/check.noskid.today/api-changes.md)
+
 > [!TIP]
 > This website contains a lot (and really, a lot) of hidden features, find them by looking at the console ! (Shift + ESC)  
 > E.G: use [Shift + T to open the comments !](https://noskid.today/#spawnCommentSystem)

@@ -60,6 +60,7 @@ if ($result->num_rows > 0) {
             'data' => [
                 'certificate_number' => $cached_cert['certificate_number'],
                 'username' => $cached_cert['username'],
+                'nickname' => $cached_cert['nickname'],
                 'percentage' => $cached_cert['percentage'],
                 'creationDate' => $cached_cert['creation_date'],
                 'country' => $cached_cert['country'],
@@ -122,15 +123,26 @@ if ($apiData === null) {
     exit;
 }
 
+function cleanUsername($originalUsername, $certId) {
+    $firstWord = explode(' ', trim($originalUsername))[0];
+    
+    $cleanedUsername = preg_replace('/[^a-zA-Z0-9_]/', '', $firstWord);
+    
+    return $cleanedUsername . $certId;
+}
+
 if ($apiData['success']) {
     $data = $apiData['data'];
-    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, certificate_number, username, percentage, creation_date, country, country_code, cached_at) VALUES (?, 1, ?, ?, ?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE cached_at = NOW()");
+    $cleanedUsername = cleanUsername($data['username'], $data['certificate_number']);
+    
+    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, certificate_number, username, nickname, percentage, creation_date, country, country_code, cached_at) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE username = VALUES(username), nickname = VALUES(nickname), cached_at = NOW()");
 
     if ($insertStmt) {
-        $insertStmt->bind_param("sssssss",
+        $insertStmt->bind_param("ssssssss",
             $key,
             $data['certificate_number'],
-            $data['username'],
+            $cleanedUsername,
+            $originalUsername,
             $data['percentage'],
             $data['creationDate'],
             $data['country'],
@@ -140,6 +152,8 @@ if ($apiData['success']) {
         $insertStmt->close();
     }
 
+    $apiData['data']['username'] = $cleanedUsername;
+    $apiData['data']['nickname'] = $originalUsername;
     $apiData['cached'] = false;
     echo json_encode($apiData, JSON_PRETTY_PRINT);
 } else {

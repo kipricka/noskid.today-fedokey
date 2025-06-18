@@ -86,7 +86,8 @@ new NskdLbr(options)
 | `debug` | boolean | `false` | Enable debug logging |
 | `timeout` | number | `10000` | Request timeout in milliseconds |
 | `strictCheck` | boolean | `true` | Validate local data against API response |
-| `onnskdLbrLog` | function | `null` | Custom logging function |
+| `useLegacyAPI` | boolean | `false` | Whether to use the legacy API format (nickname field or not) |
+| `onLog` | function | `null` | Custom logging function |
 
 ### Methods
 

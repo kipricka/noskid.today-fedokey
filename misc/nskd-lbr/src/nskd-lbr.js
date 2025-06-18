@@ -1,13 +1,15 @@
 /**
  * NoSkid Certificate Library
  * A JavaScript library for working with NoSkid certificates
- * 
+ *
  * @version 1.0.0
  * @author Douxx <douxx@douxx.tech>
  * @param {string} [options.apiUrl='https://check.noskid.today/'] - Logs debug messages to console
  * @param {boolean} [options.debug=false] - Logs debug messages to console
  * @param {boolean} [options.strictCheck=true] - Whether to validate local data against API response
  * @param {integer} [options.timeout=10000] - API request timeout in milliseconds
+ * @param {boolean} [options.useLegacyAPI=false] - Whether to use the legacy API format
+ * 
  * @param {function} [options.onLog=null] - Whether to validate local data against API response
  */
 
@@ -18,6 +20,7 @@ class NskdLbr {
         this.timeout = options.timeout || 10000;
         this.strictCheck = options.strictCheck !== undefined ? options.strictCheck : true;
         this.onLog = options.onLog || null;
+        this.useLegacyAPI = options.useLegacyAPI || false;
         this.certificateData = null;
         this.verificationKey = null;
         this.localData = null;
@@ -146,8 +149,6 @@ class NskdLbr {
         };
     }
 
-
-
     /**
      * Check if the certificate is valid
      * @returns {boolean} True if certificate is valid
@@ -166,10 +167,12 @@ class NskdLbr {
         }
 
         const data = this.certificateData;
+        const username = this.useLegacyAPI ? data.username : data.nickname || data.username;
+
         return `
 Certificate Details:
 - Certificate #: ${data.certificate_number}
-- Username: ${data.username}
+- Username: ${username}
 - Percentage: ${data.percentage}%
 - Creation Date: ${data.creationDate}
 - Country: ${data.country} (${data.countryCode})
@@ -248,7 +251,6 @@ Certificate Details:
                         }
                     }
                 }
-
                 pos += 8 + length + 4;
             }
 
@@ -349,7 +351,9 @@ Certificate Details:
 
             // Compare local data with API data if available and strictCheck is enabled
             if (this.localData && this.strictCheck) {
-                const validationResult = this.compareData(this.localData, apiData.data);
+                const apiUsername = this.useLegacyAPI ? apiData.data.username : (apiData.data.nickname || apiData.data.username);
+                const validationResult = this.compareData(this.localData, { ...apiData.data, username: apiUsername });
+
                 if (!validationResult.valid) {
                     this.isValid = false;
                     this.nskdLbrLog('Certificate data mismatch!', 'error');
