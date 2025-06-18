@@ -23,6 +23,6 @@ Doc : [badges.md](badges.md)
 ## Developer services
 
 ### NSKD-LBR
--> Get informations about a NoSkid certificate
--> Login with NoSkid
+-> Get informations about a NoSkid certificate  
+-> Login with NoSkid  
 > [README.md](misc/nskd-lbr/README.md)
