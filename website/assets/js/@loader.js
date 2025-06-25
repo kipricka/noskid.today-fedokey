@@ -85,6 +85,7 @@ class ScriptLoader {
             'assets/js/noskid.js',
             'assets/js/pong.js',
             'assets/js/rick.js',
+            'assets/js/rq.js',
             'assets/js/terminal.js',
             'assets/js/track.js',
             'assets/js/update.js',

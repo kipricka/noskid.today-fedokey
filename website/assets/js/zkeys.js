@@ -55,6 +55,11 @@ const keyBindings = [
         keys: ['Shift', 'W'],
         action: toggleWebSocketMode,
         description: 'Don\'t be alone !'
+    },
+    {
+        keys: ['Shift', 'S'],
+        action: requestsCatcher,
+        description: 'Spy on your requests !'
     }
 ];
 
