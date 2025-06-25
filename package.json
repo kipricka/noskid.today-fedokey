@@ -4,9 +4,5 @@
   "description": "Custom build setup for noskid source",
   "scripts": {
     "build": "node build/builder.js"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
   }
 }
