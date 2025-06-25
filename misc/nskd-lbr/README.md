@@ -31,7 +31,7 @@ npm install nskd-lbr
 ```
 
 ```js
-const NskdLbr = require('nskd-lbr');
+import NskdLbr from 'nskd-lbr';
 ```
 
 ## Quick Start
