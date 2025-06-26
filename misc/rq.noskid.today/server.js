@@ -92,34 +92,24 @@ app.use(express.json());
 app.all('/r/:id', async (req, res) => {
   const sessionId = req.params.id;
   const ws = sessions.get(sessionId);
+  const requestInfo = {
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+    query: req.query,
+    ip: getRequesterIp(req),
+    timestamp: new Date().toISOString(),
+    url: req.originalUrl
+  };
 
-  if (ws) {
-    const requestInfo = {
-      method: req.method,
-      headers: req.headers,
-      body: req.body,
-      query: req.query,
-      ip: getRequesterIp(req),
-      timestamp: new Date().toISOString(),
-      url: req.originalUrl
-    };
+  sendToSession(sessionId, {
+    type: 'request_data',
+    data: requestInfo
+  });
 
-    sendToSession(sessionId, {
-      type: 'request_data',
-      data: requestInfo
-    });
-
-    res.status(200).json({
-      success: true,
-      message: 'Request captured'
-    });
-  } else {
-    res.status(404).json({
-      success: false,
-      message: 'Inspection endpoint not found'
-    });
+  res.redirect(301, `https://light.noskid.today/`);
   }
-});
+);
 
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -127,4 +117,8 @@ app.get('/health', (req, res) => {
     activeSessions: sessions.size,
     maxSessions: MAX_SESSIONS
   });
+});
+
+app.get('/', (req, res) => {
+  res.redirect(301, 'https://noskid.today/');
 });
