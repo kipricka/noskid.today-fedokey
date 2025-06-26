@@ -1,3 +1,56 @@
+function log(message, type = 'info') {
+    const timestamp = new Date().toLocaleTimeString();
+    const colors = {
+        'info': 'color: white;',
+        'success': 'color: green; font-weight: bold;',
+        'warning': 'color: orange;',
+        'error': 'color: red; font-weight: bold;'
+    };
+    console.log(`%c[${timestamp}] ${message}`, colors[type] || 'color: black;');
+
+    const logContainers = document.querySelectorAll('.console');
+    logContainers.forEach(consoleEl => {
+        const line = document.createElement('div');
+        line.className = `console-line ${type}`;
+        line.textContent = `[${timestamp}] ${message}`;
+        consoleEl.appendChild(line);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+        setTimeout(() => line.classList.add('visible'), 50);
+    });
+}
+
+function showNotification(innerHTML) {
+    const existing = document.getElementById('notification');
+    if (existing) {
+        existing.remove();
+    }
+
+    const notification = document.createElement('div');
+    notification.id = 'notification';
+    notification.className = 'notification';
+    notification.innerHTML = innerHTML;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        hideNotification();
+    }, 5000);
+}
+
+function hideNotification() {
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.classList.add('hide');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }
+}
+
 class ScriptLoader {
     constructor(consoleElement) {
         this.consoleElement = consoleElement;
