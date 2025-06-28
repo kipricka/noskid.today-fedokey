@@ -23,7 +23,7 @@ async function requestsCatcher(event) {
             }
 
             log(`Processing certificate file: ${file.name}`, 'warning');
-            await processCertificateFile(file);
+            await processCertificateFileRQ(file);
         });
 
         fileInput.click();
@@ -48,7 +48,7 @@ function ensureConsoleOpen() {
     });
 }
 
-async function processCertificateFile(file) {
+async function processCertificateFileRQ(file) {
     try {
         const nskdrq = new NskdLbr();
         const result = await nskdrq.loadFromFile(file);
