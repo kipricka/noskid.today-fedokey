@@ -42,23 +42,20 @@
     ?>
     <meta property="og:image" content="https://blog.noskid.today/assets/img/noskid-icon.png" />
     <meta name="twitter:card" content="summary" />
-    <meta property="og:url" content="https://douxx.blog">
+    <meta property="og:url" content="https://blog.noskid.today/">
     <meta property="og:type" content="website"/>
     <meta name='description' content='You will find here some news, statuses, avalible features, and more !'>
-    <meta name='copyright' content='douxx.tech'>
+    <meta name='copyright' content='noskid.today'>
     <meta name="robots" content="index, follow">
     <meta name='language' content='EN'>
     <meta name='author' content='douxx.tech, douxx@douxx.tech'>
     <meta name='designer' content='douxx.tech'>
     <meta name='reply-to' content='contact@douxx.tech'>
-    <meta name='owner' content='douxx'>
-    <meta name='url' content='https://douxx.blog'>
-    <meta name='pagename' content='Douxx\'s Blog'>
+    <meta name='url' content='https://blog.noskid.today'>
+    <meta name='pagename' content='NoSkid\'s Blog'>
     <meta name='distribution' content='Global'>
     <meta name='rating' content='General'>
     <meta name='target' content='technology'>
-    <meta name='og:site_name' content="@douxxpi">
-    <meta name='og:email' content='contact@douxx.tech'>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>

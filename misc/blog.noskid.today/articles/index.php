@@ -70,7 +70,7 @@ function generateJsonFromMarkdownFiles($directory) {
     });
 
     $jsonData = [
-        'title' => 'Douxx.tech | Blog',
+        'title' => 'NoSkid.today | Blog',
         'pages' => $pages
     ];
 
