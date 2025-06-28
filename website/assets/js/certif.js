@@ -295,7 +295,7 @@ function offerCertificate(percentage, userAnswers) {
         quizForm.innerHTML = `
   <p>✅ Certificate downloaded! Check if a certificate is valid with 'Shift + C'</p>
   <br>
-  <p>Check out what you can do with it: <a href="https://github.com/douxxtech/noskid.today/blob/main/noskid-services.md" target="_blank">noskid services</a></p>
+  <p>Check out what you can do with it: <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a></p>
   <hr>
   <p>If you like this website consider adding a star to 
     <a href="https://github.com/douxxtech/noskid.today" target="_blank">the GitHub</a> <3
@@ -331,7 +331,7 @@ async function handleQuizDisplay() {
       const message = document.createElement('p');
       message.innerHTML = `❌ You have already taken this test.
       <br>
-      You can still check the <a href="https://github.com/douxxtech/noskid.today/blob/main/noskid-services.md" target="_blank">noskid services</a> or do the quiz again by typing 'bypass' !`;
+      You can still check the <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a> or do the quiz again by typing 'bypass' !`;
       message.className = 'quiz-message';
       quizForm.appendChild(message);
       submitButton.style.display = 'none';
