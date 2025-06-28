@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Douxx.tech | Blog</title>
-    <link href="https://douxx.tech/assets/img/icon.png" rel="icon">
+    <title>NoSkid.today | Blog</title>
+    <link href="https://blog.noskid.today/assets/img/noskid-icon.png" rel="icon">
     <?php
     if (isset($_GET['p'])) {
         $param = $_GET['p'];
 
         if ($param === '1-intro') {
-            echo "<meta property='og:title' content='Douxx.tech | Blog'>";
-            echo "<meta property='og:description' content='Here will be posted some tutorials or.. yea idk some random shit basically.'>";
+            echo "<meta property='og:title' content='NoSkid.today | Blog'>";
+            echo "<meta property='og:description' content='You will find here some news, statuses, avalible features, and more !'>";
         } else {
             $filePath = "./articles/{$param}.md";
 
@@ -24,27 +24,27 @@
                     $title = urldecode($titleMatches[1]);
                     $category = urldecode($categoryMatches[1]);
 
-                    echo "<meta property='og:title' content='{$category} | Douxx Blog'>";
-                    echo "<meta property='og:description' content=\"Learn more about {$title} on douxx's blog!\">";
+                    echo "<meta property='og:title' content='{$category} | NoSkid Blog'>";
+                    echo "<meta property='og:description' content=\"Learn more about {$title} on NoSkid's blog!\">";
                 } else {
-                    echo "<meta property='og:title' content='Douxx.tech | Blog'>";
-                    echo "<meta property='og:description' content='Here will be posted some tutorials or.. yea idk some random shit basically.'>";
+                    echo "<meta property='og:title' content='NoSkid.today | Blog'>";
+                    echo "<meta property='og:description' content='You will find here some news, statuses, avalible features, and more !'>";
                 }
             } else {
-                echo "<meta property='og:title' content='Douxx.tech | Blog'>";
-                echo "<meta property='og:description' content='Here will be posted some tutorials or.. yea idk some random shit basically.'>";
+                echo "<meta property='og:title' content='NoSkid.today | Blog'>";
+                echo "<meta property='og:description' content='You will find here some news, statuses, avalible features, and more !'>";
             }
         }
     } else {
-        echo "<meta property='og:title' content='Douxx.tech | Blog'>";
-        echo "<meta property='og:description' content='Here will be posted some tutorials or.. yea idk some random shit basically.'>";
+        echo "<meta property='og:title' content='NoSkid.today | Blog'>";
+        echo "<meta property='og:description' content='You will find here some news, statuses, avalible features, and more !'>";
     }
     ?>
-    <meta property="og:image" content="https://douxx.tech/assets/img/icon.png" />
+    <meta property="og:image" content="https://blog.noskid.today/assets/img/noskid-icon.png" />
     <meta name="twitter:card" content="summary" />
     <meta property="og:url" content="https://douxx.blog">
     <meta property="og:type" content="website"/>
-    <meta name='description' content='Here will be posted some tutorials or.. yea idk some random shit basically.'>
+    <meta name='description' content='You will find here some news, statuses, avalible features, and more !'>
     <meta name='copyright' content='douxx.tech'>
     <meta name="robots" content="index, follow">
     <meta name='language' content='EN'>
