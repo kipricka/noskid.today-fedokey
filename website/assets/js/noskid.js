@@ -56,4 +56,3 @@ log("Typing cursor initiated!", 'success');
 if (typed2.cursor != null) {
   typed2.cursor.classList.add('typed-cursor--blink');
 }
-
