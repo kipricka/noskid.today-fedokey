@@ -68,10 +68,6 @@ const sequences = {
         action: openTerminal,
         description: 'Open the terminal'
     },
-    'minecraft': {
-        action: launchEaglercraft,
-        description: 'Launch Eaglercraft'
-    },
     'awesome': {
         action: toggleAwesome,
         description: 'Toggle the awesome feature'

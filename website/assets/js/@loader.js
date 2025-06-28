@@ -77,7 +77,6 @@ class ScriptLoader {
             'assets/js/gary.js',
             'assets/js/konata.js',
             'assets/js/localinfo.js',
-            'assets/js/minecraft.js',
             'assets/js/night.js',
             'assets/js/noskid.js',
             'assets/js/pong.js',
