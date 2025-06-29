@@ -1,4 +1,4 @@
-//Comments.js | Comment system for noskid
+//Comments.js | Comment system for noskid with enhanced CSS
 
 function spawnCommentSystem(event) {
     event.preventDefault();
@@ -9,7 +9,10 @@ function spawnCommentSystem(event) {
         height: 400,
         x: Math.round((window.innerWidth - 500) / 2),
         y: Math.round((window.innerHeight - 400) / 2),
-        content: `<div>Loading comments...</div>`,
+        content: `<div class="comments-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading comments...</p>
+        </div>`,
         theme: 'dark',
         resizable: false,
     });
@@ -23,11 +26,302 @@ function spawnCommentSystem(event) {
 
     const newCommentBtn = document.createElement('button');
     newCommentBtn.textContent = 'New Comment';
+    newCommentBtn.className = 'new-comment-btn';
     newCommentBtn.addEventListener('click', () => spawnNewCommentForm());
     footer.prepend(newCommentBtn);
 
+    addCommentSystemStyles();
+    
     loadComments(commentwin);
     return commentwin;
+}
+
+function addCommentSystemStyles() {
+    // Check if styles already exist
+    if (document.getElementById('comment-system-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'comment-system-styles';
+    style.textContent = `
+        /* Comment System Styles */
+        .comments-container {
+            padding: 15px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            height: 100%;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .comments-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #888;
+        }
+
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            border-top: 2px solid #007acc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .comment {
+            background: #2d2d2d;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .comment:hover {
+            border-color: #007acc;
+            box-shadow: 0 2px 8px rgba(0, 122, 204, 0.2);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #404040;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #007acc;
+            font-size: 14px;
+        }
+
+        .comment-date {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .comment-content {
+            line-height: 1.5;
+            margin: 12px 0;
+            color: #e0e0e0;
+            word-wrap: break-word;
+        }
+
+        .comment-reactions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px solid #404040;
+        }
+
+        .reaction-btn {
+            background: #404040;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .reaction-btn:hover {
+            background: #4a4a4a;
+            border-color: #666;
+        }
+
+        .reaction-btn.like-btn {
+            border-color: #28a745;
+        }
+
+        .reaction-btn.dislike-btn {
+            border-color: #dc3545;
+        }
+
+        .reaction-btn.like-btn.active {
+            background: #28a745;
+            color: white;
+        }
+
+        .reaction-btn.dislike-btn.active {
+            background: #dc3545;
+            color: white;
+        }
+
+        .reaction-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: #888;
+            padding: 40px 20px;
+            font-style: italic;
+        }
+
+        .no-comments .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .error-message {
+            background: #4a1a1a;
+            border: 1px solid #8b0000;
+            border-radius: 4px;
+            padding: 15px;
+            color: #ff6b6b;
+            text-align: center;
+        }
+
+        .retry-btn {
+            background: #007acc;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .retry-btn:hover {
+            background: #0056b3;
+        }
+
+        .new-comment-btn {
+            background: #007acc;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .new-comment-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Comment Form Styles */
+        .comment-form {
+            padding: 20px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #2d2d2d;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            color: #e0e0e0;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .form-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .form-btn.primary {
+            background: #007acc;
+            color: white;
+        }
+
+        .form-btn.primary:hover {
+            background: #0056b3;
+        }
+
+        .form-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .form-btn.secondary:hover {
+            background: #545b62;
+        }
+
+        .form-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Scrollbar Styling */
+        .comments-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .comments-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .comments-container::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 4px;
+        }
+
+        .comments-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    `;
+    
+    document.head.appendChild(style);
 }
 
 function loadComments(commentwin) {
@@ -46,15 +340,18 @@ function loadComments(commentwin) {
             }
         })
         .catch(error => {
-            const errorMsg = `
-                <div>
+            const errorContent = document.createElement('div');
+            errorContent.className = 'comments-container';
+            errorContent.innerHTML = `
+                <div class="error-message">
                     <p>Error loading comments: ${error.message}</p>
-                    <button>Retry</button>
+                    <button class="retry-btn">Retry</button>
                 </div>
             `;
-            updateComments(commentwin, errorMsg);
+            
+            updateComments(commentwin, errorContent);
 
-            const retryBtn = commentwin.querySelector('button');
+            const retryBtn = errorContent.querySelector('.retry-btn');
             if (retryBtn) {
                 retryBtn.addEventListener('click', () => loadComments(commentwin));
             }
@@ -64,9 +361,17 @@ function loadComments(commentwin) {
 }
 
 function displayComments(window, comments) {
+    const container = document.createElement('div');
+    container.className = 'comments-container';
+    
     if (comments.length === 0) {
-        const content = `<div><p>No comments yet. Be the first to comment!</p></div>`;
-        updateComments(window, content);
+        container.innerHTML = `
+            <div class="no-comments">
+                <div class="icon">💬</div>
+                <p>No comments yet. Be the first to comment!</p>
+            </div>
+        `;
+        updateComments(window, container);
         return;
     }
 
@@ -74,36 +379,28 @@ function displayComments(window, comments) {
         const userLiked = comment.user_reaction === 'like';
         const userDisliked = comment.user_reaction === 'dislike';
 
-        return cwStyles(`
+        return `
         <div class="comment" data-id="${comment.id}">
-            <bold>${comment.author || 'Anonymous'}</bold>
-            <span>${formatDate(comment.date)}</span>
-            <p>${comment.content}</p>
-            <div class="reactions">
-                <button class="like-btn ${userLiked ? 'active' : ''}" onclick="handleReaction(${comment.id}, '${userLiked ? 'none' : 'like'}')">
+            <div class="comment-header">
+                <span class="comment-author">${comment.author || 'Anonymous'}</span>
+                <span class="comment-date">${formatDate(comment.date)}</span>
+            </div>
+            <div class="comment-content">${escapeHtml(comment.content)}</div>
+            <div class="comment-reactions">
+                <button class="reaction-btn like-btn ${userLiked ? 'active' : ''}" 
+                        onclick="handleReaction(${comment.id}, '${userLiked ? 'none' : 'like'}')">
                     + ${comment.likes || 0}
                 </button>
-                <button class="dislike-btn ${userDisliked ? 'active' : ''}" onclick="handleReaction(${comment.id}, '${userDisliked ? 'none' : 'dislike'}')">
+                <button class="reaction-btn dislike-btn ${userDisliked ? 'active' : ''}" 
+                        onclick="handleReaction(${comment.id}, '${userDisliked ? 'none' : 'dislike'}')">
                     - ${comment.dislikes || 0}
                 </button>
             </div>
-            <hr>
         </div>
-        `);
+        `;
     }).join('');
 
-    const container = document.createElement('div');
     container.innerHTML = commentsHTML;
-
-    const style = document.createElement('style');
-    style.textContent = `
-        .comment { margin-bottom: 10px; }
-        .reactions { margin: 5px 0; }
-        .reactions button { margin-right: 5px; cursor: pointer; }
-        .reactions button.active { font-weight: bold; background: #444; }
-    `;
-    container.prepend(style);
-
     updateComments(window, container);
     log('Comments loaded successfully', 'success');
 }
@@ -131,8 +428,24 @@ function formatDate(dateString) {
     });
 }
 
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 function handleReaction(commentId, reactionType) {
-    fetch(`/api/comments/?action=${reactionType}&id=${commentId}`) //to lazy to mess with post requests
+    const commentElement = document.querySelector(`.comment[data-id="${commentId}"]`);
+    if (!commentElement) return;
+    
+    const likeBtn = commentElement.querySelector('.like-btn');
+    const dislikeBtn = commentElement.querySelector('.dislike-btn');
+    
+    // Disable buttons during request
+    likeBtn.disabled = true;
+    dislikeBtn.disabled = true;
+    
+    fetch(`/api/comments/?action=${reactionType}&id=${commentId}`)
         .then(response => {
             if (!response.ok) {
                 return response.json().then(data => {
@@ -142,26 +455,25 @@ function handleReaction(commentId, reactionType) {
             return response.json();
         })
         .then(data => {
-            const commentElement = document.querySelector(`.comment[data-id="${commentId}"]`);
-            if (commentElement) {
-                const likeBtn = commentElement.querySelector('.like-btn');
-                const dislikeBtn = commentElement.querySelector('.dislike-btn');
+            likeBtn.innerHTML = `+ ${data.likes || 0}`;
+            dislikeBtn.innerHTML = `- ${data.dislikes || 0}`;
 
-                likeBtn.textContent = `+ ${data.likes || 0}`;
-                dislikeBtn.textContent = `- ${data.dislikes || 0}`;
+            likeBtn.classList.toggle('active', data.user_reaction === 'like');
+            dislikeBtn.classList.toggle('active', data.user_reaction === 'dislike');
 
-                likeBtn.classList.toggle('active', data.user_reaction === 'like');
-                dislikeBtn.classList.toggle('active', data.user_reaction === 'dislike');
-
-                likeBtn.setAttribute('onclick', `handleReaction(${commentId}, '${data.user_reaction === 'like' ? 'none' : 'like'}')`);
-                dislikeBtn.setAttribute('onclick', `handleReaction(${commentId}, '${data.user_reaction === 'dislike' ? 'none' : 'dislike'}')`);
-            }
+            likeBtn.setAttribute('onclick', `handleReaction(${commentId}, '${data.user_reaction === 'like' ? 'none' : 'like'}')`);
+            dislikeBtn.setAttribute('onclick', `handleReaction(${commentId}, '${data.user_reaction === 'dislike' ? 'none' : 'dislike'}')`);
 
             log('Reaction updated successfully', 'success');
         })
         .catch(error => {
             alert('Error: ' + error.message);
             log('Error handling reaction: ' + error.message, 'error');
+        })
+        .finally(() => {
+            // Re-enable buttons
+            likeBtn.disabled = false;
+            dislikeBtn.disabled = false;
         });
 }
 
@@ -172,24 +484,24 @@ function spawnNewCommentForm() {
         height: 300,
         x: Math.round((window.innerWidth - 400) / 2),
         y: Math.round((window.innerHeight - 300) / 2),
-        content: cwStyles(`
-            <div>
+        content: `
+            <div class="comment-form">
                 <form>
-                    <div>
+                    <div class="form-group">
                         <label for="author">Your name:</label>
                         <input type="text" id="author" placeholder="Anonymous">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="content">Comment:</label>
                         <textarea id="content" required rows="5" placeholder="Write your comment here..."></textarea>
                     </div>
-                    <div>
-                        <button type="submit">Send</button>
-                        <button type="button" class="cancel">Cancel</button>
+                    <div class="form-actions">
+                        <button type="button" class="form-btn secondary cancel">Cancel</button>
+                        <button type="submit" class="form-btn primary">Send Comment</button>
                     </div>
                 </form>
             </div>
-        `),
+        `,
         theme: 'dark',
         resizable: false,
         statusText: 'Writing a new comment',
@@ -253,7 +565,7 @@ function submitComment(form, window) {
                 }
             });
 
-            ClassicWindow.closeWindow(window)
+            ClassicWindow.closeWindow(window);
             
         })
         .catch(error => {
