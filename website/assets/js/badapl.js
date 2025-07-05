@@ -175,8 +175,7 @@ if (!isMobileDevice()) {
         if (!devtools.open) {
           devtools.open = true;
           log('Devtools opened detected via polling!', 'success');
-          const fakeEvent = { preventDefault: () => {} };
-          playBadApl(fakeEvent);
+          playBadApl();
         }
       } else {
         devtools.open = false;
@@ -188,8 +187,10 @@ if (!isMobileDevice()) {
     setTimeout(detectDevtools, 100);
   });
 
+  
   devtoolsDetectionLoop();
   
-  log('BadApple devtools detection enabled (Desktop detected)', 'success');
-  log('write \'i hate badapple\' to disable bad apple.', 'warning');
+  log('BadApple devtools detection enabled (Desktop detected)', 'success'); //were always detecting it, even if good apple is enabled, so we dont have to reload on toggle
+
+  if (!isGoodAppleEnabled()) log('write \'i hate badapple\' to disable bad apple.', 'warning');
 }
