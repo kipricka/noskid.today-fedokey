@@ -331,7 +331,7 @@ async function handleQuizDisplay() {
       const message = document.createElement('p');
       message.innerHTML = `❌ You have already taken this test.
       <br>
-      You can still check the <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a> or do the quiz again by typing 'bypass' !`;
+      You can still check the <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a> or do the quiz again by typing <i>bypass</i> ! (PS: If you like this website, consider <a href="https://noskid.today/#spawnCommentSystem">leaving a comment</a>)`;
       message.className = 'quiz-message';
       quizForm.appendChild(message);
       submitButton.style.display = 'none';
