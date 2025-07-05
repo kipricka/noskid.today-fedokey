@@ -36,10 +36,9 @@ const typed2 = new Typed('#strike', {
         '"nmap 192.168.1.108"',
         '"ddosing u 😈"',
         '"firewall down 💀"',
-        '"nmap❤️ddos tools❤️"',
+        '"ddos tools"',
         '"imma find u on doxbin"',
-        '"gave ur ip to hackers"',
-        'by douxx.tech :)',
+        '"gave ur ip to hackers"'
     ],
     
   typeSpeed: 80,
