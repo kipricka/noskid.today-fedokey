@@ -282,10 +282,6 @@ function handleGetAchievements($achievements) {
                 'done' => $isDone
             ];
 
-            if (isset($achievement['time'])) {
-                $formattedAchievement['time'] = (int) $achievement['time'];
-            }
-
             if (empty($formattedAchievement['name']) || empty($formattedAchievement['description'])) {
                 continue;
             }
