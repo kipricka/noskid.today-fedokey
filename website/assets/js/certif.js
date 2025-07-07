@@ -29,9 +29,7 @@ async function loadQuestions() {
   try {
     const response = await fetch('/api/certificate/');
     const data = await response.json();
-    if (!data.success) {
-      throw new Error(data.message || 'Failed to load questions');
-    }
+    if (!data.success) throw new Error(data.message || 'Failed to load questions');
     quizQuestions = data.questions.map(q => ({
       question: q.question,
       options: q.answers.map(a => a.content),
@@ -58,17 +56,12 @@ async function createQuestions() {
     }
   }
 
-  // Reset timer when creating new questions
   timerStart = null;
-  if (timerInterval) {
-    clearInterval(timerInterval);
-  }
+  if (timerInterval) clearInterval(timerInterval);
 
   submitButton.style.display = 'flex';
   const existingMessage = quizForm.querySelector('.quiz-message');
-  if (existingMessage) {
-    existingMessage.style.display = 'none';
-  }
+  if (existingMessage) existingMessage.style.display = 'none';
 
   const existingQuestions = document.querySelectorAll('.question-group');
   if (existingQuestions.length > 0) {
@@ -147,9 +140,7 @@ async function checkQuizResponses() {
     const response = await fetch(`/api/certificate/?${params}`);
     const data = await response.json();
 
-    if (!data.success) {
-      throw new Error(data.message || 'Failed to check answers');
-    }
+    if (!data.success) throw new Error(data.message || 'Failed to check answers');
 
     displayQuizResults(data);
     localStorage.setItem('quizTaken', 'true');
@@ -161,12 +152,6 @@ async function checkQuizResponses() {
       if (data.correct_answers >= 15 && timeTaken <= 20) {
         addAchievement('Speed Runner');
       }
-
-      if (data.passed && data.correct_answers >= 12) addAchievement('Certified NoSkid');
-      
-      if (data.passed && data.correct_answers === 15) addAchievement('Perfect Score');
-
-
       offerCertificate(data.percentage, userAnswers);
     }
   } catch (error) {
@@ -267,7 +252,7 @@ function offerCertificate(percentage, userAnswers) {
   const downloadButton = document.createElement('button');
   downloadButton.textContent = 'Download';
   downloadButton.className = 'submit-button';
-  downloadButton.disabled = true; // disabled till Turnstile is validated
+  downloadButton.disabled = true;
 
   let turnstileWidgetId = null;
   let turnstileToken = null;
@@ -338,18 +323,15 @@ function offerCertificate(percentage, userAnswers) {
       }
 
       if (achievementCheckbox && achievementCheckbox.checked) {
-        try {
-          const userId = getUserId();
-          if (userId) {
-            params.append('userId', userId);
-            log(`Adding userId ${userId} to certificate request`, 'success');
-          } else {
-            log('getUserId() returned null or undefined', 'warning');
-          }
-        } catch (error) {
-          log('Error getting userId: ' + error.message, 'error');
+        const userId = getUserId();
+        if (userId) {
+          params.append('userId', userId);
+          log(`Adding userId ${userId} to certificate request`, 'success');
         }
       }
+
+      if (percentage >= 80) addAchievement('Certified NoSkid');
+      if (percentage === 100) addAchievement('Perfect Score');
 
       const downloadUrl = `/api/certificate/?${params}`;
       downloadButton.disabled = true;
@@ -380,11 +362,7 @@ function offerCertificate(percentage, userAnswers) {
 
   certificateSection.appendChild(message);
   certificateSection.appendChild(usernameInput);
-
-  if (achievementContainer) {
-    certificateSection.appendChild(achievementContainer);
-  }
-
+  if (achievementContainer) certificateSection.appendChild(achievementContainer);
   certificateSection.appendChild(turnstileContainer);
   certificateSection.appendChild(downloadButton);
   quizForm.appendChild(certificateSection);
