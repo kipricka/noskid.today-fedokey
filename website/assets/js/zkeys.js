@@ -1,5 +1,4 @@
 // zKeys.js | Check if any keybind / key sequences has been done
-
 const keyBindings = [
     {
         keys: ['Shift', 'Escape'],
@@ -15,11 +14,6 @@ const keyBindings = [
         keys: ['Shift', 'H'],
         action: help,
         description: 'Show this message'
-    },
-    {
-        keys: ['Shift', 'S'],
-        action: showStats,
-        description: 'Log the website stats in the console'
     },
     {
         keys: ['Shift', 'N'],
@@ -60,6 +54,11 @@ const keyBindings = [
         keys: ['Shift', 'S'],
         action: requestsCatcher,
         description: 'Spy on your requests !'
+    },
+    {
+        keys: ['Shift', 'A'],
+        action: spawnAchievementSystem,
+        description: 'Look at your achievements !'
     }
 ];
 
@@ -119,10 +118,18 @@ const sequences = {
     'i hate badapple': {
         action: toggleGoodApple,
         description: 'toggle badapple playback in devtools'
+    },
+    'clearach': {
+        action: clearAllAchievements,
+        description: 'reset all achievements'
     }
 };
 
 let currentSequence = '';
+let actionCount = 0;
+let lastAction = null;
+let startedAchZKEYS = false;
+let doneAchZKEYS = false;
 
 function checkKeyCombination(event) {
     const activeElement = document.activeElement;
@@ -131,30 +138,50 @@ function checkKeyCombination(event) {
     }
 
     const keysPressed = [];
-
     if (event.shiftKey) keysPressed.push('Shift');
     if (event.ctrlKey) keysPressed.push('Control');
     if (event.altKey) keysPressed.push('Alt');
     keysPressed.push(event.key);
 
+    let actionPerformed = false;
+
     keyBindings.forEach(binding => {
         if (binding.keys.every(key => keysPressed.includes(key))) {
             log(`Combo detected: ${binding.keys.join(' + ')}`);
+            const currentAction = binding.action.toString();
+            if (currentAction !== lastAction) {
+                actionCount++;
+                lastAction = currentAction;
+            }
             binding.action(event);
+            actionPerformed = true;
             return;
         }
     });
 
-    currentSequence += event.key;
-
-    for (const sequence in sequences) {
-        if (currentSequence.includes(sequence)) {
-            log(`Sequence detected: ${sequence}`);
-            sequences[sequence].action(event);
-            currentSequence = '';
-            break; 
+    if (!actionPerformed) {
+        currentSequence += event.key;
+        for (const sequence in sequences) {
+            if (currentSequence.includes(sequence)) {
+                log(`Sequence detected: ${sequence}`);
+                const currentAction = sequences[sequence].action.toString();
+                if (currentAction !== lastAction) {
+                    actionCount++;
+                    lastAction = currentAction;
+                    if (!startedAchZKEYS) {
+                        startAchievement('Keyboard Ninja');
+                        startedAchZKEYS = true;
+                    }
+                }
+                sequences[sequence].action(event);
+                currentSequence = '';
+                actionPerformed = true;
+                break;
+            }
         }
     }
+
+    if (actionCount === 10 && !doneAchZKEYS) addAchievement('Keyboard Ninja'); doneAchZKEYS = true;
 }
 
 document.addEventListener('keydown', checkKeyCombination);
@@ -162,25 +189,25 @@ document.addEventListener('keydown', checkKeyCombination);
 function help() {
     log("", 'warning');
     log("=-=-= Combos =-=-=", 'warning');
-    
+
     const sortedCombos = [...keyBindings].sort((a, b) => {
         const aKeys = a.keys.join(' + ');
         const bKeys = b.keys.join(' + ');
         return aKeys.localeCompare(bKeys);
     });
-    
+
     sortedCombos.forEach(binding => {
         log(`Combo: ${binding.keys.join(' + ')}: ${binding.description}`, 'warning');
     });
 
     log("=-=-= Sequences =-=-=", 'warning');
-    
+
     const sortedSequences = Object.keys(sequences).sort();
-    
+
     sortedSequences.forEach(sequence => {
         log(`Sequence: '${sequence}': ${sequences[sequence].description}`, 'warning');
     });
-    
+
     log("", 'warning');
 }
 

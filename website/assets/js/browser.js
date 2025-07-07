@@ -15,6 +15,8 @@ function spawnBrowser(event) {
         statusText: 'NoSkidBrowser v69',
     });
 
+    startAchievement('Browser Inception');
+
     browserMainPage(browser);
 }
 
@@ -74,6 +76,7 @@ function doShitWithQuery(win, query) {
     try {
         new URL(query);
         url = query;
+        addAchievement('Browser Inception');
     } catch (_) { //use a search engine if not
         url = 'https://wiby.me/?q=' + encodeURIComponent(query);
     }

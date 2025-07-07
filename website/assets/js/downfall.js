@@ -4,6 +4,8 @@ let animationInProgress = false;
 let revealedImage = null;
 
 function makeElementsFall() {
+    startAchievement('Secret Certificate Hunter');
+
     let imageUrl = "/assets/img/tusc.png";
     if (animationInProgress) return;
     animationInProgress = true;
@@ -65,6 +67,7 @@ function makeElementsFall() {
             
             if (typeof log === 'function') {
                 log('All elements are gone <3', 'success');
+                addAchievement('Secret Certificate Hunter');
             }
         }, 1500);
     }, 100);
@@ -101,5 +104,6 @@ function resetPage() {
     
     if (typeof log === 'function') {
         log('all el are back, sadly :[', 'success');
+        addAchievement('I gotta fix that');
     }
 }

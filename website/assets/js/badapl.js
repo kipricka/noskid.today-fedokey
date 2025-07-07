@@ -3,6 +3,9 @@
 function toggleGoodApple() {
   const currentSetting = localStorage.getItem('goodApple') === 'true';
   const newSetting = !currentSetting;
+
+  if (newSetting) addAchievement('Good Apple Mode');
+
   localStorage.setItem('goodApple', newSetting.toString());
   
   log(`Good Apple mode ${newSetting ? 'enabled' : 'disabled'}. Bad Apple will ${newSetting ? 'NOT' : ''} play when devtools open.`, 'success');
@@ -21,6 +24,9 @@ async function playBadApl() {
   }
 
   try {
+
+    startAchievement('Bad Apple Fan');
+
     const response = await fetch('assets/vids/ba.tmov');
     if (!response.ok) {
       throw new Error(`Failed to fetch file: ${response.statusText}`);
@@ -49,6 +55,8 @@ async function playBadApl() {
     console.log('%cAnimation will start in 5 seconds...', 'color: yellow; font-size: 14px;');
 
     await new Promise(resolve => setTimeout(resolve, 5000));
+
+    addAchievement('Bad Apple Fan');
 
     const frameDuration = metadata.playback.frameDuration || (1000 / metadata.ascii.fps);
     const audio = new Audio('assets/audio/ba.mp3');

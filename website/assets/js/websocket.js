@@ -190,6 +190,7 @@ function setupWebSocket() {
                         };
                         cursors.set(data.id, cursor);
                         log(`New cursor detected with ID: ${data.id}`, 'info');
+                        addAchievement('Websocket Socializer');
                     } else {
                         cursor.x = data.x;
                         cursor.y = data.y;

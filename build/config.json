@@ -49,6 +49,8 @@
     "devtools",
     "total_requests",
     "unique_views",
-    "terminal"
+    "terminal",
+    "achievement",
+    "completed"
   ]
 }

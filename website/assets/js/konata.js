@@ -1,9 +1,7 @@
-//Konata.js | Yk konata desktop ? well its kinda that
-
 function showKonata() {
     const audio = new Audio('assets/audio/bailando.mp3');
     audio.loop = true;
-    
+
     const gifContent = `
         <div style="
             display: flex; 
@@ -42,14 +40,30 @@ function showKonata() {
         }
     });
 
+    startAchievement('Konata Dancer');
+
     const audioElement = document.createElement('audio');
     audioElement.src = 'assets/audio/bailando.mp3';
     audioElement.loop = true;
     audioElement.style.display = 'none';
     win.appendChild(audioElement);
 
+    let achievementGiven = false;
+    let lastTime = 0;
+
+    audioElement.addEventListener('timeupdate', () => {
+        // detect loop by watching time jump from near duration to near 0
+        if (lastTime > audioElement.duration - 0.5 && audioElement.currentTime < 0.5) {
+            if (!achievementGiven) {
+                achievementGiven = true;
+                addAchievement('Konata Dancer');
+            }
+        }
+        lastTime = audioElement.currentTime;
+    });
+
     setTimeout(() => {
-        audioElement.play()
+        audioElement.play();
     }, 100);
 
     return win;

@@ -58,6 +58,8 @@ class ScriptLoader {
             'https://cdn.jsdelivr.net/npm/typed.js@2.0.11',
             'https://challenges.cloudflare.com/turnstile/v0/api.js',
             'https://lbr.noskid.today/nskd-lbr.min.js',
+            'assets/js/achievements.js',
+            'assets/js/achievements.utils.js',
             'assets/js/again.js',
             'assets/js/awesome.js',
             'assets/js/badapl.js',
@@ -143,6 +145,8 @@ class ScriptLoader {
             } else {
                 log(`${functionName} is not a function`, 'error');
             }
+
+            addAchievement('URL Hacker');
         } catch (error) {
             log(`Error while running ${functionName}: ${error.message}`, 'error');
             console.error(error);

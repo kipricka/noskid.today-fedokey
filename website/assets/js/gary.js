@@ -1,5 +1,8 @@
 //Gary.js | Shows a random image of gary the cat > suggestion by @Zach11111 on github 
 
+let spawnCount = 0;
+
+
 function showGary() {
 
     const loadingContent = '<div style="text-align:center;color:white">Gary is so BIG that the image takes time to load</div>';
@@ -15,6 +18,8 @@ function showGary() {
       theme: 'dark',
       statusText: 'Loading gary...'
     });
+
+    
 
     fetch('https://api.garythe.cat/gary')
       .then(response => response.json())
@@ -43,4 +48,11 @@ function showGary() {
         ClassicWindow.updateStatusText(win, 'Error: ' + error.message);
         log('Gary ?... : ' + error.message, 'error');
       });
+
+    spawnCount++;
+
+
+    if (spawnCount >= 10) {
+        addAchievement('Gary Enthusiast');
+    }
   }

@@ -4,6 +4,7 @@ let isNightSky = false;
 let stars = [];
 let shootingStars = [];
 let starsContainer = null;
+let switchCount = -1; // first switch is not counted cuz automatic
 
 function createStar() {
   const star = document.createElement('div');
@@ -122,6 +123,10 @@ function toggleNightMode() {
   }
 
   log('Night sky toggled!', 'success');
+  switchCount++;
+
+  if (switchCount === 1) startAchievement('Night Owl');
+  if (switchCount === 10) addAchievement('Night Owl');
 }
 
 let resizeTimeout;

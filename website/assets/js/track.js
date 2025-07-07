@@ -1,4 +1,4 @@
-//Track.js | Shows the visit count when the "A" is clicked
+//Track.js | Shows the stats of the website on load
 
 let unique_views = -1;
 let total_requests = -1;

@@ -2,6 +2,10 @@
 
 
 function pongGame() {
+    
+    startAchievement('Pong Rookie');
+    startAchievement('Pong Champion');
+
     const container = document.createElement('div');
     container.style.width = '600px';
     container.style.height = '400px';
@@ -125,6 +129,8 @@ function pongGame() {
     function drawGameOver() {
         const winner = game.player.score >= winScore ? "YOU WIN!" : "AI WINS!";
 
+        if (game.player.score >= winScore) addAchievement('Pong Champion');
+
         ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -242,9 +248,11 @@ function pongGame() {
 
         if (game.ball.x < 0) {
             game.ai.score++;
+            addAchievement('Pong Rookie');
             resetBall();
         } else if (game.ball.x > canvas.width) {
             game.player.score++;
+            addAchievement('Pong Rookie');
             resetBall();
         }
 

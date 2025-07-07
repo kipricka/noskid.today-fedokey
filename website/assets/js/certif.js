@@ -1,28 +1,43 @@
-//Certif.js | The certification manager with Turnstile protection - Updated for new API
-
+// Certif.js | The certification manager with Turnstile protection - Updated for new API
 const quizForm = document.getElementById('quiz-form');
 const submitButton = quizForm.querySelector('.submit-button');
 const quizSection = document.querySelector(".quiz-section");
 const TURNSTILE_SITE_KEY = '0x4AAAAAABeZwqhQ3FcnOkEe';
-
 let quizQuestions = [];
+let timerStart = null;
+let timerInterval = null;
+
+function startTimer() {
+  if (timerStart === null) {
+    timerStart = new Date();
+    startAchievement('Speed Runner');
+  }
+}
+
+function stopTimer() {
+  if (timerStart !== null) {
+    const elapsed = Math.floor((new Date() - timerStart) / 1000);
+    clearInterval(timerInterval);
+    timerStart = null;
+    log(`Timer stopped. Total time: ${elapsed} seconds`, 'success');
+    return elapsed;
+  }
+  return 0;
+}
 
 async function loadQuestions() {
   try {
     const response = await fetch('/api/certificate/');
     const data = await response.json();
-
     if (!data.success) {
       throw new Error(data.message || 'Failed to load questions');
     }
-
     quizQuestions = data.questions.map(q => ({
       question: q.question,
       options: q.answers.map(a => a.content),
       answer: q.answers.find((a, index) => index === (q.correct_answer_id - 1))?.content || q.answers[0].content,
       correct_answer_id: q.correct_answer_id
     }));
-
     log('Questions loaded successfully!', 'success');
     return true;
   } catch (error) {
@@ -41,6 +56,12 @@ async function createQuestions() {
       quizForm.appendChild(errorMessage);
       return;
     }
+  }
+
+  // Reset timer when creating new questions
+  timerStart = null;
+  if (timerInterval) {
+    clearInterval(timerInterval);
   }
 
   submitButton.style.display = 'flex';
@@ -75,6 +96,12 @@ async function createQuestions() {
       input.value = optionIndex + 1;
       input.className = 'radio-input';
 
+      input.addEventListener('change', () => {
+        if (timerStart === null) {
+          startTimer();
+        }
+      });
+
       const span = document.createElement('span');
       span.className = 'radio-text';
       span.textContent = option;
@@ -86,22 +113,18 @@ async function createQuestions() {
 
     questionGroup.appendChild(questionText);
     questionGroup.appendChild(radioGroup);
-
     submitButton.parentNode.insertBefore(questionGroup, submitButton);
-
     log(`Question ${index + 1} added!`, 'success');
   });
 }
 
 async function checkQuizResponses() {
-
   const userAnswers = {};
   let allAnswered = true;
 
   quizQuestions.forEach((question, index) => {
     const questionId = index + 1;
     const selectedInput = quizForm.querySelector(`input[name="q${questionId}"]:checked`);
-
     if (selectedInput) {
       userAnswers[questionId] = parseInt(selectedInput.value);
     } else {
@@ -117,7 +140,6 @@ async function checkQuizResponses() {
   try {
     const params = new URLSearchParams();
     params.append('action', 'check');
-
     Object.keys(userAnswers).forEach(questionId => {
       params.append(questionId, userAnswers[questionId]);
     });
@@ -130,14 +152,18 @@ async function checkQuizResponses() {
     }
 
     displayQuizResults(data);
-
     localStorage.setItem('quizTaken', 'true');
     log('quizTaken set to true', 'warning');
 
+    const timeTaken = stopTimer();
+
     if (data.passed) {
       offerCertificate(data.percentage, userAnswers);
-    }
 
+      if (data.correct_answers >= 15 && timeTaken <= 20) {
+        addAchievement('Speed Runner');
+      }
+    }
   } catch (error) {
     log('Error checking answers: ' + error.message, 'error');
     alert('Error checking your answers. Please try again.');
@@ -153,18 +179,16 @@ function displayQuizResults(results) {
     const questionId = detail.question_id;
     const userAnswerId = detail.user_answer;
     const correctAnswerId = detail.correct_answer;
-
     const selectedInput = quizForm.querySelector(`input[name="q${questionId}"][value="${userAnswerId}"]`);
+
     if (selectedInput) {
       const selectedLabel = selectedInput.closest('.radio-label');
-
       if (detail.is_correct) {
         selectedLabel.classList.add('correct');
         log(`Question ${questionId}: Correct!`, 'success');
       } else {
         selectedLabel.classList.add('incorrect');
         log(`Question ${questionId}: Incorrect!`, 'warning');
-
         const correctInput = quizForm.querySelector(`input[name="q${questionId}"][value="${correctAnswerId}"]`);
         if (correctInput) {
           const correctLabel = correctInput.closest('.radio-label');
@@ -180,6 +204,13 @@ function displayQuizResults(results) {
 
   submitButton.disabled = true;
   submitButton.textContent = `Score: ${results.correct_answers}/${results.total_questions} (${results.percentage}%)`;
+
+  if (results.passed && results.correct_answers >= 12) {
+    addAchievement('Certified NoSkid');
+  }
+  if (results.passed && results.correct_answers === 15) {
+    addAchievement('Perfect Score');
+  }
 }
 
 function offerCertificate(percentage, userAnswers) {
@@ -199,6 +230,36 @@ function offerCertificate(percentage, userAnswers) {
   usernameInput.type = 'text';
   usernameInput.placeholder = 'Your name';
   usernameInput.className = 'input-text';
+
+  const totalPercent = getTotalPercent();
+  let achievementCheckbox = null;
+  let achievementContainer = null;
+
+  if (totalPercent > 0) {
+    achievementContainer = document.createElement('div');
+    achievementContainer.className = 'achievement-container';
+    achievementContainer.style.marginTop = '15px';
+    achievementContainer.style.marginBottom = '15px';
+
+    const achievementLabel = document.createElement('label');
+    achievementLabel.className = 'achievement-label';
+    achievementLabel.style.display = 'flex';
+    achievementLabel.style.alignItems = 'center';
+    achievementLabel.style.cursor = 'pointer';
+
+    achievementCheckbox = document.createElement('input');
+    achievementCheckbox.type = 'checkbox';
+    achievementCheckbox.className = 'achievement-checkbox';
+    achievementCheckbox.style.marginRight = '10px';
+
+    const achievementText = document.createElement('span');
+    achievementText.textContent = `Add ${totalPercent}% to your score? (Achievements)`;
+    achievementText.style.fontSize = '14px';
+
+    achievementLabel.appendChild(achievementCheckbox);
+    achievementLabel.appendChild(achievementText);
+    achievementContainer.appendChild(achievementLabel);
+  }
 
   const turnstileContainer = document.createElement('div');
   turnstileContainer.className = 'turnstile-container';
@@ -258,12 +319,10 @@ function offerCertificate(percentage, userAnswers) {
 
   downloadButton.addEventListener('click', async () => {
     const username = usernameInput.value.trim();
-
     if (!username) {
       alert('Please enter a valid name.');
       return;
     }
-
     if (typeof turnstile !== 'undefined' && !turnstileToken) {
       alert('Please complete the security verification.');
       return;
@@ -273,22 +332,32 @@ function offerCertificate(percentage, userAnswers) {
       const params = new URLSearchParams();
       params.append('action', 'download');
       params.append('name', username);
-
       Object.keys(userAnswers).forEach(questionId => {
         params.append(questionId, userAnswers[questionId]);
       });
-
       if (turnstileToken) {
         params.append('turnstile_token', turnstileToken);
       }
 
-      const downloadUrl = `/api/certificate/?${params}`;
+      if (achievementCheckbox && achievementCheckbox.checked) {
+        try {
+          const userId = getUserId();
+          if (userId) {
+            params.append('userId', userId);
+            log(`Adding userId ${userId} to certificate request`, 'success');
+          } else {
+            log('getUserId() returned null or undefined', 'warning');
+          }
+        } catch (error) {
+          log('Error getting userId: ' + error.message, 'error');
+        }
+      }
 
+      const downloadUrl = `/api/certificate/?${params}`;
       downloadButton.disabled = true;
       downloadButton.textContent = 'Downloading...';
 
       window.location.href = downloadUrl;
-
       log('Certificate download initiated!', 'success');
 
       setTimeout(() => {
@@ -297,19 +366,15 @@ function offerCertificate(percentage, userAnswers) {
   <br>
   <p>Check out what you can do with it: <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a></p>
   <hr>
-  <p>If you like this website consider adding a star to 
+  <p>If you like this website consider adding a star to
     <a href="https://github.com/douxxtech/noskid.today" target="_blank">the GitHub</a> <3
   </p>
 `;
-
-
         certificateSection.style.display = 'none';
       }, 2000);
-
     } catch (error) {
       log('Error downloading certificate: ' + error.message, 'error');
       alert('Error downloading certificate. Please try again.');
-
       downloadButton.disabled = false;
       downloadButton.textContent = 'Download';
     }
@@ -317,6 +382,11 @@ function offerCertificate(percentage, userAnswers) {
 
   certificateSection.appendChild(message);
   certificateSection.appendChild(usernameInput);
+
+  if (achievementContainer) {
+    certificateSection.appendChild(achievementContainer);
+  }
+
   certificateSection.appendChild(turnstileContainer);
   certificateSection.appendChild(downloadButton);
   quizForm.appendChild(certificateSection);
@@ -338,7 +408,6 @@ async function handleQuizDisplay() {
       log('Quiz has already been taken.', 'warning')
     } else {
       await createQuestions();
-
       quizForm.addEventListener('submit', (e) => {
         e.preventDefault();
         checkQuizResponses();
@@ -347,11 +416,8 @@ async function handleQuizDisplay() {
   }
 }
 
-handleQuizDisplay();
-
 async function redoQuiz(event) {
   event.preventDefault();
-
   const quizContainer = document.querySelector('.quiz-container');
   if (quizContainer) {
     quizContainer.open = true;
@@ -360,12 +426,12 @@ async function redoQuiz(event) {
     log('Quiz container not found!', 'error');
     return;
   }
-
   await createQuestions();
   log('Recreated questions!', 'success')
-
   quizForm.addEventListener('submit', (e) => {
     e.preventDefault();
     checkQuizResponses();
   });
 }
+
+handleQuizDisplay();

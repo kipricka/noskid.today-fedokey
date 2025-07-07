@@ -1,6 +1,8 @@
 //Check.js | The certification validity checker
 
 async function verifyCertificate() {
+    startAchievement('Certificate Validator');
+    
     log('=-=-==- Certificate -==-=-=', 'warning');
     log('Opening certificate verification tool...', 'warning');
 
@@ -22,6 +24,7 @@ async function verifyCertificate() {
 
             log(`Processing certificate file: ${file.name}`, 'warning');
             await processCertificateFile(file);
+            addAchievement('Certificate Validator');
         });
 
         fileInput.click();
@@ -75,6 +78,7 @@ async function processCertificateFile(file) {
     } catch (error) {
         log(`Error processing certificate: ${error.message}`, 'error');
     }
+
 }
 
 function displayCertificateDetails(data) {

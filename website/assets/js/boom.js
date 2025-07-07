@@ -28,6 +28,8 @@ function toggleBoom() {
         }
         log('Boom bg toggled!', 'success');
 
+        addAchievement('Boom Explorer');
+
     } catch (err) {
         log(`Failed to toggle boom bg: ${err}`, 'error');
 

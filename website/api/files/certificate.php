@@ -151,6 +151,61 @@ function checkAnswers() {
     }
 }
 
+function getUserAchievements($userId) {
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    
+    if ($conn->connect_error) {
+        return [];
+    }
+    
+    $stmt = $conn->prepare("SELECT completed_achievements FROM user_achievements WHERE id = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $completedAchievements = [];
+    if ($row = $result->fetch_assoc()) {
+        if (!empty($row['completed_achievements'])) {
+            $completedAchievements = explode('||', $row['completed_achievements']);
+        }
+    }
+    
+    $stmt->close();
+    $conn->close();
+    
+    return $completedAchievements;
+}
+
+function calculateAchievementBonus($userId) {
+    global $achievements;
+    
+    if (empty($userId) || !isset($achievements) || !is_array($achievements)) {
+        return 0;
+    }
+    
+    $completedAchievements = getUserAchievements($userId);
+    
+    if (empty($completedAchievements)) {
+        return 0;
+    }
+    
+    $totalBonus = 0;
+    
+    foreach ($achievements as $achievement) {
+        if (!isset($achievement['name']) || !isset($achievement['percent'])) {
+            continue;
+        }
+        
+        $achievementName = trim((string) $achievement['name']);
+        
+        if (in_array($achievementName, $completedAchievements)) {
+            $totalBonus += (int) $achievement['percent'];
+        }
+    }
+    
+    return $totalBonus;
+}
+
 function downloadCertificate() {
     global $questions;
 
@@ -161,6 +216,7 @@ function downloadCertificate() {
     }
 
     $name = $_GET['name'];
+    $userId = $_GET['userId'] ?? '';
     $turnstileToken = $_GET['turnstile_token'] ?? null;
     $ip = getRequesterIp();
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
@@ -232,14 +288,20 @@ function downloadCertificate() {
             }
         }
 
-        $percentage = $total_questions > 0 ? round(($correct_answers / $total_questions) * 100, 2) : 0;
+        $basePercentage = $total_questions > 0 ? round(($correct_answers / $total_questions) * 100, 2) : 0;
+        
+        $achievementBonus = calculateAchievementBonus($userId);
+        
+        $finalPercentage = $basePercentage + $achievementBonus;
 
-        if ($percentage < MIN_PERCENTAGE) {
+        if ($basePercentage < MIN_PERCENTAGE) {
             http_response_code(400);
             echo json_encode([
                 'success' => false, 
-                'message' => 'Certificate can only be downloaded with a score of 80% or higher',
-                'percentage' => $percentage,
+                'message' => 'Certificate can only be downloaded with a base score of 80% or higher',
+                'base_percentage' => $basePercentage,
+                'achievement_bonus' => $achievementBonus,
+                'final_percentage' => $finalPercentage,
                 'threshold' => MIN_PERCENTAGE
             ]);
             exit;
@@ -252,7 +314,6 @@ function downloadCertificate() {
                 throw new Exception('Database connection failed: ' . $mysqli->connect_error);
             }
 
-            setupDatabase($mysqli);
 
             if (defined('MAX_REQUESTS_PER_MINUTE')) {
                 $oneMinuteAgo = gmdate('Y-m-d H:i:s', $currentTime - 60);
@@ -276,24 +337,24 @@ function downloadCertificate() {
             $stmt->execute();
             $stmt->close();
 
-            if (defined('MIN_PERCENTAGE') && $percentage < MIN_PERCENTAGE) {
+            if (defined('MIN_PERCENTAGE') && $basePercentage < MIN_PERCENTAGE) {
                 $mysqli->close();
                 http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Percentage below minimum threshold']);
+                echo json_encode(['success' => false, 'message' => 'Base percentage below minimum threshold']);
                 exit;
             }
 
-            if (defined('MAX_PERCENTAGE') && $percentage > MAX_PERCENTAGE) {
+            if (defined('MAX_PERCENTAGE') && $basePercentage > MAX_PERCENTAGE) {
                 $mysqli->close();
                 http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Percentage above maximum threshold']);
+                echo json_encode(['success' => false, 'message' => 'Base percentage above maximum threshold']);
                 exit;
             }
 
             $verificationKey = generateVerificationKey($name, $currentTime, $mysqli);
 
             $stmt = $mysqli->prepare("INSERT INTO cert (name, percentage, ip, verification_key) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("sdss", $name, $percentage, $ip, $verificationKey);
+            $stmt->bind_param("sdss", $name, $finalPercentage, $ip, $verificationKey);
             $stmt->execute();
             $insertId = $mysqli->insert_id;
             $stmt->close();
@@ -304,7 +365,7 @@ function downloadCertificate() {
             $verificationKey = generateSimpleVerificationKey($name, $currentTime);
         }
 
-        generateCertificate($name, $percentage, $insertId, $verificationKey, $ip);
+        generateCertificate($name, $finalPercentage, $insertId, $verificationKey, $ip);
 
     } catch (Exception $e) {
         http_response_code(500);
@@ -322,6 +383,7 @@ function generateCertificate($name, $percentage, $insertId, $verificationKey, $i
 
     $date = gmdate('Y-m-d');
     $certNumber = str_pad($insertId, 5, '0', STR_PAD_LEFT);
+        
     $svgContent = str_replace(['{{DATE}}', '{{CERTNB}}', '{{PERCENT}}', '{{USER}}'], [$date, $certNumber, $percentage, $name], $svgContent);
 
     $tempSvgPath = tempnam(sys_get_temp_dir(), 'cert_') . '.svg';
@@ -537,40 +599,6 @@ function appendVerificationKeyToPng($pngPath, $verificationKey) {
     file_put_contents($pngPath, $newData);
 }
 
-function setupDatabase($mysqli) {
-    $requestsTableExists = $mysqli->query("SHOW TABLES LIKE 'requests'")->num_rows > 0;
-    if (!$requestsTableExists) {
-        $createRequestsTableSql = "CREATE TABLE requests (
-            id INT(11) AUTO_INCREMENT PRIMARY KEY,
-            ip VARCHAR(45) NOT NULL,
-            user_agent TEXT NOT NULL,
-            request_time DATETIME NOT NULL,
-            INDEX idx_request_time (ip, request_time)
-        )";
-        if (!$mysqli->query($createRequestsTableSql)) {
-            throw new Exception('Error creating requests table: ' . $mysqli->error);
-        }
-    }
-
-    $certTableExists = $mysqli->query("SHOW TABLES LIKE 'cert'")->num_rows > 0;
-    if (!$certTableExists) {
-        $createTableSql = "CREATE TABLE cert (
-            id INT(11) AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            percentage DECIMAL(5,2) NOT NULL,
-            ip VARCHAR(45) NOT NULL,
-            verification_key VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT UTC_TIMESTAMP()
-        )";
-        if (!$mysqli->query($createTableSql)) {
-            throw new Exception('Error creating cert table: ' . $mysqli->error);
-        }
-    } else {
-        if (!$mysqli->query("SHOW COLUMNS FROM cert LIKE 'verification_key'")->num_rows) {
-            $mysqli->query("ALTER TABLE cert ADD COLUMN verification_key VARCHAR(255) AFTER ip");
-        }
-    }
-}
 
 function getCountryEmoji($countryCode) {
     if ($countryCode == 'XX' || strlen($countryCode) != 2) {
@@ -588,29 +616,31 @@ function getCountryEmoji($countryCode) {
 function sendDiscordNotification($certNumber, $username, $countryEmoji, $pngPath) {
     $webhookUrl = DISCORD_WEBHOOK_URL;
 
+    $fields = [
+        [
+            'name' => 'Number',
+            'value' => '#' . $certNumber,
+            'inline' => true
+        ],
+        [
+            'name' => 'User',
+            'value' => $username,
+            'inline' => true
+        ],
+        [
+            'name' => 'Country',
+            'value' => $countryEmoji,
+            'inline' => true
+        ]
+    ];
+
     $message = [
         'content' => "New certificate generated!",
         'embeds' => [
             [
                 'title' => 'Certificate Details',
                 'color' => 0xf9f7f0,
-                'fields' => [
-                    [
-                        'name' => 'Number',
-                        'value' => '#' . $certNumber,
-                        'inline' => true
-                    ],
-                    [
-                        'name' => 'User',
-                        'value' => $username,
-                        'inline' => true
-                    ],
-                    [
-                        'name' => 'Country',
-                        'value' => $countryEmoji,
-                        'inline' => true
-                    ]
-                ],
+                'fields' => $fields,
                 'timestamp' => gmdate('c')
             ]
         ]

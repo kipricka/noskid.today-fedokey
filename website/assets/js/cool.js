@@ -16,7 +16,7 @@ function spawnCool(event) {
     doTheCool(coolwin);
     log('Cool is here !', 'success');
 
-
+    addAchievement('Cool Thing Finder');
     return coolwin;
 }
 

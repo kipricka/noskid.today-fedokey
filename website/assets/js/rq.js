@@ -1,7 +1,9 @@
-// rq.js | Request catcher tool
+// Rq.js | Request catcher tool
 
 async function requestsCatcher(event) {
     event.preventDefault();
+
+    startAchievement('Request Catcher');
 
     log('=-=-==- Certificate Request Catcher -==-=-=', 'warning');
     log('Opening certificate verification tool...', 'warning');
@@ -110,6 +112,7 @@ function connectToWebSocketServer(key) {
         if (data.type === 'auth_success') {
             log(`Authentication successful. Generated url: https://rq.noskid.today${data.url}`, 'success');
         } else if (data.type === 'request_data') {
+            addAchievement('Request Catcher');
             log('=-=-==- Incoming Request -==-=-=', 'warning');
             log(`Method: ${data.data.method}`, 'info');
             log(`URL: ${data.data.url}`, 'info');
@@ -124,6 +127,7 @@ function connectToWebSocketServer(key) {
                 log(JSON.stringify(data.data.body, null, 2), 'info');
             }
             log('=-=-=-=-=-=-=-=-==-=-==-=-=', 'warning');
+            
         } else if (data.type === 'auth_failed') {
             log(`Authentication failed: ${data.reason}`, 'error');
         } else if (data.type === 'auth_error') {

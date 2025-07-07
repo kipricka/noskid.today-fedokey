@@ -3,6 +3,8 @@
 function spawnCommentSystem(event) {
     event.preventDefault();
 
+    startAchievement('Super Commenter');
+
     const commentwin = ClassicWindow.createWindow({
         title: 'Comments',
         width: 500,
@@ -37,13 +39,11 @@ function spawnCommentSystem(event) {
 }
 
 function addCommentSystemStyles() {
-    // Check if styles already exist
     if (document.getElementById('comment-system-styles')) return;
     
     const style = document.createElement('style');
     style.id = 'comment-system-styles';
     style.textContent = `
-        /* Comment System Styles */
         .comments-container {
             padding: 15px;
             background: #1a1a1a;
@@ -221,7 +221,6 @@ function addCommentSystemStyles() {
             background: #0056b3;
         }
 
-        /* Comment Form Styles */
         .comment-form {
             padding: 20px;
             background: #1a1a1a;
@@ -302,7 +301,6 @@ function addCommentSystemStyles() {
             cursor: not-allowed;
         }
 
-        /* Scrollbar Styling */
         .comments-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -367,7 +365,6 @@ function displayComments(window, comments) {
     if (comments.length === 0) {
         container.innerHTML = `
             <div class="no-comments">
-                <div class="icon">💬</div>
                 <p>No comments yet. Be the first to comment!</p>
             </div>
         `;
@@ -555,6 +552,7 @@ function submitComment(form, window) {
         })
         .then(data => {
             log('Comment added successfully', 'success');
+            addAchievement('Super Commenter');
 
             const allWindows = ClassicWindow.getAllWindows();
 
