@@ -257,6 +257,7 @@ function handleGetAchievements($achievements) {
             createUser($userId);
         } else {
             if (!userExists($userId)) {
+                $userId = generateUserId();
                 createUser($userId);
             } else {
                 $completedAchievements = getUserAchievements($userId);
