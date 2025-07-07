@@ -162,9 +162,9 @@ async function checkQuizResponses() {
         addAchievement('Speed Runner');
       }
 
-        if (results.passed && results.correct_answers >= 12) addAchievement('Certified NoSkid');
-        
-        if (results.passed && results.correct_answers === 15) addAchievement('Perfect Score');
+      if (data.passed && data.correct_answers >= 12) addAchievement('Certified NoSkid');
+      
+      if (data.passed && data.correct_answers === 15) addAchievement('Perfect Score');
 
 
       offerCertificate(data.percentage, userAnswers);
