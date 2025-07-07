@@ -158,11 +158,16 @@ async function checkQuizResponses() {
     const timeTaken = stopTimer();
 
     if (data.passed) {
-      offerCertificate(data.percentage, userAnswers);
-
       if (data.correct_answers >= 15 && timeTaken <= 20) {
         addAchievement('Speed Runner');
       }
+
+        if (results.passed && results.correct_answers >= 12) addAchievement('Certified NoSkid');
+        
+        if (results.passed && results.correct_answers === 15) addAchievement('Perfect Score');
+
+
+      offerCertificate(data.percentage, userAnswers);
     }
   } catch (error) {
     log('Error checking answers: ' + error.message, 'error');
@@ -204,13 +209,6 @@ function displayQuizResults(results) {
 
   submitButton.disabled = true;
   submitButton.textContent = `Score: ${results.correct_answers}/${results.total_questions} (${results.percentage}%)`;
-
-  if (results.passed && results.correct_answers >= 12) {
-    addAchievement('Certified NoSkid');
-  }
-  if (results.passed && results.correct_answers === 15) {
-    addAchievement('Perfect Score');
-  }
 }
 
 function offerCertificate(percentage, userAnswers) {
