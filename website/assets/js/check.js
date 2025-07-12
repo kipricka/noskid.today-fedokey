@@ -84,7 +84,7 @@ async function processCertificateFile(file) {
 function displayCertificateDetails(data) {
     log('=-=-==- Certificate -==-=-=', 'warning');
     log(`Certificate #: ${data.certificate_number}`, 'success');
-    log(`Username: ${data.username}`, 'success');
+    log(`Username: ${data.nickname}`, 'success');
     log(`Percentage: ${data.percentage}%`, 'success');
     log(`Creation Date: ${data.creationDate}`, 'success');
     log(`Country: ${data.country} (${data.countryCode})`, 'success');
