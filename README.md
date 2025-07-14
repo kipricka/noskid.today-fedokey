@@ -28,6 +28,8 @@ cd noskid.today
 php -S 0.0.0.0:80
 ```
 (or use something like apache with php-fpm)
+  
+Note: i'll >> **maybe** << rewrite the API Backend in JavaScript, if i find the time to do it
 
 > [!WARNING]
 > We recently changed our API ! We recommand looking at the change notes:
