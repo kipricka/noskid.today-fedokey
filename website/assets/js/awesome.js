@@ -10,7 +10,7 @@ function getRandomColor() {
 function toggleAwesome() {
     try {
         const strikeElement = document.getElementById('strike');
-        const links = [document.getElementById('footer-link1'), document.getElementById('footer-link2')];
+        const links = [document.getElementById('footer-link1'), document.getElementById('footer-link2'), document.getElementById('footer-link3')];
 
         if (intervalId) {
             clearInterval(intervalId);
