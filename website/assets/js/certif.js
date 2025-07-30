@@ -6,6 +6,111 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAABeZwqhQ3FcnOkEe';
 let quizQuestions = [];
 let timerStart = null;
 let timerInterval = null;
+let quizInvalidated = false;
+let tabSwitchDetectionEnabled = false;
+
+class TabSwitchDetector {
+  constructor() {
+    this.isActive = false;
+    this.switchCount = 0;
+    this.onTabSwitch = null;
+  }
+
+  enable(callback) {
+    if (this.isActive) return;
+    
+    this.isActive = true;
+    this.onTabSwitch = callback;
+    this.switchCount = 0;
+
+    document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+    window.addEventListener('blur', this.handleWindowBlur.bind(this));
+    window.addEventListener('focus', this.handleWindowFocus.bind(this));
+    document.addEventListener('contextmenu', this.handleContextMenu.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+
+    log('Tab switch detection enabled', 'warning');
+  }
+
+  disable() {
+    if (!this.isActive) return;
+
+    this.isActive = false;
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+    window.removeEventListener('blur', this.handleWindowBlur.bind(this));
+    window.removeEventListener('focus', this.handleWindowFocus.bind(this));
+    document.removeEventListener('contextmenu', this.handleContextMenu.bind(this));
+    document.removeEventListener('keydown', this.handleKeyDown.bind(this));
+    
+    log('Tab switch detection disabled', 'warning');
+  }
+
+  handleVisibilityChange() {
+    if (document.hidden && this.isActive) {
+      this.switchCount++;
+      log(`Tab switch detected (visibility) - Count: ${this.switchCount}`, 'warning');
+      this.triggerInvalidation('tab switch');
+    }
+  }
+
+  handleWindowBlur() {
+    if (this.isActive) {
+      this.switchCount++;
+      log(`Window blur detected - Count: ${this.switchCount}`, 'warning');
+      this.triggerInvalidation('window focus loss');
+    }
+  }
+
+  handleWindowFocus() {
+    if (this.isActive && this.switchCount > 0) {
+      log('Window focus regained, but quiz already invalidated', 'warning');
+    }
+  }
+
+  handleContextMenu(e) {
+    if (this.isActive) {
+      e.preventDefault();
+      log('Context menu blocked during quiz', 'warning');
+      this.triggerInvalidation('context menu attempt');
+    }
+  }
+
+  handleKeyDown(e) {
+    if (!this.isActive) return;
+
+    const blockedKeys = [
+      { key: 'F12' },
+      { key: 'I', ctrl: true, shift: true },
+      { key: 'J', ctrl: true, shift: true },
+      { key: 'C', ctrl: true, shift: true },
+      { key: 'U', ctrl: true }
+    ];
+
+    for (const blocked of blockedKeys) {
+      if (e.key === blocked.key && 
+          (!blocked.ctrl || e.ctrlKey) && 
+          (!blocked.shift || e.shiftKey)) {
+        e.preventDefault();
+        log(`Blocked key combination: ${e.key}`, 'warning');
+        this.triggerInvalidation('developer tools attempt');
+        return;
+      }
+    }
+  }
+
+  triggerInvalidation(reason) {
+    if (!this.isActive) return;
+
+    log(`Quiz invalidated due to: ${reason}`, 'error');
+    this.disable();
+    
+    if (this.onTabSwitch) {
+      this.onTabSwitch(reason);
+    }
+  }
+}
+
+const tabSwitchDetector = new TabSwitchDetector();
 
 function startTimer() {
   if (timerStart === null) {
@@ -23,6 +128,47 @@ function stopTimer() {
     return elapsed;
   }
   return 0;
+}
+
+function enableTabSwitchDetection() {
+  if (!tabSwitchDetectionEnabled) {
+    tabSwitchDetectionEnabled = true;
+    tabSwitchDetector.enable((reason) => {
+      quizInvalidated = true;
+      stopTimer();
+      displayInvalidatedQuiz();
+    });
+  }
+}
+
+function disableTabSwitchDetection() {
+  if (tabSwitchDetectionEnabled) {
+    tabSwitchDetectionEnabled = false;
+    tabSwitchDetector.disable();
+  }
+}
+
+function displayInvalidatedQuiz() {
+  const existingQuestions = document.querySelectorAll('.question-group');
+  existingQuestions.forEach((q) => q.remove());
+  
+  const existingMessage = quizForm.querySelector('.quiz-message');
+  if (existingMessage) existingMessage.remove();
+
+  const message = document.createElement('p');
+  message.innerHTML = `
+    Quiz Invalidated!
+    <br><br>
+    The quiz was invalidated because you switched tabs during the test. 
+    This is to ensure test integrity.
+    <br><br>
+    <a onclick="redoQuiz()" class="submit-button" style="margin-top: 15px;">
+      Restart quiz
+    </a>
+  `;
+  message.className = 'quiz-message';
+  quizForm.appendChild(message);
+  submitButton.style.display = 'none';
 }
 
 async function loadQuestions() {
@@ -92,6 +238,7 @@ async function createQuestions() {
       input.addEventListener('change', () => {
         if (timerStart === null) {
           startTimer();
+          enableTabSwitchDetection();
         }
       });
 
@@ -112,6 +259,11 @@ async function createQuestions() {
 }
 
 async function checkQuizResponses() {
+  if (quizInvalidated) {
+    alert('This quiz has been invalidated and cannot be submitted.');
+    return;
+  }
+
   const userAnswers = {};
   let allAnswered = true;
 
@@ -141,6 +293,8 @@ async function checkQuizResponses() {
     const data = await response.json();
 
     if (!data.success) throw new Error(data.message || 'Failed to check answers');
+
+    disableTabSwitchDetection();
 
     displayQuizResults(data);
     localStorage.setItem('quizTaken', 'true');
@@ -393,7 +547,12 @@ async function handleQuizDisplay() {
 }
 
 async function redoQuiz(event) {
-  event.preventDefault();
+  if (event) event.preventDefault();
+  
+  quizInvalidated = false;
+  tabSwitchDetectionEnabled = false;
+  timerStart = null;
+  
   const quizContainer = document.querySelector('.quiz-container');
   if (quizContainer) {
     quizContainer.open = true;
