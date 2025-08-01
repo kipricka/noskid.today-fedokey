@@ -41,11 +41,11 @@ function initCanvas() {
 function loadCursorImage() {
     cursorImage = new Image();
     cursorImage.src = 'assets/img/cursor_white.png';
-    cursorImage.onload = function() {
+    cursorImage.onload = function () {
         cursorImageLoaded = true;
         log('Cursor image loaded successfully', 'success');
     };
-    cursorImage.onerror = function() {
+    cursorImage.onerror = function () {
         console.error("Failed to load cursor image, using default cursor");
         cursorImageLoaded = false;
         log('Failed to load cursor image, using default cursor', 'warning');
@@ -213,7 +213,7 @@ function drawTrail(points, alphaMultiplier = 1) {
     if (!points || points.length < 2) return;
 
     for (let i = 1; i < points.length; i++) {
-        const p0 = points[i-1];
+        const p0 = points[i - 1];
         const p1 = points[i];
         const progress = i / points.length;
         const thickness = 12 * (0.3 + progress * 0.7);
@@ -270,8 +270,8 @@ function drawCursors(alphaMultiplier) {
                 ctx.globalAlpha = alphaMultiplier;
                 ctx.drawImage(
                     cursorImage,
-                    cursor.x - cursorSize/2 + offsetX,
-                    cursor.y - cursorSize/2 + offsetY,
+                    cursor.x - cursorSize / 2 + offsetX,
+                    cursor.y - cursorSize / 2 + offsetY,
                     cursorSize,
                     cursorSize
                 );

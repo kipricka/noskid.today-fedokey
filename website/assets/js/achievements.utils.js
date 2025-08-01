@@ -70,17 +70,17 @@ const marathonStart = Date.now();
 startAchievement('Marathon Runner');
 
 const marathonCheckInterval = setInterval(() => {
-    if (marathonAchievementGiven) {
-        clearInterval(marathonCheckInterval);
-        return;
-    }
+  if (marathonAchievementGiven) {
+    clearInterval(marathonCheckInterval);
+    return;
+  }
 
-    const elapsed = Date.now() - marathonStart;
-    if (elapsed >= 2 * 60 * 60 * 1000) { // 2 hours in milliseconds
-        marathonAchievementGiven = true;
-        addAchievement('Marathon Runner');
-        clearInterval(marathonCheckInterval);
-    }
+  const elapsed = Date.now() - marathonStart;
+  if (elapsed >= 2 * 60 * 60 * 1000) { // 2 hours in milliseconds
+    marathonAchievementGiven = true;
+    addAchievement('Marathon Runner');
+    clearInterval(marathonCheckInterval);
+  }
 }, 60 * 1000);
 
 // Marathon Runner \\

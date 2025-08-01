@@ -10,7 +10,7 @@ async function showStats() {
         } else {
             await getReqCount();
         }
-        
+
         logStats();
     } else {
         logStats();

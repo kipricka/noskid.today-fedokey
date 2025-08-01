@@ -66,4 +66,4 @@ createCustomCookies({
     'contact': 'made by https://douxx.tech or @douxx.xyz on discord',
     'miammiam': 'I love pasta, and you ?',
     'hehe': 'i got 100% at the noskid certificate, and you ?'
-  });
+});

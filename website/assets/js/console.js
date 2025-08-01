@@ -4,7 +4,7 @@ const consoleButton = document.getElementById('console-btn');
 function toggleConsole(event) {
     event.preventDefault();
     try {
-        
+
         const consoleContainer = document.getElementById("console-container");
         const wholeSite = document.getElementById("wholesite");
 

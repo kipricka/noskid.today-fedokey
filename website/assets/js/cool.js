@@ -4,13 +4,13 @@ function spawnCool(event) {
     event.preventDefault();
 
     const coolwin = ClassicWindow.createWindow({
-      title: 'Ts is so cool',
-      width: 500,
-      height: 400,
-      x: Math.round((window.innerWidth - 500) / 2),
-      y: Math.round((window.innerHeight - 400) / 2),
-      theme: 'dark',
-      statusText: 'ts is fire, isnt it ?'
+        title: 'Ts is so cool',
+        width: 500,
+        height: 400,
+        x: Math.round((window.innerWidth - 500) / 2),
+        y: Math.round((window.innerHeight - 400) / 2),
+        theme: 'dark',
+        statusText: 'ts is fire, isnt it ?'
     });
 
     doTheCool(coolwin);

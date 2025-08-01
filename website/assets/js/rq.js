@@ -127,7 +127,7 @@ function connectToWebSocketServer(key) {
                 log(JSON.stringify(data.data.body, null, 2), 'info');
             }
             log('=-=-=-=-=-=-=-=-==-=-==-=-=', 'warning');
-            
+
         } else if (data.type === 'auth_failed') {
             log(`Authentication failed: ${data.reason}`, 'error');
         } else if (data.type === 'auth_error') {

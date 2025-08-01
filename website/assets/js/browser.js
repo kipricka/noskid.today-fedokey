@@ -50,14 +50,14 @@ function browserMainPage(browser) {
     `;
 
     updateBrowser(browser, page);
-    
+
     setTimeout(() => {
         const container = browser.querySelector('.c-cnt');
         if (!container) return;
-        
+
         const form = container.querySelector('#search-form');
         const input = container.querySelector('#search-input');
-        
+
         if (form && input) {
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -156,16 +156,16 @@ function doShitWithQuery(win, query) {
     `;
 
     updateBrowser(win, content);
-    
+
     ClassicWindow.updateStatusText(win, url);
-    
+
     setTimeout(() => {
         const container = win.querySelector('.c-cnt');
         if (!container) return;
-        
+
         const urlInput = container.querySelector('#browser-url');
         const goButton = container.querySelector('#browser-go');
-        
+
         if (urlInput && goButton) {
             const handleSearch = () => {
                 const newQuery = urlInput.value.trim();
@@ -173,7 +173,7 @@ function doShitWithQuery(win, query) {
                     doShitWithQuery(win, newQuery);
                 }
             };
-            
+
             goButton.addEventListener('click', handleSearch);
             urlInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
@@ -185,16 +185,16 @@ function doShitWithQuery(win, query) {
     }, 100);
 
     updateBrowser(win, content);
-    
+
     ClassicWindow.updateStatusText(win, url);
-    
+
     setTimeout(() => {
         const container = win.querySelector('.c-cnt');
         if (!container) return;
-        
+
         const urlInput = container.querySelector('#browser-url');
         const goButton = container.querySelector('#browser-go');
-        
+
         if (urlInput && goButton) {
             const handleSearch = () => {
                 const newQuery = urlInput.value.trim();
@@ -202,7 +202,7 @@ function doShitWithQuery(win, query) {
                     doShitWithQuery(win, newQuery);
                 }
             };
-            
+
             goButton.addEventListener('click', handleSearch);
             urlInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {

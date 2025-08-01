@@ -2,7 +2,7 @@
 
 
 function pongGame() {
-    
+
     startAchievement('Pong Rookie');
     startAchievement('Pong Champion');
 

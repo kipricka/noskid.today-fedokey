@@ -37,21 +37,21 @@ function createShootingStar() {
   container.style.top = `${startY}px`;
 
   const angle = Math.PI / 4 + (Math.random() - 0.5) * (Math.PI / 6);
-  
+
   const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
   const endX = startX + Math.cos(angle) * distance;
   const endY = startY + Math.sin(angle) * distance;
 
   const duration = Math.random() * 1000 + 1500;
-  
+
   const animation = container.animate([
-    { 
+    {
       transform: 'translate(0, 0) rotate(' + (angle * 180 / Math.PI) + 'deg)',
-      opacity: 1 
+      opacity: 1
     },
-    { 
+    {
       transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${angle * 180 / Math.PI}deg)`,
-      opacity: 0 
+      opacity: 0
     }
   ], {
     duration: duration,
@@ -74,7 +74,7 @@ function createShootingStar() {
 
 function addShootingStar() {
   if (!isNightSky || !starsContainer) return;
-  
+
   const star = createShootingStar();
   starsContainer.appendChild(star);
   shootingStars.push(star);
@@ -89,36 +89,36 @@ function updateStarPositions() {
 
 function toggleNightMode() {
   isNightSky = !isNightSky;
-  
+
   if (isNightSky) {
     document.body.classList.add('night-sky');
-    
+
     starsContainer = document.createElement('div');
     starsContainer.className = 'stars-container';
     document.body.appendChild(starsContainer);
-    
+
     for (let i = 0; i < 150; i++) {
       const star = createStar();
       starsContainer.appendChild(star);
       stars.push(star);
     }
-    
+
     for (let i = 0; i < 2; i++) {
       setTimeout(addShootingStar, i * 2000);
     }
-    
+
     window.addEventListener('resize', updateStarPositions);
-    
+
   } else {
     document.body.classList.remove('night-sky');
-    
+
     if (starsContainer) {
       starsContainer.remove();
       starsContainer = null;
     }
     stars = [];
     shootingStars = [];
-    
+
     window.removeEventListener('resize', updateStarPositions);
   }
 

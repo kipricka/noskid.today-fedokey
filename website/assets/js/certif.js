@@ -18,7 +18,7 @@ class TabSwitchDetector {
 
   enable(callback) {
     if (this.isActive) return;
-    
+
     this.isActive = true;
     this.onTabSwitch = callback;
     this.switchCount = 0;
@@ -41,7 +41,7 @@ class TabSwitchDetector {
     window.removeEventListener('focus', this.handleWindowFocus.bind(this));
     document.removeEventListener('contextmenu', this.handleContextMenu.bind(this));
     document.removeEventListener('keydown', this.handleKeyDown.bind(this));
-    
+
     log('Tab switch detection disabled', 'warning');
   }
 
@@ -87,9 +87,9 @@ class TabSwitchDetector {
     ];
 
     for (const blocked of blockedKeys) {
-      if (e.key === blocked.key && 
-          (!blocked.ctrl || e.ctrlKey) && 
-          (!blocked.shift || e.shiftKey)) {
+      if (e.key === blocked.key &&
+        (!blocked.ctrl || e.ctrlKey) &&
+        (!blocked.shift || e.shiftKey)) {
         e.preventDefault();
         log(`Blocked key combination: ${e.key}`, 'warning');
         this.triggerInvalidation('developer tools attempt');
@@ -103,7 +103,7 @@ class TabSwitchDetector {
 
     log(`Quiz invalidated due to: ${reason}`, 'error');
     this.disable();
-    
+
     if (this.onTabSwitch) {
       this.onTabSwitch(reason);
     }
@@ -151,7 +151,7 @@ function disableTabSwitchDetection() {
 function displayInvalidatedQuiz() {
   const existingQuestions = document.querySelectorAll('.question-group');
   existingQuestions.forEach((q) => q.remove());
-  
+
   const existingMessage = quizForm.querySelector('.quiz-message');
   if (existingMessage) existingMessage.remove();
 
@@ -548,11 +548,11 @@ async function handleQuizDisplay() {
 
 async function redoQuiz(event) {
   if (event) event.preventDefault();
-  
+
   quizInvalidated = false;
   tabSwitchDetectionEnabled = false;
   timerStart = null;
-  
+
   const quizContainer = document.querySelector('.quiz-container');
   if (quizContainer) {
     quizContainer.open = true;

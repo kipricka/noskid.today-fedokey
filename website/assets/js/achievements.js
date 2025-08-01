@@ -6,7 +6,7 @@ let currentUserId = null;
 function spawnAchievementSystem(event) {
     try {
         event.preventDefault();
-    } catch (e) {}
+    } catch (e) { }
 
     const achievementwin = ClassicWindow.createWindow({
         title: 'Achievements',
@@ -309,12 +309,12 @@ function saveUserId(userId) {
 
 function loadAchievements(achievementwin) {
     const userId = getUserId();
-    
+
     let url = '/api/achievement/?action=get';
     if (userId) {
         url += `&id=${encodeURIComponent(userId)}`;
     }
-    
+
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -326,9 +326,9 @@ function loadAchievements(achievementwin) {
             if (data.status && data.data && Array.isArray(data.data.achievements)) {
                 validAchievements = data.data.achievements;
                 currentUserId = data.data.userId;
-                
+
                 saveUserId(data.data.userId);
-                
+
                 displayAchievements(achievementwin, data.data.achievements);
             } else {
                 throw new Error('Invalid data format or API error');
@@ -478,7 +478,7 @@ function startAchievement(achievementName) {
         });
 }
 
-    
+
 function addAchievement(achievementName) {
     if (!isValidAchievement(achievementName)) {
         log(`Achievement "${achievementName}" is not valid or not provided by the API`, 'warning');
@@ -498,7 +498,7 @@ function addAchievement(achievementName) {
 
     // validate with server
     const url = `/api/achievement/?action=done&name=${encodeURIComponent(achievementName)}&id=${encodeURIComponent(currentUserId)}`;
-    
+
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -512,11 +512,11 @@ function addAchievement(achievementName) {
                 if (achievement) {
                     achievement.done = true;
                 }
-                
+
                 updateOpenAchievementWindows();
                 showAchievementNotification(achievementName);
                 log(`Achievement "${achievementName}" completed!`, 'success');
-                
+
                 // check for "Legendary NoSkid" achievement
                 checkAllAchievementsCompleted();
             } else {
@@ -536,12 +536,12 @@ function getCompletedAchievements() {
 
 function getAchievementsWithStatus() {
     const userId = getUserId();
-    
+
     let url = '/api/achievement/?action=get';
     if (userId) {
         url += `&id=${encodeURIComponent(userId)}`;
     }
-    
+
     return fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -553,9 +553,9 @@ function getAchievementsWithStatus() {
             if (data.status && data.data && Array.isArray(data.data.achievements)) {
                 validAchievements = data.data.achievements;
                 currentUserId = data.data.userId;
-                
+
                 saveUserId(data.data.userId);
-                
+
                 return data.data.achievements.map(achievement => ({
                     ...achievement,
                     completed: achievement.done
@@ -615,12 +615,12 @@ function getTotalPercent() {
 
 function preloadAchievements() {
     const userId = getUserId();
-    
+
     let url = '/api/achievement/?action=get';
     if (userId) {
         url += `&id=${encodeURIComponent(userId)}`;
     }
-    
+
     return fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -632,9 +632,9 @@ function preloadAchievements() {
             if (data.status && data.data && Array.isArray(data.data.achievements)) {
                 validAchievements = data.data.achievements;
                 currentUserId = data.data.userId;
-                
+
                 saveUserId(data.data.userId);
-                
+
                 log('Achievements preloaded successfully', 'success');
                 return data.data.achievements;
             } else {
@@ -650,9 +650,9 @@ function preloadAchievements() {
 function checkAllAchievementsCompleted() {
     const achievementsToCheck = validAchievements.filter(achievement => achievement.name !== "Legendary NoSkid");
     const allCompleted = achievementsToCheck.every(achievement => achievement.done);
-    
+
     const legendaryAchievement = validAchievements.find(achievement => achievement.name === "Legendary NoSkid");
-    
+
     if (allCompleted && legendaryAchievement && !legendaryAchievement.done) {
         addAchievement("Legendary NoSkid");
     }

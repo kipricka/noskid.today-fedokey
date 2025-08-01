@@ -33,7 +33,7 @@ function showKonata() {
         y: Math.round((window.innerHeight - 450) / 2),
         theme: 'dark',
         resizable: true,
-        onClose: function() {
+        onClose: function () {
             audio.pause();
             audio.currentTime = 0;
             audio.remove();

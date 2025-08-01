@@ -7,7 +7,7 @@ function toggleGoodApple() {
   if (newSetting) addAchievement('Good Apple Mode');
 
   localStorage.setItem('goodApple', newSetting.toString());
-  
+
   log(`Good Apple mode ${newSetting ? 'enabled' : 'disabled'}. Bad Apple will ${newSetting ? 'NOT' : ''} play when devtools open.`, 'success');
   return newSetting;
 }
@@ -150,19 +150,19 @@ if (!isMobileDevice()) {
   function detectDevtools() {
     const currentOuterHeight = window.outerHeight;
     const currentInnerHeight = window.innerHeight;
-    
+
     const outerDiff = Math.abs(currentOuterHeight - initialOuterHeight);
     const innerDiff = Math.abs(currentInnerHeight - initialInnerHeight);
-    
+
     const significantChange = innerDiff > 100 || (outerDiff > 50 && innerDiff > outerDiff);
-    
+
     const now = Date.now();
     const timeSinceLastTrigger = now - lastTriggered;
-    
+
     if (significantChange && timeSinceLastTrigger > 2000) {
       log('Devtools opening detected!', 'success');
       lastTriggered = now;
-      
+
       playBadApl();
     }
   }
@@ -172,14 +172,14 @@ if (!isMobileDevice()) {
       open: false,
       orientation: null
     };
-     
+
     setInterval(() => {
       const heightThreshold = window.outerHeight - window.innerHeight > 200;
       const widthThreshold = window.outerWidth - window.innerWidth > 200;
-      
-      if (!(heightThreshold && widthThreshold) && 
-          ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || heightThreshold || widthThreshold)) {
-        
+
+      if (!(heightThreshold && widthThreshold) &&
+        ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || heightThreshold || widthThreshold)) {
+
         if (!devtools.open) {
           devtools.open = true;
           log('Devtools opened detected via polling!', 'success');
@@ -195,9 +195,9 @@ if (!isMobileDevice()) {
     setTimeout(detectDevtools, 100);
   });
 
-  
+
   devtoolsDetectionLoop();
-  
+
   log('BadApple devtools detection enabled (Desktop detected)', 'success'); //were always detecting it, even if good apple is enabled, so we dont have to reload on toggle
 
   if (!isGoodAppleEnabled()) log('write \'i hate badapple\' to disable bad apple.', 'warning');

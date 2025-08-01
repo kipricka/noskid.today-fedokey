@@ -16,7 +16,7 @@ async function getIpInfo() {
     try {
         const response = await fetch('/api/ip/');
         const data = await response.json();
-    
+
         if (data.status === 'success') {
             country = data.country;
             city = data.city;
@@ -35,13 +35,13 @@ async function getIpInfo() {
                 ispUpdate.innerHTML = isp;
                 ispfUpdate.innerHTML = isp.toUpperCase();
                 log(`isp(f)Update set to ${isp}`, 'success');
-                
+
             }
             if (ip) {
                 ipUpdate.innerHTML = ip;
                 log(`ipUpdate set to ${ip}`, 'success');
             }
-            
+
         }
     } catch (error) {
         log(`Failed to fetch ip infos: ${error}`, 'error')

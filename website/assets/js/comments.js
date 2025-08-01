@@ -33,14 +33,14 @@ function spawnCommentSystem(event) {
     footer.prepend(newCommentBtn);
 
     addCommentSystemStyles();
-    
+
     loadComments(commentwin);
     return commentwin;
 }
 
 function addCommentSystemStyles() {
     if (document.getElementById('comment-system-styles')) return;
-    
+
     const style = document.createElement('style');
     style.id = 'comment-system-styles';
     style.textContent = `
@@ -318,7 +318,7 @@ function addCommentSystemStyles() {
             background: #555;
         }
     `;
-    
+
     document.head.appendChild(style);
 }
 
@@ -346,7 +346,7 @@ function loadComments(commentwin) {
                     <button class="retry-btn">Retry</button>
                 </div>
             `;
-            
+
             updateComments(commentwin, errorContent);
 
             const retryBtn = errorContent.querySelector('.retry-btn');
@@ -361,7 +361,7 @@ function loadComments(commentwin) {
 function displayComments(window, comments) {
     const container = document.createElement('div');
     container.className = 'comments-container';
-    
+
     if (comments.length === 0) {
         container.innerHTML = `
             <div class="no-comments">
@@ -434,14 +434,14 @@ function escapeHtml(text) {
 function handleReaction(commentId, reactionType) {
     const commentElement = document.querySelector(`.comment[data-id="${commentId}"]`);
     if (!commentElement) return;
-    
+
     const likeBtn = commentElement.querySelector('.like-btn');
     const dislikeBtn = commentElement.querySelector('.dislike-btn');
-    
+
     // Disable buttons during request
     likeBtn.disabled = true;
     dislikeBtn.disabled = true;
-    
+
     fetch(`/api/comments/?action=${reactionType}&id=${commentId}`)
         .then(response => {
             if (!response.ok) {
@@ -564,7 +564,7 @@ function submitComment(form, window) {
             });
 
             ClassicWindow.closeWindow(window);
-            
+
         })
         .catch(error => {
             log('Error sending comment: ' + error.message, 'error');

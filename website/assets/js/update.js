@@ -19,7 +19,7 @@ async function checkForUpdates() {
         } else if (storedVersion !== latestVersion) {
             log('New version: ' + latestVersion, 'warning');
             localStorage.lastest = latestVersion;
-                showNotification(`Noskid updated to version <strong>${latestVersion}</strong>`);
+            showNotification(`Noskid updated to version <strong>${latestVersion}</strong>`);
         } else {
             log(`We are up to date ! (${latestVersion})`, 'success');
         }

@@ -117,7 +117,7 @@ class ScriptLoader {
 
         try {
             const event = {
-                preventDefault: function() {
+                preventDefault: function () {
                     this.defaultPrevented = true;
                 },
                 defaultPrevented: false,

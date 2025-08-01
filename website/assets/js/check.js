@@ -2,7 +2,7 @@
 
 async function verifyCertificate() {
     startAchievement('Certificate Validator');
-    
+
     log('=-=-==- Certificate -==-=-=', 'warning');
     log('Opening certificate verification tool...', 'warning');
 
