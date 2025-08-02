@@ -1,6 +1,6 @@
 # No skid today - please don't talk when you don't know
 
-![togp thing](https://togp.xyz?owner=douxxtech&repo=noskid.today&theme=json-dark-all&cache=false)
+![togp thing](https://togp.xyz?owner=dpipstudio&repo=noskid.today&theme=json-dark-all&cache=false)
 
 We dont like skids.
 
@@ -10,7 +10,7 @@ A website based on [nohello.net](https://nohello.net), but heavily modified with
 > New feature ! @is.notaskid.ong mails !:  
 > Check the [website](https://im.notaskid.ong) ! 
 >  
-> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=douxxtech/noskid.today)](https://noskid.today)
+> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=dpipstudio/noskid.today)](https://noskid.today)
 
 
 ## Hosting this website
@@ -23,7 +23,7 @@ You also need to install the package `librsvg2-bin` to convert SVG into PNG, and
 
 Installation: 
 ```shell
-git clone https://github.com/douxxtech/noskid.today
+git clone https://github.com/dpipstudio/noskid.today
 cd noskid.today
 php -S 0.0.0.0:80
 ```
@@ -42,10 +42,14 @@ Note: i'll >> **maybe** << rewrite the API Backend in JavaScript, if i find the 
 ## Yapyap
 Licensed under the [NSDv1.0 License](LICENSE)
 
-Thanks to all the [contributors](https://github.com/douxxtech/noskid.today/graphs/contributors) <3
+Thanks to all the [contributors](https://github.com/dpipstudio/noskid.today/graphs/contributors) <3
 
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
+</a>
+
+<a align="center" href="https://github.com/dpipstudio" target="_blank">
+<img src="https://madeby.dpip.lol"></img>
 </a>
 
 ---

@@ -501,7 +501,7 @@ function offerCertificate(percentage, userAnswers) {
   <p>Check out what you can do with it: <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a></p>
   <hr>
   <p>If you like this website consider adding a star to
-    <a href="https://github.com/douxxtech/noskid.today" target="_blank">the GitHub</a> <3
+    <a href="https://github.com/dpipstudio/noskid.today" target="_blank">the GitHub</a> <3
   </p>
 `;
         certificateSection.style.display = 'none';
