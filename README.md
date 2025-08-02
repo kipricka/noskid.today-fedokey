@@ -10,7 +10,7 @@ A website based on [nohello.net](https://nohello.net), but heavily modified with
 > New feature ! @is.notaskid.ong mails !:  
 > Check the [website](https://im.notaskid.ong) ! 
 >  
-> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=dpipstudio/noskid.today)](https://noskid.today)
+> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=douxxtech/)](https://noskid.today)
 
 
 ## Hosting this website
