@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/douxxtech/noskid.today.git"
+    "url": "git+https://github.com/dpipstudio/noskid.today.git"
   },
   "keywords": [
     "noskid",
@@ -17,7 +17,7 @@
   "author": "Douxx",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/douxxtech/noskid.today/issues"
+    "url": "https://github.com/dpipstudio/noskid.today/issues"
   },
-  "homepage": "https://github.com/douxxtech/noskid.today#readme"
+  "homepage": "https://github.com/dpipstudio/noskid.today#readme"
 }

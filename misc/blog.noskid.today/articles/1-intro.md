@@ -19,11 +19,11 @@ Check for all articles here
 ---
 
 ### Noskid's blog source code is on github!
-[douxxtech/noskid.today](https://github.com/douxxtech/noskid.today/tree/main/misc/blog.noskid.today)
+[dpipstudio/noskid.today](https://github.com/dpipstudio/noskid.today/tree/main/misc/blog.noskid.today)
 
 <img 
       alt="TerminalOgp" 
-      src="https://togp.xyz?owner=douxxtech&repo=noskid.today&theme=json-dark-all&cache=false" 
+      src="https://togp.xyz?owner=dpipstudio&repo=noskid.today&theme=json-dark-all&cache=false" 
       type="image/svg+xml" 
       style="border-radius: 20px; overflow: hidden;"
       width="800"

@@ -62,7 +62,7 @@ function getAllCookies(prefix = '') {
 
 createCustomCookies({
     '!WHAT_ARE_YOU_DOING_HERE': 'You skiddie! Please dont hack this website 😡',
-    'IBegYou': 'PLEASSEEEE star https://github.com/douxxtech/noskid.today',
+    'IBegYou': 'PLEASSEEEE star https://github.com/dpipstudio/noskid.today',
     'contact': 'made by https://douxx.tech or @douxx.xyz on discord',
     'miammiam': 'I love pasta, and you ?',
     'hehe': 'i got 100% at the noskid certificate, and you ?'

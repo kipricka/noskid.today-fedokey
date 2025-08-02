@@ -187,7 +187,7 @@ Log messages with different levels (when debug is enabled).
 The library provides a complete login system with a responsive modal interface.
 
 If you want a clean login button, please use this one:  
-![button](https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/misc/nskd-lbr/src/login.svg)
+![button](https://raw.githubusercontent.com/dpipstudio/noskid.today/refs/heads/main/misc/nskd-lbr/src/login.svg)
 
 ### `showLoginModal()`
 
@@ -488,7 +488,7 @@ This library is licensed under the NSDv1.0 License. See the [LICENSE](LICENSE) f
 ---
 
 **Need Help?** 
-- 🐛 Issues: [GitHub Issues](https://github.com/douxxtech/noskid.today/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/dpipstudio/noskid.today/issues)
 
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
