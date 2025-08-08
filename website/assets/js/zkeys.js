@@ -122,6 +122,10 @@ const sequences = {
     'clearach': {
         action: clearAllAchievements,
         description: 'reset all achievements'
+    },
+    'sstv': {
+        action: showSstv,
+        description: 'Try to find the secret certificate',
     }
 };
 

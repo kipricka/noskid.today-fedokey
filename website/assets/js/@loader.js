@@ -84,6 +84,7 @@ class ScriptLoader {
             'assets/js/pong.js',
             'assets/js/rick.js',
             'assets/js/rq.js',
+            'assets/js/sstv.js',
             'assets/js/terminal.js',
             'assets/js/track.js',
             'assets/js/update.js',
