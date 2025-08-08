@@ -69,7 +69,7 @@ async function processCertificateFile(file) {
 
         if (result.valid) {
             log('Certificate is VALID!', 'success');
-            displayCertificateDetails(certData);
+            showCertificateDetails(certData);
         } else {
             log('Certificate data mismatch!', 'error');
             log(`Mismatch reason: Data does not match server records`, 'error');
@@ -81,7 +81,8 @@ async function processCertificateFile(file) {
 
 }
 
-function displayCertificateDetails(data) {
+function showCertificateDetails(data) {
+
     log('=-=-==- Certificate -==-=-=', 'warning');
     log(`Certificate #: ${data.certificate_number}`, 'success');
     log(`Username: ${data.nickname}`, 'success');
