@@ -1,3 +1,5 @@
+// Konata.js | Show a Konata gif with music 
+
 function showKonata() {
     const audio = new Audio('assets/audio/bailando.mp3');
     audio.loop = true;

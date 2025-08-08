@@ -1,4 +1,4 @@
-//Localinfo | Get local informations to dynamicly update the website
+//Localinfo.js | Get local informations to dynamicly update the website
 
 const countryUpdate = document.getElementById("country");
 const cityUpdate = document.getElementById("city");
