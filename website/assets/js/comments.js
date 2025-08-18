@@ -379,7 +379,7 @@ function displayComments(window, comments) {
         return `
         <div class="comment" data-id="${comment.id}">
             <div class="comment-header">
-                <span class="comment-author">${comment.author || 'Anonymous'}</span>
+                <span class="comment-author">${escapeHtml(comment.author) || 'Anonymous'}</span>
                 <span class="comment-date">${formatDate(comment.date)}</span>
             </div>
             <div class="comment-content">${escapeHtml(comment.content)}</div>
