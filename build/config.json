@@ -51,6 +51,8 @@
     "unique_views",
     "terminal",
     "achievement",
-    "completed"
+    "completed",
+    "noskid",
+    "today"
   ]
 }
