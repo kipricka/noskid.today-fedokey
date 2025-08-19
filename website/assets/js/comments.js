@@ -379,10 +379,10 @@ function displayComments(window, comments) {
         return `
         <div class="comment" data-id="${comment.id}">
             <div class="comment-header">
-                <span class="comment-author">${escapeHtml(comment.author) || 'Anonymous'}</span>
+                <span class="comment-author">${comment.author || 'Anonymous'}</span>
                 <span class="comment-date">${formatDate(comment.date)}</span>
             </div>
-            <div class="comment-content">${escapeHtml(comment.content)}</div>
+            <div class="comment-content">${comment.content}</div>
             <div class="comment-reactions">
                 <button class="reaction-btn like-btn ${userLiked ? 'active' : ''}" 
                         onclick="handleReaction(${comment.id}, '${userLiked ? 'none' : 'like'}')">
@@ -423,12 +423,6 @@ function formatDate(dateString) {
         hour: '2-digit',
         minute: '2-digit'
     });
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
 }
 
 function handleReaction(commentId, reactionType) {

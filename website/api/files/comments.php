@@ -172,6 +172,8 @@ function getComments($conn, $userFingerprint) {
 
     $comments = [];
     while ($row = $result->fetch_assoc()) {
+        $row['content'] = htmlspecialchars($row['content'], ENT_QUOTES, 'UTF-8');
+        $row['author'] = htmlspecialchars($row['author'], ENT_QUOTES, 'UTF-8');
         $comments[] = $row;
     }
 
