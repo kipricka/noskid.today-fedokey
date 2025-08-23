@@ -524,25 +524,21 @@ function offerCertificate(percentage, userAnswers) {
 }
 
 async function handleQuizDisplay() {
-  if (window.innerWidth <= 768) {
-    quizSection.style.display = "none";
-  } else {
-    if (localStorage.getItem('quizTaken') === 'true') {
-      const message = document.createElement('p');
-      message.innerHTML = `❌ You have already taken this test.
+  if (localStorage.getItem('quizTaken') === 'true') {
+    const message = document.createElement('p');
+    message.innerHTML = `❌ You have already taken this test.
       <br>
       You can still check the <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a> or do the quiz again by typing 'bypass' ! (PS: If you like this website, consider <a href="https://noskid.today/#spawnCommentSystem">leaving a comment</a>)`;
-      message.className = 'quiz-message';
-      quizForm.appendChild(message);
-      submitButton.style.display = 'none';
-      log('Quiz has already been taken.', 'warning')
-    } else {
-      await createQuestions();
-      quizForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        checkQuizResponses();
-      });
-    }
+    message.className = 'quiz-message';
+    quizForm.appendChild(message);
+    submitButton.style.display = 'none';
+    log('Quiz has already been taken.', 'warning')
+  } else {
+    await createQuestions();
+    quizForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      checkQuizResponses();
+    });
   }
 }
 
