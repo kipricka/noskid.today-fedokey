@@ -159,7 +159,7 @@ function displayInvalidatedQuiz() {
   message.innerHTML = `
     Quiz Invalidated!
     <br><br>
-    The quiz was invalidated because you switched tabs during the test. 
+    The quiz was invalidated because you did a forbidden action during the test. 
     This is to ensure test integrity.
     <br><br>
     <a onclick="redoQuiz()" class="submit-button" style="margin-top: 15px;">
