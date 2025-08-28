@@ -1,49 +1,77 @@
-# No skid today - please don't talk when you don't know
+<div align="center">
 
-![togp thing](https://togp.xyz?owner=dpipstudio&repo=noskid.today&theme=json-dark-all&cache=false)
+[![NoSkid Verification](https://noskid.today/badge/100x30/?repo=douxxtech/)](https://noskid.today)
 
-We dont like skids.
+# NoSkid.Today - Don't Talk When You Don't Know
+</div>
 
-A website based on [nohello.net](https://nohello.net), but heavily modified with rich features !
+A modern, feature-rich version of [nohello.net](https://nohello.net) with advanced features.
+> Do you hate skids ? We do too.
+
+---
+
+## Introduction
+NoSkid.Today is a PHP-based website designed to prevent skids and provide a variety of hidden, advanced features for verified users. It is heavily inspired by [nohello.net](https://nohello.net) but comes with a modern twist.
 
 > [!NOTE]
-> New feature ! @is.notaskid.ong mails !:  
-> Check the [website](https://im.notaskid.ong) ! 
->  
-> [![NoSkid Verification](https://noskid.today/badge/100x30/?repo=douxxtech/)](https://noskid.today)
+> New feature!  `@is.notaskid.ong` emails.  
+> Check [>> im.notaskid.ong <<](https://im.notaskid.ong)
+
+## Sponsor This Project
+Keeping NoSkid.Today online and improving it takes time and resources. Sponsorship helps us cover:  
+- Server hosting and maintenance  
+- Domain costs  
+- Development of new features and hidden goodies  
+- Tools and software required for the project  
+
+If you like what we’re doing, consider supporting us! Every contribution helps keep the project alive and growing.  
+<div align="center">
+<a href="https://github.com/sponsors/dpipstudio"><img src="https://img.shields.io/badge/⭐-Sponsor-yellow?style=for-the-badge" height=50 /></a></div>
 
 
-## Hosting this website
+
+
+## Features
+- Skid prevention and verification system
+- Rich hidden features accessible via console shortcuts
+- API integration for advanced usage
+- Lightweight PHP server support
+
 > [!TIP]
-> To ensure high-quality production content, we recommend building the website from source before deploying it to a web server.
-> > Check out the [build README](build/readme.md) for detailed instructions.
+> Discover hidden features by opening the console (Shift + ESC).  
+> Example: Press `Shift + T` to open the comments system: [Comments](https://noskid.today/#spawnCommentSystem)
 
-It's a php-dependent site, except if you dont want to use the API (that would be sad).  
-You also need to install the package `librsvg2-bin` to convert SVG into PNG, and php must have the exec() function allowed.
+## Installation
 
-Installation: 
-```shell
-git clone https://github.com/dpipstudio/noskid.today
-cd noskid.today
+Clone the repository:
+
+```bash
+git clone https://github.com/dpipstudio/noskid.today # clone the repo
+cd noskid.today/website # navigate to the websites folder
+nano api/config.php # or notepad api/config.php on windows
+```
+Run with built-in PHP server:
+```bash
 php -S 0.0.0.0:80
 ```
-(or use something like apache with php-fpm)
-  
-Note: i'll >> **maybe** << rewrite the API Backend in JavaScript, if i find the time to do it
+> Or use Apache/Nginx with PHP-FPM.
 
-> [!WARNING]
-> We recently changed our API ! We recommand looking at the change notes:
-> [api-changes.md](misc/check.noskid.today/api-changes.md)
+## Requirements
+- PHP with `exec()` and curl enabled.
+- librsvg2-bin for SVG to PNG (certificates) conversion. 
 
 > [!TIP]
-> This website contains a lot (and really, a lot) of hidden features, find them by looking at the console ! (Shift + ESC)  
-> E.G: use [Shift + T to open the comments !](https://noskid.today/#spawnCommentSystem)
+> For high-quality production content, build the website from source before deploying. See the [build README](/build/readme.md) for detailed instructions.
 
-## Yapyap
+## Contributing
+Contributions are welcome! Check out the list of [contributors](https://github.com/dpipstudio/noskid.today/graphs/contributors) and see how you can help. Thanks to all of them <3
+
+---
+
+## License
 Licensed under the [NSDv1.0 License](LICENSE)
 
-Thanks to all the [contributors](https://github.com/dpipstudio/noskid.today/graphs/contributors) <3
-
+## Made by
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
 </a>
@@ -51,6 +79,3 @@ Thanks to all the [contributors](https://github.com/dpipstudio/noskid.today/grap
 <a align="center" href="https://github.com/dpipstudio" target="_blank">
 <img src="https://madeby.dpip.lol"></img>
 </a>
-
----
-Oh yea, i forgot to tell ya, i also hate CI/CD.
