@@ -102,6 +102,7 @@ function isFromSearchEngine() {
 }
 
 if (isFromSearchEngine()) {
-  log("Welcome, searcher !");
-  addAchievement("Searcher's Path");
+  setTimeout(() => {
+    addAchievement("Searcher's Path");
+  }, 1000); // to avoid the ClassicWindow is not defined error
 }
