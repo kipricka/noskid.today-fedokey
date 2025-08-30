@@ -101,4 +101,7 @@ function isFromSearchEngine() {
   return searchEngines.some(domain => ref.includes(domain));
 }
 
-if (isFromSearchEngine()) addAchievement("Searcher's Path");
+if (isFromSearchEngine()) {
+  log("Welcome, searcher !");
+  addAchievement("Searcher's Path");
+}
