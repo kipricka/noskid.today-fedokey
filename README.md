@@ -26,7 +26,7 @@ Keeping NoSkid.Today online and improving it takes time and resources. Sponsorsh
 
 If you like what we’re doing, consider supporting us! Every contribution helps keep the project alive and growing.  
 <div align="center">
-<a href="https://github.com/sponsors/douxxtech"><img src="https://img.shields.io/badge/⭐-Sponsor-yellow?style=for-the-badge" height=50 /></a></div>
+<a href="https://github.com/sponsors/dpipstudio"><img src="https://img.shields.io/badge/⭐-Sponsor-yellow?style=for-the-badge" height=50 /></a></div>
 
 
 
