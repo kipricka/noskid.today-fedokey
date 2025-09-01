@@ -1,7 +1,6 @@
 <?php
 
 /*
-
 =============================
 DB SETUP
 =============================
@@ -47,10 +46,15 @@ CREATE TABLE IF NOT EXISTS comments_blocked_ips (
 );
 */
 
+// =============================
+// HEADERS AND INCLUDES
+// =============================
+
 header('Content-Type: application/json');
 
 require_once '../config.php';
 require_once '../files/getip.php';
+
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -59,6 +63,8 @@ if ($conn->connect_error) {
     echo json_encode(['error' => 'Database connection failed: ' . $conn->connect_error]);
     exit;
 }
+
+// utility
 
 function getBadWords() {
     $badWordsFile = './bw.txt';
@@ -97,7 +103,6 @@ function censorBadWords($text) {
     return implode(' ', $words);
 }
 
-
 function getUserFingerprint() {
     $ip = getRequesterIp();
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
@@ -121,36 +126,63 @@ function blockIp($conn, $ip) {
     $stmt->execute();
 }
 
-$userFingerprint = getUserFingerprint();
-$ip = getRequesterIp();
+function sendDiscordNotification($content, $username) {
+    $webhookUrl = DISCORD_WEBHOOK_URL;
 
-if (isIpBlocked($conn, $ip)) {
-    http_response_code(403);
-    echo json_encode(['error' => 'Your IP address has been blocked']);
-    exit;
+    $fields = [
+        [
+            'name' => 'Content',
+            'value' => $content,
+            'inline' => false
+        ],
+        [
+            'name' => 'User',
+            'value' => $username,
+            'inline' => false
+        ]
+    ];
+
+    $message = [
+        'content' => "",
+        'embeds' => [
+            [
+                'title' => 'New noskid comment',
+                'color' => 0xf9f7f0,
+                'fields' => $fields,
+                'timestamp' => gmdate('c')
+            ]
+        ]
+    ];
+
+    $boundary = '----WebKitFormBoundary' . md5(microtime());
+
+    $payload = '';
+    $payload .= '--' . $boundary . "\r\n";
+    $payload .= 'Content-Disposition: form-data; name="payload_json"' . "\r\n";
+    $payload .= 'Content-Type: application/json' . "\r\n\r\n";
+    $payload .= json_encode($message) . "\r\n";
+
+    $payload .= '--' . $boundary . '--';
+
+    $ch = curl_init($webhookUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: multipart/form-data; boundary=' . $boundary,
+        'Content-Length: ' . strlen($payload)
+    ]);
+
+    $response = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($error) {
+        error_log('Discord webhook error: ' . $error);
+    }
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-
-$action = isset($_GET['action']) ? $_GET['action'] : null;
-$commentId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-switch($method) {
-    case 'GET':
-        if ($action === 'like' || $action === 'dislike' || $action === 'none') {
-            handleReaction($conn, $commentId, $userFingerprint, $action);
-        } else {
-            getComments($conn, $userFingerprint);
-        }
-        break;
-    case 'POST':
-        addComment($conn, $userFingerprint, $ip);
-        break;
-    default:
-        http_response_code(405);
-        echo json_encode(['error' => 'Method not allowed']);
-        break;
-}
+// api funcs
 
 function getComments($conn, $userFingerprint) {
     $sql = "SELECT cp.id, cp.author, cp.content, cp.created_at as date,
@@ -230,6 +262,10 @@ function addComment($conn, $userFingerprint, $ip) {
         $stmt->execute();
         $result = $stmt->get_result();
         $comment = $result->fetch_assoc();
+
+        if (defined('DISCORD_WEBHOOK_URL') && !empty(DISCORD_WEBHOOK_URL)) {
+            sendDiscordNotification($content, $author);
+        }
 
         http_response_code(201);
         echo json_encode($comment);
@@ -323,5 +359,38 @@ function handleReaction($conn, $commentId, $userFingerprint, $reactionType) {
     }
 }
 
+// MAIN EXECUTION LOGIC
+
+$userFingerprint = getUserFingerprint();
+$ip = getRequesterIp();
+
+if (isIpBlocked($conn, $ip)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Your IP address has been blocked']);
+    exit;
+}
+
+$method = $_SERVER['REQUEST_METHOD'];
+$action = isset($_GET['action']) ? $_GET['action'] : null;
+$commentId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+switch($method) {
+    case 'GET':
+        if ($action === 'like' || $action === 'dislike' || $action === 'none') {
+            handleReaction($conn, $commentId, $userFingerprint, $action);
+        } else {
+            getComments($conn, $userFingerprint);
+        }
+        break;
+    case 'POST':
+        addComment($conn, $userFingerprint, $ip);
+        break;
+    default:
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
+        break;
+}
+
 $conn->close();
+
 ?>
