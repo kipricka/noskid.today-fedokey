@@ -43,8 +43,6 @@ If you like what we’re doing, consider supporting us! Every contribution helps
 
 ## Installation
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/dpipstudio/noskid.today # clone the repo
 cd noskid.today/website # navigate to the websites folder
