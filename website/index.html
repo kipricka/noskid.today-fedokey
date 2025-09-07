@@ -1,43 +1,28 @@
-<!doctype html>
-
-<!--
-This incredible website has been made by douxx.tech !
-noskid.today is a DPIP.lol project.
-
-invaders must die ;)
- 
--->
-
-
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
   <title>No Skid</title>
 
-
   <!-- Styles -->
-
   <link rel="stylesheet" type="text/css" href="assets/css/main.css" />
   <link rel="stylesheet" type="text/css" href="assets/css/locons.css" />
-  <link rel="stylesheet" type="text/css" href="assets/css/scrollbar.css" />
-  <link rel="stylesheet" type="text/css" href="assets/css/cursor.css" />
   <link rel="stylesheet" type="text/css" href="assets/css/cert.css" />
-  <link rel="stylesheet" type="text/css" href="assets/css/night.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/cursor.css" />
   <link rel="stylesheet" type="text/css" href="assets/css/notification.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/scrollbar.css" />
   <link rel="stylesheet" type="text/css" href="assets/css/selection.css" />
-
+  <link rel="stylesheet" type="text/css" href="assets/css/responsive.css" />
 
   <!-- Meta -->
-
   <meta name="title" content="No Skid" />
   <meta name="description" content="Please don't talk when you don't know :]" />
   <meta name="keywords" content="no skid, humor, internet culture, DDoS, online behavior, communication" />
   <meta name="author" content="douxx.tech" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://noskid.today" />
-
 
   <!-- OpenGraph -->
   <meta property="og:type" content="website" />
@@ -46,7 +31,6 @@ invaders must die ;)
   <meta property="og:description" content="Please don't talk when you don't know :]" />
   <meta property="og:image" content="https://noskid.today/assets/img/noskid-icon.png" />
 
-
   <!-- Twitter -->
   <meta property="twitter:card" content="summary" />
   <meta property="twitter:url" content="https://noskid.today" />
@@ -54,19 +38,18 @@ invaders must die ;)
   <meta property="twitter:description" content="Please don't talk when you don't know :]" />
   <meta property="twitter:image" content="https://noskid.today/assets/img/noskid-icon.png" />
 
-
   <!-- Icons -->
   <link rel="apple-touch-icon" href="assets/img/noskid-icon.png" />
   <link rel="shortcut icon" href="assets/img/noskid-icon.png" type="image/x-icon" />
   <link rel="icon" href="assets/img/noskid-icon.png" type="image/x-icon" />
 
-
-  <!-- JS Loader-->
+  <!-- JS Loader -->
   <script src="assets/js/@loader.js"></script>
 </head>
 
 <body>
-  <div id="loader-container">
+
+  <section id="loader-container">
     <div class="loader-content">
       <div class="progress-bar">
         <div class="progress"></div>
@@ -74,197 +57,223 @@ invaders must die ;)
       <div class="loader-text">LOADING RESOURCES</div>
     </div>
     <div class="console" id="console">Waiting DOM load...</div>
-  </div>
 
-  <div id="console-container">
+    <a href="#" class="console-link hidden" id="console-loader-link">Show logs</a>
+  </section>
+
+  <section id="console-container">
     <div class="console-text">Debug Console</div>
     <div class="console" id="console">
     </div>
-  </div>
+  </section>
 
   <button class="console-toggle" id="console-btn">
     <img src="assets/img/console.svg" alt="Toggle Console" width="24" height="24">
   </button>
 
-  <div id="wholesite">
-    <div class="container">
-      <div class="hero">
-        <div id="plsstop">
-          <h1 class="name">
-            no
-            <span id="strike">skid</span>
-          </h1>
-        </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="name">no <span id="strike">skid</span></h1>
         <span class="subtitle">Please don't talk when you don't know.</span>
         <h2 class="lead">
-          Imagine calling someone just to drop a <em>&quot;You're living in <span id="country">&lt;some
-              country&gt;</span>&quot;</em> line, just to feel interesting... 🤦‍♀️
+          Imagine calling someone just to drop a
+          <em>"You're living in <span id="country">&lt;some country&gt;</span>"</em>
+          line, just to feel interesting... 🤦‍♀️
         </h2>
       </div>
-    </div>
+    </section>
 
-    <div class="container nonos">
+    <!-- Don't Do This Section -->
+    <section class="container nonos">
       <div class="sections sectionleft">
-        <h2 class="section-title">❌ Don't do this</h2>
+        <h2 class="section-title"><span class="red" style="font-size: 2rem;">×</span> Don't do this</h2>
         <div class="list-card example one">
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/kratzaeditts_avatar.webp 128w">
-              <img alt="kratzaeditts's Slack avatar" src="assets/img/MxF06xdCHJ-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@kratzaeditts</span>
-            <span class="slackIamee">8:58 PM</span><br />
-            <span class="slackmessage">What if I tell you I will do a DDoS attack on your IP</span>
+            <img alt="kratzaeditts's avatar" src="assets/img/kratzaeditts_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@kratzaeditts</span>
+                <span class="slacktime">8:58 PM</span>
+              </div>
+              <span class="slackmessage">What if I tell you I will do a DDoS attack on your IP</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/iame_avatar.webp 128w">
-              <img alt="Iame's Slack avatar" src="assets/img/CGi-z9VgRi-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@iame</span>
-            <span class="slackIamee">9:01 PM</span><br />
-            <span class="slackmessage">OK.</span>
+            <img alt="Iame's avatar" src="assets/img/iame_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@iame</span>
+                <span class="slacktime">9:01 PM</span>
+              </div>
+              <span class="slackmessage">OK.</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/kratzaeditts_avatar.webp 128w">
-              <img alt="kratzaeditts's Slack avatar" src="assets/img/MxF06xdCHJ-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@kratzaeditts</span>
-            <span class="slackIamee">8:13 AM</span><br />
-            <span class="slackmessage">nmap -T4 192.168.1.108<br></span>
-            <span class="slackmessage">That's how I will find your ports</span>
+            <img alt="kratzaeditts's avatar" src="assets/img/kratzaeditts_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@kratzaeditts</span>
+                <span class="slacktime">8:13 AM</span>
+              </div>
+              <span class="slackmessage">nmap -T4 192.168.1.108 That's how I will find your ports</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/iame_avatar.webp 128w">
-              <img alt="Iame's Slack avatar" src="assets/img/CGi-z9VgRi-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@iame</span>
-            <span class="slackIamee">10:10 AM</span><br />
-            <span class="slackmessage">You're funny dude</span>
+            <img alt="Iame's avatar" src="assets/img/iame_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@iame</span>
+                <span class="slacktime">10:10 AM</span>
+              </div>
+              <span class="slackmessage">You're funny dude</span>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="sections sectionright">
         <div class="list-card">
           <div>
-            <p>Note that Kratzaeditts just found a random IP and wants to harm the person owning this IP to get someone
-              interested in him.</p>
-            <p>People who do this are generally trying to be scary by dropping random information, like <em>&quot;Your
-                city is <span id="city">&lt;Some city&gt;</span>&quot;</em> that they just found by typing <span
-                id="ipadr">127.0.0.1</span> into <a href="https://ip-api.com" target="_blank">ip-api.com</a>.</p>
+            <p>
+              Note that Kratzaeditts just found a random IP and wants to harm the person owning this IP to get someone
+              interested in him.
+            </p>
+            <p>
+              People who do this are generally trying to be scary by dropping random information, like
+              <em>"Your city is <span id="city">&lt;Some city&gt;</span>"</em>
+              that they just found by typing <span id="ipadr">127.0.0.1</span> into
+              <a href="https://ip-api.com" target="_blank">ip-api.com</a>.
+            </p>
             <p>The same goes for:</p>
-            <ul>
-              <li>&quot;YOU LEAKED YOUR IP!!!&quot;</li>
-              <li>&quot;I'm going to SWAT you 😈😈😈&quot;</li>
-              <li>&quot;Gonna boot you&quot;</li>
-              <li>&quot;Your ISP is <span id="isp">&lt;some isp&gt;</span>&quot;</li>
-              <li>&quot;You have a web server on 127.0.0.1 💀💀&quot;</li>
+            <ul class="no">
+              <li>"YOU LEAKED YOUR IP!!!"</li>
+              <li>"I'm going to SWAT you 😈😈😈"</li>
+              <li>"Gonna boot you"</li>
+              <li>"Your ISP is <span id="isp">&lt;some isp&gt;</span>"</li>
+              <li>"You have a web server on 127.0.0.1 💀💀"</li>
               <li>etc.</li>
             </ul>
             <p><strong>YOU AIN'T SCARY DUDE</strong> 😫</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="container yepyep">
+    <!-- Do This Instead Section -->
+    <section class="container yepyep">
       <div class="sections sectionleft">
-        <h2 class="section-title yepyep">✅ Instead try this</h2>
+        <h2 class="section-title yepyep"><span class="green">✓</span> Instead try this</h2>
         <div class="list-card example two">
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/lzuai_avatar.webp 128w">
-              <img alt="lzoai's Slack avatar" src="assets/img/4gebfK1xtc-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@lzoai</span>
-            <span class="slackIamee">2:15 PM</span><br />
-            <span class="slackmessage">Hey! Quick question, is your server still running?</span>
+            <img alt="lzoai's avatar" src="assets/img/lzuai_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@lzoai</span>
+                <span class="slacktime">2:15 PM</span>
+              </div>
+              <span class="slackmessage">Hey! Quick question, is your server still running?</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/douxxpi_avatar.webp 128w">
-              <img alt="Douxx's Slack avatar" src="assets/img/CGi-z9VgRi-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@douxxpi</span>
-            <span class="slackIamee">2:15 PM</span><br />
-            <span class="slackmessage">Yep, let me know if you run into anything</span>
+            <img alt="Douxx's avatar" src="assets/img/douxxpi_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@douxxpi</span>
+                <span class="slacktime">2:15 PM</span>
+              </div>
+              <span class="slackmessage">Yep, let me know if you run into anything</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/lzuai_avatar.webp 128w">
-              <img alt="lzoai's Slack avatar" src="assets/img/4gebfK1xtc-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@lzoai</span>
-            <span class="slackIamee">2:15 PM</span><br />
-            <span class="slackmessage">Awesome, thanks!</span>
+            <img alt="lzoai's avatar" src="assets/img/lzuai_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@lzoai</span>
+                <span class="slacktime">2:15 PM</span>
+              </div>
+              <span class="slackmessage">Awesome, thanks!</span>
+            </div>
           </div>
+
           <div class="slack">
-            <picture>
-              <source type="image/webp" srcset="assets/img/douxxpi_avatar.webp 128w">
-              <img alt="Douxx's Slack avatar" src="assets/img/CGi-z9VgRi-128.jpeg" width="128" height="128">
-            </picture>
-            <span class="slackname">@douxxpi</span>
-            <span class="slackIamee">2:16 PM</span><br />
-            <span class="slackmessage">Np!</span>
+            <img alt="Douxx's avatar" src="assets/img/douxxpi_avatar.webp" />
+            <div class="text">
+              <div class="header">
+                <span class="slackname">@douxxpi</span>
+                <span class="slacktime">2:16 PM</span>
+              </div>
+              <span class="slackmessage">Np!</span>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="sections sectionright">
         <div class="list-card">
           <div>
             <p>If <strong>you need any help with a normal thing</strong>, just ask nicely without being provocative! It
               will always be a pleasure to help you!</p>
             <p>For example:</p>
-            <ul>
-              <li>&quot;Hey man, what's up? Can I get any help with my server?&quot;</li>
-              <li>&quot;Hi there! Hope you're well. Is your Minecraft server still up? :)&quot;</li>
-              <li>&quot;Hey, if you're not busy, could you upload a new video?&quot;</li>
+            <ul class="yes">
+              <li>"Hey man, what's up? Can I get any help with my server?"</li>
+              <li>"Hi there! Hope you're well. Is your Minecraft server still up? :)"</li>
+              <li>"Hey, if you're not busy, could you upload a new video?"</li>
               <li>etc.</li>
             </ul>
             <p>When done right - everyone's happy! 🎉</p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div>
-      <div class="quiz-card quiz-section">
+    <!-- Quiz Section -->
+    <section>
+      <div class="quiz-section quiz-card">
         <details class="quiz-container">
           <summary class="quiz-header">
-            <h2 class="section-title" style="margin-bottom:0; display:flex; align-items:center; gap:6px;">
-              <img src="assets/img/ball-pen-fill.svg" width="25" alt="">
-              Get your No Skid certificate!
-            </h2>
-
+            <h2 class="section-title"> <img src="assets/img/ball-pen-fill.svg" width="25" alt=""> Get your No Skid
+              certificate!</h2>
           </summary>
-          <p><br>Obtain 12/15 or more to download the certificate!</p>
+          <instructions class="quiz-instructions">Obtain 12/15 or more to download the certificate!</instructions>
           <form id="quiz-form" class="quiz-content">
             <button type="submit" class="submit-button">Submit</button>
           </form>
         </details>
       </div>
-    </div>
+    </section>
+  </main>
 
-    <footer>
+  <footer>
+    <div>
+      <p>Built with HTML, CSS, JS, and hate. Stop being a cringe skid<span id="date"></span>.</p>
       <p>
-        This is 100% serious. Stop being a cringe skid<span id="date"></span>.
-        <br>
-        That said, if you see this site's URL as someone's status/bio, be prepared to be ignored if you say
-        <em>&quot;YOUR ISP IS <span id="ispf">&lt;some random isp&gt;</span>&quot;</em>
-        <br>
-        Check the <a id="footer-link1" href="https://github.com/dpipstudio/noskid.today" target="_blank">github</a>
-        repo! <a id="footer-link2" href="https://dpip.lol/tos" target="_blank">TOS</a> | <a id="footer-link3"
-          href="https://dpip.lol/privacy" target="_blank">PP</a>
+        If you see this site's URL as someone's status/bio, be prepared to be ignored if you say
+        <em>"YOUR ISP IS <span id="ispf">&lt;some random isp&gt;</span>"</em>
       </p>
+      <p>
+        Check the <a href="https://github.com/dpipstudio/noskid.today" target="_blank" id="footer-link1">github</a> repo!
+        <a href="https://dpip.lol/tos" target="_blank" id="footer-link2">TOS</a> |
+        <a href="https://dpip.lol/privacy" target="_blank" id="footer-link3">PP</a>
+      </p>
+    </div>
+    <div>
       <a href="https://blog.noskid.today/?p=4-noskid-badges">
-        <img src="https://noskid.today/badge/100x30/?repo=douxxtech/douxxtech" alt="NoSkid Verification">
+        <img src="https://noskid.today/badge/100x30/?repo=douxxtech/douxxtech" alt="NoSkid Verification" />
       </a>
+      <a href="https://dpip.lol" target="_blank">
+        <img src="https://images.dpip.lol/big_logo.png" alt="DPIP Logo" />
+      </a>
+    </div>
+  </footer>
 
-      <a href="https://dpip.lol" target="_blank"><img src="https://images.dpip.lol/big_logo.png"></a>
-    </footer>
-  </div>
 </body>
 
-</html> 
+</html>

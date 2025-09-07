@@ -7,7 +7,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #121212;
+  background-color: color-mix(in srgb, var(--primary) 70%, black 30%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,6 +15,23 @@
   z-index: 8888;
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
+}
+
+.console-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.console-link:hover {
+  opacity: 1;
+  color: #fff;
 }
 
 .loader-content {
@@ -53,15 +70,13 @@
   text-transform: uppercase;
 }
 
-
-
 #console-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #121212;
+  background-color: color-mix(in srgb, var(--primary) 70%, black 30%);
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -124,22 +139,38 @@
   transform: translateY(0);
 }
 
-.success { color: #00ff9c; }
-.warning { color: #ffa500; }
-.error { color: #ff6b6b; }
-.info { color: #ffffff; }
+.success {
+  color: #00ff9c;
+}
+
+.warning {
+  color: #ffa500;
+}
+
+.error {
+  color: #ff6b6b;
+}
+
+.info {
+  color: #ffffff;
+}
 
 @keyframes progress {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(200%);
+  }
 }
 
 .console-toggle {
   position: fixed;
   top: 20px;
   left: 20px;
-  background: #1e1e1e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--box);
+  border: var(--border);
   border-radius: 8px;
   width: 48px;
   height: 48px;
@@ -149,14 +180,12 @@
   cursor: pointer;
   z-index: 7777;
   transition: all 0.3s ease;
-  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .console-toggle:hover {
-  background: #262626;
+  background: color-mix(in srgb, var(--primary) 70%, black 30%);
   border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
-  box-shadow: -5px 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .console-toggle img {
@@ -175,7 +204,7 @@
     width: 40px;
     height: 40px;
   }
-  
+
   .console-toggle img {
     width: 20px;
     height: 20px;

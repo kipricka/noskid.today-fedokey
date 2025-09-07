@@ -5,7 +5,7 @@
     top: -60px;
     left: 50%;
     transform: translateX(-50%);
-    background: #333;
+    background: var(--box);
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -14,6 +14,7 @@
     z-index: 7777;
     font-size: 14px;
     max-width: 90vw;
+    border: var(--border);
 }
 
 .notification.show {
@@ -26,5 +27,5 @@
 }
 
 .notification:hover {
-    background: #444;
+    background: color-mix(in srgb, var(--primary) 70%, black 30%);
 }

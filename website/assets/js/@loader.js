@@ -55,43 +55,42 @@ class ScriptLoader {
     constructor(consoleElement) {
         this.consoleElement = consoleElement;
         this.scripts = [
-            'https://cdn.jsdelivr.net/npm/typed.js@2.0.11',
-            'https://challenges.cloudflare.com/turnstile/v0/api.js',
-            'https://lbr.noskid.today/nskd-lbr.min.js',
-            'assets/js/achievements.js',
-            'assets/js/achievements.utils.js',
-            'assets/js/again.js',
-            'assets/js/awesome.js',
-            'assets/js/badapl.js',
-            'assets/js/boom.js',
-            'assets/js/browser.js',
-            'assets/js/certif.js',
-            'assets/js/check.js',
-            'assets/js/comments.js',
-            'assets/js/console.js',
-            'assets/js/cookies.js',
-            'assets/js/cool.js',
-            'assets/js/cursor.js',
-            'assets/js/cw.js',
-            'assets/js/cw.utils.js',
-            'assets/js/downfall.js',
-            'assets/js/exploit.js',
-            'assets/js/gary.js',
-            'assets/js/konata.js',
-            'assets/js/localinfo.js',
-            'assets/js/night.js',
-            'assets/js/noskid.js',
-            'assets/js/pong.js',
-            'assets/js/rick.js',
-            'assets/js/rq.js',
-            'assets/js/sstv.js',
-            'assets/js/terminal.js',
-            'assets/js/track.js',
-            'assets/js/update.js',
-            'assets/js/url.js',
-            'assets/js/warning.js',
-            'assets/js/websocket.js',
-            'assets/js/zkeys.js',
+                'https://challenges.cloudflare.com/turnstile/v0/api.js',
+                'https://lbr.noskid.today/nskd-lbr.min.js',
+                'assets/js/@typed.js',
+                'assets/js/achievements.js',
+                'assets/js/achievements.utils.js',
+                'assets/js/again.js',
+                'assets/js/awesome.js',
+                'assets/js/badapl.js',
+                'assets/js/boom.js',
+                'assets/js/browser.js',
+                'assets/js/certif.js',
+                'assets/js/check.js',
+                'assets/js/comments.js',
+                'assets/js/console.js',
+                'assets/js/cookies.js',
+                'assets/js/cool.js',
+                'assets/js/cursor.js',
+                'assets/js/cw.js',
+                'assets/js/cw.utils.js',
+                'assets/js/downfall.js',
+                'assets/js/exploit.js',
+                'assets/js/gary.js',
+                'assets/js/konata.js',
+                'assets/js/localinfo.js',
+                'assets/js/noskid.js',
+                'assets/js/pong.js',
+                'assets/js/rick.js',
+                'assets/js/rq.js',
+                'assets/js/sstv.js',
+                'assets/js/terminal.js',
+                'assets/js/track.js',
+                'assets/js/update.js',
+                'assets/js/url.js',
+                'assets/js/warning.js',
+                'assets/js/websocket.js',
+                'assets/js/zkeys.js',
         ];
         this.loadedCount = 0;
         this.startTime = null;
@@ -257,15 +256,47 @@ class ScriptLoader {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const consoleElement = document.getElementById('console');
     const loader = new ScriptLoader(consoleElement);
     loader.loadAll();
 
+    // url has func
     window.addEventListener('hashchange', () => {
         loader.checkHashFunction();
         if (loader.loadedCount === loader.scripts.length) {
             loader.executeHashFunction();
+        }
+    });
+
+    // loader shit
+    const consoleEl = document.getElementById('console');
+    const consoleLink = document.getElementById('console-loader-link');
+
+    consoleLink.classList.remove('hidden');
+
+    const pref = localStorage.getItem('showLoaderConsole');
+    if (pref === 'true') {
+        consoleEl.style.display = 'block';
+        consoleLink.textContent = 'Hide logs';
+    } else {
+        consoleEl.style.display = 'none';
+        consoleLink.textContent = 'Show logs';
+    }
+
+    consoleLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isVisible = consoleEl.style.display === 'block';
+
+        if (isVisible) {
+            consoleEl.style.display = 'none';
+            consoleLink.textContent = 'Show logs';
+            localStorage.setItem('showLoaderConsole', 'false');
+        } else {
+            consoleEl.style.display = 'block';
+            consoleLink.textContent = 'Hide logs';
+            localStorage.setItem('showLoaderConsole', 'true');
         }
     });
 });

@@ -496,14 +496,21 @@ function offerCertificate(percentage, userAnswers) {
 
       setTimeout(() => {
         quizForm.innerHTML = `
-  <p>✅ Certificate downloaded! Check if a certificate is valid with 'Shift + C'</p>
-  <br>
-  <p>Check out what you can do with it: <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a></p>
-  <hr>
-  <p>If you like this website consider adding a star to
-    <a href="https://github.com/dpipstudio/noskid.today" target="_blank">the GitHub</a> <3
-  </p>
+<p>✅ Certificate downloaded! Check if a certificate is valid with 'Shift + C'</p>
+
+<div class="button-row">
+  <p>Discover NoSkid's services ></p>
+  <div class="buttons">
+    <a href="https://im.notaskid.ong" target="_blank" class="a-button">@is.notaskid.ong</a>
+    <a href="https://github.com/dpipstudio/noskid.today" target="_blank" class="a-button">
+      <img src="/assets/img/github-fill.svg" width=24/>
+    </a>
+    <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank" class="a-button">More Services</a>
+  </div>
+</div>
+
 `;
+
         certificateSection.style.display = 'none';
       }, 2000);
     } catch (error) {
@@ -526,9 +533,17 @@ function offerCertificate(percentage, userAnswers) {
 async function handleQuizDisplay() {
   if (localStorage.getItem('quizTaken') === 'true') {
     const message = document.createElement('p');
-    message.innerHTML = `❌ You have already taken this test.
-      <br>
-      You can still check the <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank">noskid services</a> or do the quiz again by typing 'bypass' ! (PS: If you like this website, consider <a href="https://noskid.today/#spawnCommentSystem">leaving a comment</a>)`;
+    message.innerHTML = `<h3><span class="red" style="font-size: 24px;">×</span> You have already taken this test.</h3>
+<p> <em>Pss.. You can still do the quiz again by typing 'bypass'</em></p>
+<div class="button-row">
+  <p>You can still check NoSkid Services ></p>
+  <div class="buttons">
+    <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank" class="a-button">Services</a>
+    <a href="https://noskid.today/#spawnCommentSystem" target="_blank" class="a-button">Leave a comment</a>
+  </div>
+</div>
+`;
+
     message.className = 'quiz-message';
     quizForm.appendChild(message);
     submitButton.style.display = 'none';

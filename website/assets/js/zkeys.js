@@ -16,11 +16,6 @@ const keyBindings = [
         description: 'Show this message'
     },
     {
-        keys: ['Shift', 'N'],
-        action: toggleNightMode,
-        description: 'Toggle night sky'
-    },
-    {
         keys: ['Shift', 'C'],
         action: verifyCertificate,
         description: 'Check a certificate status'

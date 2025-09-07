@@ -122,7 +122,7 @@ function connectToWebSocketServer(key) {
             Object.entries(data.data.headers).forEach(([key, value]) => {
                 log(`${key}: ${value}`, 'info');
             });
-            if (Object.keys(data.data.body).length > 0) {
+            if (data.data.body && Object.keys(data.data.body).length > 0) {
                 log('Body:', 'info');
                 log(JSON.stringify(data.data.body, null, 2), 'info');
             }

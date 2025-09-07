@@ -2,11 +2,11 @@
 
 
 ::selection {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--text);
+    color: var(--primary);
 }
 
 ::-moz-selection {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--text);
+    color: var(--primary);
 }

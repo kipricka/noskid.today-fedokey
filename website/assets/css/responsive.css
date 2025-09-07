@@ -1,0 +1,233 @@
+/*Responsive.css | Media queries for medium and tiny screens */
+
+@media (max-width: 768px) {
+  .container {
+    margin: 40px auto;
+    padding: 15px;
+  }
+
+  .hero {
+    margin: 60px auto 100px auto;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+
+  .hero .subtitle {
+    font-size: 20px;
+  }
+
+  .hero .lead {
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
+
+  .sections {
+    display: block;
+  }
+
+  .sectionleft {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .sectionright {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .list-card {
+    margin: 20px 0;
+    padding: 20px;
+  }
+
+  .list-card.example {
+    max-width: 100%;
+    min-width: auto;
+    margin: 20px 0;
+    padding: 20px;
+  }
+
+  .quiz-card {
+    margin: 20px 10px;
+    padding: 20px;
+  }
+
+  .quiz-container p {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .question-text {
+    font-size: 16px;
+  }
+
+  .radio-text {
+    font-size: 15px;
+  }
+
+  .certificate-section {
+    margin: 20px 10px;
+    padding: 20px;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+  }
+
+  footer img {
+    margin: 20px 0 0 0;
+  }
+
+  .button-row {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .a-button {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .slack img {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 30px auto;
+    padding: 10px;
+  }
+
+  .hero {
+    margin: 40px auto 80px auto;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero .subtitle {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .hero .lead {
+    font-size: 1.2rem;
+    margin-top: 15px;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .sectionright {
+    font-size: 0.95rem;
+  }
+
+  .list-card {
+    margin: 15px 0;
+    padding: 15px;
+  }
+
+  .list-card.example {
+    padding: 15px;
+  }
+
+  .quiz-card {
+    margin: 15px 5px;
+    padding: 15px;
+  }
+
+  .quiz-container p {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .question-text {
+    font-size: 15px;
+  }
+
+  .radio-text {
+    font-size: 14px;
+  }
+
+  .radio-input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .radio-input:checked::after {
+    width: 8px;
+    height: 8px;
+  }
+
+  .certificate-section {
+    margin: 15px 5px;
+    padding: 15px;
+  }
+
+  .submit-button,
+  .certificate-section button,
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  footer {
+    padding: 20px 15px;
+  }
+
+  footer p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .a-button {
+    padding: 8px 10px;
+    font-size: 14px;
+    min-width: 100px;
+  }
+
+  .slack img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .slack .slackname {
+    font-size: 14px;
+  }
+
+  .slack .slacktime {
+    font-size: 12px;
+  }
+
+  .slack .slackmessage {
+    font-size: 14px;
+  }
+
+  .achievement-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .achievement-checkbox:checked::after {
+    font-size: 12px;
+  }
+}

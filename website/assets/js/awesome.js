@@ -10,13 +10,19 @@ function getRandomColor() {
 function toggleAwesome() {
     try {
         const strikeElement = document.getElementById('strike');
-        const links = [document.getElementById('footer-link1'), document.getElementById('footer-link2'), document.getElementById('footer-link3')];
+        const links = [
+            document.getElementById('footer-link1'),
+            document.getElementById('footer-link2'),
+            document.getElementById('footer-link3')
+        ];
 
         if (intervalId) {
             clearInterval(intervalId);
             strikeElement.style.textDecorationColor = '#ff6666';
+            
             links.forEach(link => {
                 link.style.color = '#ff6666';
+                link.style.transition = '';
             });
 
             log('Awesome toggled!', 'success');
@@ -26,12 +32,12 @@ function toggleAwesome() {
 
         log('Awesome toggled!', 'success');
 
+        links.forEach(link => link.style.transition = 'none');
+
         intervalId = setInterval(() => {
             const color = getRandomColor();
             strikeElement.style.textDecorationColor = color;
-            links.forEach(link => {
-                link.style.color = color;
-            });
+            links.forEach(link => link.style.color = color);
         }, 50);
     } catch (err) {
         log(`Failed to toggle awesome: ${err}`, 'error');
