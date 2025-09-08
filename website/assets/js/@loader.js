@@ -87,7 +87,6 @@ class ScriptLoader {
                 'assets/js/terminal.js',
                 'assets/js/track.js',
                 'assets/js/update.js',
-                'assets/js/url.js',
                 'assets/js/warning.js',
                 'assets/js/websocket.js',
                 'assets/js/zkeys.js',
