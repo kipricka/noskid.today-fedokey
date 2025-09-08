@@ -30,6 +30,12 @@ p {
 }
 
 a {
+  color: var(--secondary);
+  text-decoration: none;
+  transition: color 1s ease;
+}
+
+footer a {
   color: #ff6666;
   text-decoration: none;
   transition: color 1s ease;
