@@ -273,8 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const consoleEl = document.getElementById('console');
     const consoleLink = document.getElementById('console-loader-link');
 
-    consoleLink.classList.remove('hidden');
-
     const pref = localStorage.getItem('showLoaderConsole');
     if (pref === 'true') {
         consoleEl.style.display = 'block';
@@ -283,6 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
         consoleEl.style.display = 'none';
         consoleLink.textContent = 'Show logs';
     }
+
+    consoleLink.classList.remove('hidden');
 
     consoleLink.addEventListener('click', (e) => {
         e.preventDefault();
