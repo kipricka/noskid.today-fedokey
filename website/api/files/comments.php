@@ -89,11 +89,12 @@ function censorBadWords($text) {
 
     $words = preg_split('/\s+/', $text);
     foreach ($words as &$word) {
+        $lowerWord = strtolower($word);
         foreach ($badWords as $badWord) {
-            if (strlen($badWord) > 4 && levenshtein($word, $badWord) <= 1) {
+            if (strlen($badWord) > 4 && levenshtein($lowerWord, $badWord) <= 1) {
                 $word = str_repeat('#', strlen($word));
                 break;
-            } elseif ($word === $badWord) {
+            } elseif ($lowerWord === $badWord) {
                 $word = str_repeat('#', strlen($word));
                 break;
             }
