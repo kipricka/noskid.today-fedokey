@@ -521,13 +521,13 @@ function submitComment(form, window) {
         return;
     }
 
-    if (author.toLowerCase() == "bypass" || author.toLowerCase() == "bypass") {
+    if (author.toLowerCase() == "bypass" || content.toLowerCase() == "bypass") {
         ClassicWindow.createWindow({
             title: "Hey !",
             content: '<h1 style="color: red;">You have to write bypass <b>on the website</b>, not in a comment &gt;:[</h1>',
             theme: 'dark',
             width: 0, //auto min value
-            width: 0, //auto min value
+            height: 0, //auto min value
             x: Math.round((window.innerWidth - 600) / 2),
             y: Math.round((window.innerHeight - 450) / 2),
         });
