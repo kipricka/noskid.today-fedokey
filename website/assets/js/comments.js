@@ -26,11 +26,16 @@ function spawnCommentSystem(event) {
         commentwin.appendChild(footer);
     }
 
-    const newCommentBtn = document.createElement('button');
-    newCommentBtn.textContent = 'New Comment';
-    newCommentBtn.className = 'new-comment-btn';
-    newCommentBtn.addEventListener('click', () => spawnNewCommentForm());
-    footer.prepend(newCommentBtn);
+    const footerText = document.createElement('div');
+    footerText.className = 'footer-text';
+    footerText.innerHTML = '<a href="#" class="new-comment-link">Write a new comment</a>';
+    footer.prepend(footerText);
+
+    const newCommentLink = footerText.querySelector('.new-comment-link');
+    newCommentLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        spawnNewCommentForm();
+    });
 
     addCommentSystemStyles();
 
@@ -206,19 +211,22 @@ function addCommentSystemStyles() {
             background: #0056b3;
         }
 
-        .new-comment-btn {
-            background: #007acc;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s ease;
+        .footer-text {
+            padding: 5px 0;
+            text-align: center;
+            color: #ccc;
+            font-size: 13px;
         }
 
-        .new-comment-btn:hover {
-            background: #0056b3;
+        .new-comment-link {
+            color: #007acc;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .new-comment-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
         }
 
         .comment-form {
@@ -526,10 +534,10 @@ function submitComment(form, commentWindow) {
             title: "Hey !",
             content: '<h1 style="color: red;">You have to write bypass <b>on the website</b>, not in a comment &gt;:[</h1>',
             theme: 'dark',
-            width: 300, //auto min value
-            height: 400, //auto min value
-            x: Math.round((window.innerWidth - 300) / 2),
-            y: Math.round((window.innerHeight - 400) / 2),
+            width: 400,
+            height: 300,
+            x: Math.round((window.innerWidth - 400) / 2),
+            y: Math.round((window.innerHeight - 300) / 2),
         });
 
         buttons.forEach(btn => btn.disabled = false);
