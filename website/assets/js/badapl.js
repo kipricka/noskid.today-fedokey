@@ -81,7 +81,7 @@ async function playBadApl() {
       console.log(`Frame ${currentFrame + 1}/${validFrames.length}`);
       console.log(`Time: ${((Date.now() - startTime) / 1000).toFixed(2)}s`);
       console.log('Github -> github.com/dpipstudio/noskid.today');
-      console.log('Contact -> douxx@douxx.tech');
+      console.log('Contact -> douxx@is.notaskid.ong');
       console.log('');
       console.log(validFrames[currentFrame]);
       currentFrame++;
