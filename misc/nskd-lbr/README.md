@@ -1,6 +1,6 @@
 # NoSkid Certificate Library
 
-A modern JavaScript library for verifying NoSkid certificates and implementing certificate-based authentication.
+A modern JavaScript library for verifying NoSkid certificates.
 
 ## Table of Contents
 
@@ -8,7 +8,6 @@ A modern JavaScript library for verifying NoSkid certificates and implementing c
 - [Quick Start](#quick-start)
 - [Constructor Options](#constructor-options)
 - [Methods](#methods)
-- [Login with NoSkid](#login-with-noskid)
 - [Response Objects](#response-objects)
 - [Examples](#examples)
 - [Error Handling](#error-handling)
@@ -38,7 +37,7 @@ import NskdLbr from 'nskd-lbr';
 
 ```js
 // Initialize the library
-const noskid = new NskdLbr(); //eventually specify parameters, well let the default ones here
+const noskid = new NskdLbr();
 
 // Verify a certificate from file upload
 const fileInput = document.getElementById('certificate-file');
@@ -67,11 +66,6 @@ const noskid = new NskdLbr({
     strictCheck: true,                      // Validate local vs API data
     useLegacyAPI: false,                   // Use legacy API format
     
-    // Login feature options
-    loginEndpoint: '',                      // Login API endpoint
-    onLoginSuccess: null,                   // Success callback function
-    onLoginFail: null,                      // Failure callback function
-    
     // Logging
     onLog: null                            // Custom logging function
 });
@@ -86,9 +80,6 @@ const noskid = new NskdLbr({
 | `timeout` | `number` | `10000` | API request timeout in milliseconds |
 | `strictCheck` | `boolean` | `true` | Compare local certificate data with API response |
 | `useLegacyAPI` | `boolean` | `false` | Use legacy API format (affects username/nickname field) |
-| `loginEndpoint` | `string` | `''` | Login API endpoint (required for login feature) |
-| `onLoginSuccess` | `function` | `null` | `(result, certData) => {}` - Called on successful login |
-| `onLoginFail` | `function` | `null` | `(error, certData) => {}` - Called on failed login |
 | `onLog` | `function` | `null` | `(message, level) => {}` - Custom logging function |
 
 ## Methods
@@ -97,7 +88,7 @@ const noskid = new NskdLbr({
 
 #### `loadFromFile(file)`
 
-Load and verify a certificate from a PNG file.'
+Load and verify a certificate from a PNG file.
 
 **Parameters:**
 - `file` (`File`) - PNG certificate file from file input
@@ -168,7 +159,7 @@ console.log(details);
 
 #### `reset()`
 
-Reset all certificate data and close any open login modals.
+Reset all certificate data.
 
 **Returns:** `void`
 
@@ -181,79 +172,6 @@ Log messages with different levels (when debug is enabled).
 - `level` (`string`) - Log level: `'info'`, `'error'`, `'warning'`, `'success'`
 
 **Returns:** `void`
-
-## Login with NoSkid
-
-The library provides a complete login system with a responsive modal interface.
-
-If you want a clean login button, please use this one:  
-![button](https://raw.githubusercontent.com/dpipstudio/noskid.today/refs/heads/main/misc/nskd-lbr/src/login.svg)
-
-### `showLoginModal()`
-
-Display a login modal for certificate-based authentication.
-
-**Requirements:**
-- Browser environment only
-- `loginEndpoint` must be configured
-- Valid login API endpoint that accepts POST requests
-
-**Returns:** `Promise<LoginResult>`
-
-**Example:**
-```js
-const noskid = new NskdLbr({
-    loginEndpoint: 'https://your-api.com/login',
-    onLoginSuccess: (result, certData) => {
-        console.log('Welcome', certData.localUsername);
-        // Redirect user, update UI, etc.
-    },
-    onLoginFail: (error, certData) => {
-        console.error('Login failed:', error.message);
-        // Show error message, etc.
-    }
-});
-
-// Show login modal
-try {
-    const loginResult = await noskid.showLoginModal();
-    console.log('Login successful:', loginResult);
-} catch (error) {
-    console.log('Login cancelled:', error.message);
-}
-```
-
-### Login API Format
-
-Your login endpoint should accept POST requests with this format:
-
-**Request:**
-```json
-{
-    "certificate": {
-        "key": "a1b2c3d4e5f6789...",
-        "username": "john_doe",
-        "certificate_number": "12345",
-        "percentage": 95,
-        "country": "United States",
-        "countryCode": "US",
-        "creationDate": "2024-01-15 14:30:25"
-    },
-    "password": "user_password"
-}
-```
-
-**Response:**
-```json
-{
-    "success": true,
-    "message": "Login successful",
-    "data": {
-        "token": "jwt_token_here",
-        "user": {...}
-    }
-}
-```
 
 ## Response Objects
 
@@ -283,16 +201,6 @@ interface CertificateData {
     key: string;                      // Verification key
     localUsername?: string;           // Username from local certificate
     localCreationDate?: string;       // Creation date from local certificate
-}
-```
-
-### LoginResult
-
-```js
-interface LoginResult {
-    success: boolean;                  // Whether login was successful
-    data: CertificateData;            // Certificate data
-    response: any;                    // API response from login endpoint
 }
 ```
 
@@ -330,45 +238,6 @@ try {
 }
 ```
 
-### Complete Login Implementation
-
-```js
-const noskid = new NskdLbr({
-    debug: true,
-    loginEndpoint: 'https://api.yoursite.com/auth/noskid',
-    onLoginSuccess: (result, certData) => {
-        // Store authentication token
-        localStorage.setItem('auth_token', result.response.token);
-        
-        // Update UI
-        document.getElementById('login-btn').style.display = 'none';
-        document.getElementById('user-info').textContent = 
-            `Welcome, ${certData.localUsername}!`;
-        
-        // Redirect or update application state
-        window.location.href = '/dashboard';
-    },
-    onLoginFail: (error, certData) => {
-        // Show error message
-        alert(`Login failed: ${error.message}`);
-        
-        // Log for debugging
-        console.error('Login error:', error);
-    }
-});
-
-// Add login button event
-document.getElementById('noskid-login-btn').addEventListener('click', async () => {
-    try {
-        await noskid.showLoginModal();
-    } catch (error) {
-        if (error.message !== 'Login cancelled') {
-            console.error('Login error:', error);
-        }
-    }
-});
-```
-
 ### Custom Configuration
 
 ```js
@@ -395,25 +264,25 @@ try {
     const result = await noskid.loadFromFile(file);
     
     if (result.valid) {
-        console.log('✅ Certificate is valid');
+        console.log('Certificate is valid');
     } else {
         // Handle different failure reasons
         if (result.strictCheck && result.message.includes('mismatch')) {
-            console.log('⚠️ Certificate data mismatch - try disabling strict check');
+            console.log('Certificate data mismatch - try disabling strict check');
         } else {
-            console.log('❌ Certificate verification failed:', result.message);
+            console.log('Certificate verification failed:', result.message);
         }
     }
 } catch (error) {
     // Handle different error types
     if (error.message.includes('timeout')) {
-        console.log('🕐 Request timed out - server may be slow');
+        console.log('Request timed out - server may be slow');
     } else if (error.message.includes('PNG')) {
-        console.log('📄 Invalid file format - please upload a PNG certificate');
+        console.log('Invalid file format - please upload a PNG certificate');
     } else if (error.message.includes('verification key')) {
-        console.log('🔑 Invalid verification key format');
+        console.log('Invalid verification key format');
     } else {
-        console.log('💥 Unexpected error:', error.message);
+        console.log('Unexpected error:', error.message);
     }
 }
 ```
@@ -431,8 +300,6 @@ The library provides detailed error messages for different failure scenarios:
 | `"No valid verification key found"` | Certificate missing key | Check certificate validity |
 | `"Request timeout"` | Network/server issues | Check connection, increase timeout |
 | `"Data mismatch"` | Local vs API data differs | Disable `strictCheck` or verify certificate |
-| `"Login endpoint is not configured"` | Missing login endpoint | Set `loginEndpoint` option |
-| `"Login modal is only available in browser"` | Node.js environment | Use in browser only |
 
 ### Best Practices
 
@@ -455,7 +322,7 @@ if (noskid.isValidCertificate()) {
 }
 
 // Reset state when needed
-noskid.reset(); // Clears all data and closes modals
+noskid.reset(); // Clears all data
 ```
 
 ## Browser Support
@@ -488,7 +355,7 @@ This library is licensed under the NSDv1.0 License. See the [LICENSE](LICENSE) f
 ---
 
 **Need Help?** 
-- 🐛 Issues: [GitHub Issues](https://github.com/dpipstudio/noskid.today/issues)
+- Issues: [GitHub Issues](https://github.com/dpipstudio/noskid.today/issues)
 
 <a align="center" href="https://github.com/douxxtech" target="_blank">
 <img src="https://madeby.douxx.tech"></img>
