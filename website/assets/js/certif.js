@@ -501,10 +501,13 @@ function offerCertificate(percentage, userAnswers) {
 <div class="button-row">
   <p>Discover NoSkid's services ></p>
   <div class="buttons">
-    <a href="https://im.notaskid.ong" target="_blank" class="a-button">@is.notaskid.ong</a>
     <a href="https://github.com/dpipstudio/noskid.today" target="_blank" class="a-button">
       <img src="/assets/img/github-fill.svg" width=24/>
     </a>
+    <a href="https://github.com/sponsors/dpipstudio" target="_blank" class="a-button">
+      <img src="/assets/img/heart-fill.svg" width=24/>
+    </a>
+    <a href="https://im.notaskid.ong" target="_blank" class="a-button">@is.notaskid.ong</a>
     <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank" class="a-button">More Services</a>
   </div>
 </div>
