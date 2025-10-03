@@ -1,4 +1,7 @@
 // Certif.js | The certification manager with Turnstile protection - Updated for new API
+
+// note: this code still has the tabswitchdetection for uhh, idk, we can remove it if needed.
+
 const quizForm = document.getElementById('quiz-form');
 const submitButton = quizForm.querySelector('.submit-button');
 const quizSection = document.querySelector(".quiz-section");
@@ -6,10 +9,10 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAABeZwqhQ3FcnOkEe';
 let quizQuestions = [];
 let timerStart = null;
 let timerInterval = null;
-let quizInvalidated = false;
-let tabSwitchDetectionEnabled = false;
+//let quizInvalidated = false;
+//let tabSwitchDetectionEnabled = false;
 
-class TabSwitchDetector {
+/*class TabSwitchDetector {
   constructor() {
     this.isActive = false;
     this.switchCount = 0;
@@ -108,9 +111,9 @@ class TabSwitchDetector {
       this.onTabSwitch(reason);
     }
   }
-}
+}*/
 
-const tabSwitchDetector = new TabSwitchDetector();
+//const tabSwitchDetector = new TabSwitchDetector();
 
 function startTimer() {
   if (timerStart === null) {
@@ -130,7 +133,7 @@ function stopTimer() {
   return 0;
 }
 
-function enableTabSwitchDetection() {
+/*function enableTabSwitchDetection() {
   if (!tabSwitchDetectionEnabled) {
     tabSwitchDetectionEnabled = true;
     tabSwitchDetector.enable((reason) => {
@@ -169,7 +172,7 @@ function displayInvalidatedQuiz() {
   message.className = 'quiz-message';
   quizForm.appendChild(message);
   submitButton.style.display = 'none';
-}
+} */
 
 async function loadQuestions() {
   try {
@@ -259,10 +262,10 @@ async function createQuestions() {
 }
 
 async function checkQuizResponses() {
-  if (quizInvalidated) {
+  /*if (quizInvalidated) {
     alert('This quiz has been invalidated and cannot be submitted.');
     return;
-  }
+  }*/
 
   const userAnswers = {};
   let allAnswered = true;
@@ -294,7 +297,7 @@ async function checkQuizResponses() {
 
     if (!data.success) throw new Error(data.message || 'Failed to check answers');
 
-    disableTabSwitchDetection();
+    //disableTabSwitchDetection();
 
     displayQuizResults(data);
     localStorage.setItem('quizTaken', 'true');
@@ -563,8 +566,8 @@ async function handleQuizDisplay() {
 async function redoQuiz(event) {
   if (event) event.preventDefault();
 
-  quizInvalidated = false;
-  tabSwitchDetectionEnabled = false;
+  //quizInvalidated = false;
+  //tabSwitchDetectionEnabled = false;
   timerStart = null;
 
   const quizContainer = document.querySelector('.quiz-container');
