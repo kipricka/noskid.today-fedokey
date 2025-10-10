@@ -19,7 +19,7 @@ async function showStats() {
 
 async function getReqCount() {
     try {
-        const response = await fetch('https://track.dpip.lol/?id=noskid.today');
+        const response = await fetch('%%ANALYTICS_URL%%');
         const data = await response.json();
         if (data.unique_views) unique_views = formatNumber(data.unique_views);
         if (data.total_requests) total_requests = formatNumber(data.total_requests);
