@@ -64,6 +64,7 @@ const noskid = new NskdLbr({
     debug: false,                           // Enable debug logging
     timeout: 10000,                         // Request timeout (ms)
     strictCheck: true,                      // Validate local vs API data
+    allowAchievements: true,                // Allow achievement-boosted certificates
     useLegacyAPI: false,                   // Use legacy API format
     
     // Logging
@@ -79,6 +80,7 @@ const noskid = new NskdLbr({
 | `debug` | `boolean` | `false` | Enable console debug messages |
 | `timeout` | `number` | `10000` | API request timeout in milliseconds |
 | `strictCheck` | `boolean` | `true` | Compare local certificate data with API response |
+| `allowAchievements` | `boolean` | `true` | Allow certificates that used achievement boosts |
 | `useLegacyAPI` | `boolean` | `false` | Use legacy API format (affects username/nickname field) |
 | `onLog` | `function` | `null` | `(message, level) => {}` - Custom logging function |
 
@@ -293,11 +295,14 @@ The library provides detailed error messages for different failure scenarios:
 
 ### Common Errors
 
+### 5. Common Errors table - add new row:
+```markdown
 | Error Type | Cause | Solution |
 |------------|-------|----------|
 | `"No file provided"` | File input is empty | Check file selection |
 | `"File must be a PNG image"` | Wrong file format | Upload a PNG certificate |
 | `"No valid verification key found"` | Certificate missing key | Check certificate validity |
+| `"Certificate uses achievements boost"` | Achievement boost not allowed | Set `allowAchievements: true` or use non-boosted certificate |
 | `"Request timeout"` | Network/server issues | Check connection, increase timeout |
 | `"Data mismatch"` | Local vs API data differs | Disable `strictCheck` or verify certificate |
 

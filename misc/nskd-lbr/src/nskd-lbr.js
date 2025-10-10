@@ -2,14 +2,15 @@
  * NoSkid Certificate Library
  * A JavaScript library for working with NoSkid certificates
  *
- * @version 1.1.0
+ * @version 1.1.4
  * @author Douxx <douxx@douxx.tech>
  * @param {string} [options.apiUrl='https://check.noskid.today/'] - Logs debug messages to console
  * @param {boolean} [options.debug=false] - Logs debug messages to console
  * @param {boolean} [options.strictCheck=true] - Whether to validate local data against API response
+ * @param {boolean} [options.allowAchievements=true] - Whether to allow achievements boosted certificates
  * @param {integer} [options.timeout=10000] - API request timeout in milliseconds
  * @param {boolean} [options.useLegacyAPI=false] - Whether to use the legacy API format
- * @param {function} [options.onLog=null] - Whether to validate local data against API response
+ * @param {function} [options.onLog=null] - Log function for callbacks
  */
 
 class NskdLbr {
@@ -18,6 +19,7 @@ class NskdLbr {
         this.debug = options.debug || false;
         this.timeout = options.timeout || 10000;
         this.strictCheck = options.strictCheck !== undefined ? options.strictCheck : true;
+        this.allowAchievements = options.allowAchievements !== undefined ? options.allowAchievements : true;
         this.onLog = options.onLog || null;
         this.useLegacyAPI = options.useLegacyAPI || false;
         this.certificateData = null;
@@ -346,6 +348,20 @@ Certificate Details:
                     message: apiData.message,
                     cached: apiData.cached || false
                 };
+            }
+
+            if (apiData.data.boosted && !this.allowAchievements) {
+                this.isValid = false;
+                this.nskdLbrLog('Certificate uses achievements boost, which is not allowed by allowAchievements', 'error');
+                return {
+                    valid: false,
+                    message: 'Certificate uses achievements boost',
+                    cached: apiData.cached || false
+                };
+            }
+
+            if (apiData.data.boosted) {
+                this.nskdLbrLog('Certificate is achievement-boosted', 'warning');
             }
 
             // Compare local data with API data if available and strictCheck is enabled
