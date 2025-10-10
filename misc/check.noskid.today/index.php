@@ -62,6 +62,7 @@ if ($result->num_rows > 0) {
                 'username' => $cached_cert['username'],
                 'nickname' => $cached_cert['nickname'],
                 'percentage' => $cached_cert['percentage'],
+                'boosted' => (bool)$cached_cert['boosted'],
                 'creationDate' => $cached_cert['creation_date'],
                 'country' => $cached_cert['country'],
                 'countryCode' => $cached_cert['country_code']
@@ -123,11 +124,10 @@ if ($apiData === null) {
     exit;
 }
 
-function cleanUsername($originalUsername, $certId) {
+function cleanUsername($originalUsername, $certId)
+{
     $firstWord = explode(' ', trim($originalUsername))[0];
-    
     $cleanedUsername = preg_replace('/[^a-zA-Z0-9_]/', '', $firstWord);
-    
     return $cleanedUsername . $certId;
 }
 
@@ -135,11 +135,20 @@ if ($apiData['success']) {
     $data = $apiData['data'];
     $originalUsername = $data['username'];
     $cleanedUsername = cleanUsername($originalUsername, $data['certificate_number']);
-    
-    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, certificate_number, username, nickname, percentage, creation_date, country, country_code, cached_at) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE username = VALUES(username), nickname = VALUES(nickname), cached_at = NOW()");
+    $boosted = isset($data['boosted']) ? (int)$data['boosted'] : null;
+
+    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache 
+        (verification_key, is_valid, certificate_number, username, nickname, percentage, creation_date, country, country_code, boosted, cached_at) 
+        VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) 
+        ON DUPLICATE KEY UPDATE 
+            username = VALUES(username), 
+            nickname = VALUES(nickname), 
+            boosted = VALUES(boosted), 
+            cached_at = NOW()");
 
     if ($insertStmt) {
-        $insertStmt->bind_param("ssssssss",
+        $insertStmt->bind_param(
+            "ssssssssi",
             $key,
             $data['certificate_number'],
             $cleanedUsername,
@@ -147,7 +156,8 @@ if ($apiData['success']) {
             $data['percentage'],
             $data['creationDate'],
             $data['country'],
-            $data['countryCode']
+            $data['countryCode'],
+            $boosted
         );
         $insertStmt->execute();
         $insertStmt->close();
@@ -158,7 +168,8 @@ if ($apiData['success']) {
     $apiData['cached'] = false;
     echo json_encode($apiData, JSON_PRETTY_PRINT);
 } else {
-    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, cached_at) VALUES (?, 0, NOW()) ON DUPLICATE KEY UPDATE is_valid = 0, cached_at = NOW()");
+    $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, cached_at) VALUES (?, 0, NOW()) 
+        ON DUPLICATE KEY UPDATE is_valid = 0, cached_at = NOW()");
 
     if ($insertStmt) {
         $insertStmt->bind_param("s", $key);
@@ -171,4 +182,3 @@ if ($apiData['success']) {
 }
 
 $mysqli->close();
-?>

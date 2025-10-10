@@ -26,7 +26,7 @@ if ($mysqli->connect_error) {
     exit;
 }
 
-$stmt = $mysqli->prepare("SELECT c.id, c.name, c.percentage, c.ip, c.created_at, c.verification_key 
+$stmt = $mysqli->prepare("SELECT c.id, c.name, c.percentage, c.ip, c.achievements_id, c.created_at, c.verification_key 
                          FROM cert c 
                          WHERE c.verification_key LIKE CONCAT(?, '|%')");
 
@@ -55,8 +55,10 @@ $stmt->close();
 
 $certNumber = str_pad($cert['id'], 5, '0', STR_PAD_LEFT);
 
+$boosted = !is_null($cert['achievements_id']);
+
 $ip = $cert['ip'];
-$ipApiUrl = "http://ip-api.com/json/{$ip}?fields=country,countryCode";
+$ipApiUrl = "http://ip-api.com/json/{$ip}?fields=country,countryCode"; // note: change for a geocityip or idk what but a local db would be better
 $ipApiResponse = @file_get_contents($ipApiUrl);
 $countryInfo = json_decode($ipApiResponse, true);
 
@@ -79,6 +81,7 @@ $response = [
         'certificate_number' => $certNumber,
         'username' => $cert['name'],
         'percentage' => $cert['percentage'],
+        'boosted' => $boosted,
         'creationDate' => $creationDate,
         'country' => $country,
         'countryCode' => $countryCode
