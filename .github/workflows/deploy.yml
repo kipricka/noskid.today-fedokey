@@ -64,7 +64,7 @@ jobs:
     name: Build & Deploy
     runs-on: self-hosted
     needs: analyze-changes
-    if: needs.analyze-changes.outputs.changed-files != ''
+    if: github.event_name == 'workflow_dispatch' || needs.analyze-changes.outputs.changed-files != ''
     
     steps:
     - name: Checkout repository
