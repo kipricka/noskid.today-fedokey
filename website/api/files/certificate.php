@@ -206,6 +206,30 @@ function calculateAchievementBonus($userId) {
     return $totalBonus;
 }
 
+function validateThatUserHasAchievements($userId) {
+    if (empty($userId)) {
+        return false;
+    }
+    
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    
+    if ($conn->connect_error) {
+        return false;
+    }
+    
+    $stmt = $conn->prepare("SELECT id FROM user_achievements WHERE id = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $exists = $result->num_rows > 0;
+    
+    $stmt->close();
+    $conn->close();
+    
+    return $exists;
+}
+
 function downloadCertificate() {
     global $questions;
 
@@ -353,8 +377,17 @@ function downloadCertificate() {
 
             $verificationKey = generateVerificationKey($name, $currentTime, $mysqli);
 
-            $stmt = $mysqli->prepare("INSERT INTO cert (name, percentage, ip, verification_key) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("sdss", $name, $finalPercentage, $ip, $verificationKey);
+            // only save achievements_id if achievement bonus was applied AND user is valid
+            $userIdToSave = ($achievementBonus > 0 && validateThatUserHasAchievements($userId)) ? $userId : null;
+
+            if ($userIdToSave !== null) {
+                $stmt = $mysqli->prepare("INSERT INTO cert (name, percentage, ip, verification_key, achievements_id) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("sdsss", $name, $finalPercentage, $ip, $verificationKey, $userIdToSave);
+            } else {
+                $stmt = $mysqli->prepare("INSERT INTO cert (name, percentage, ip, verification_key) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("sdss", $name, $finalPercentage, $ip, $verificationKey);
+            }
+            
             $stmt->execute();
             $insertId = $mysqli->insert_id;
             $stmt->close();
