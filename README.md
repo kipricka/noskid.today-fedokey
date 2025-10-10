@@ -41,6 +41,10 @@ If you like what we’re doing, consider supporting us! Every contribution helps
 > Discover hidden features by opening the console (Shift + ESC).  
 > Example: Press `Shift + T` to open the comments system: [Comments](https://noskid.today/#spawnCommentSystem)
 
+## Requirements
+- PHP with `exec()` and curl enabled.
+- librsvg2-bin for SVG to PNG (certificates) conversion. 
+
 ## Installation
 
 ```bash
@@ -48,18 +52,15 @@ git clone https://github.com/dpipstudio/noskid.today # clone the repo
 cd noskid.today/website # navigate to the websites folder
 nano api/config.php # or notepad api/config.php on windows
 ```
+
+> [!TIP]
+> For high-quality production content, build the website from source before deploying. See the [build README](/build/readme.md) for detailed instructions.
+
 Run with built-in PHP server:
 ```bash
 php -S 0.0.0.0:80
 ```
 > Or use Apache/Nginx with PHP-FPM.
-
-## Requirements
-- PHP with `exec()` and curl enabled.
-- librsvg2-bin for SVG to PNG (certificates) conversion. 
-
-> [!TIP]
-> For high-quality production content, build the website from source before deploying. See the [build README](/build/readme.md) for detailed instructions.
 
 ## Contributing
 Contributions are welcome! Check out the list of [contributors](https://github.com/dpipstudio/noskid.today/graphs/contributors) and see how you can help. Thanks to all of them <3
