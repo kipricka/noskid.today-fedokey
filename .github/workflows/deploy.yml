@@ -5,6 +5,13 @@ on:
     paths:
       - 'website/**'
 
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Why are you running this B&D ?'
+        required: false
+        default: 'Manual build & deploy, to update production server with newest changes'
+
 env:
   NODE_VERSION: '18'
 
