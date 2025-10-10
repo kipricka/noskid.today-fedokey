@@ -508,7 +508,7 @@ function offerCertificate(percentage, userAnswers) {
       <img src="/assets/img/github-fill.svg" width=24/>
     </a>
     <a href="https://github.com/sponsors/dpipstudio" target="_blank" class="a-button">
-      <img src="/assets/img/heart-fill.svg" width=24/>
+      <img src="/assets/img/heart-line.svg" width=24/>
     </a>
     <a href="https://im.notaskid.ong" target="_blank" class="a-button">@is.notaskid.ong</a>
     <a href="https://blog.noskid.today/?p=3-noskid-services" target="_blank" class="a-button">More Services</a>
