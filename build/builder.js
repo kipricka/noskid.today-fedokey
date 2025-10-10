@@ -82,6 +82,10 @@ class NoSkidBuilder {
                 updated: [],
                 patterns: []
             },
+            keywordReplacements: {
+                count: 0,
+                files: []
+            },
             errors: [],
             warnings: []
         };
@@ -138,8 +142,37 @@ class NoSkidBuilder {
         log(`Created build directory: ${this.buildDir}`, 'success');
     }
 
+    replaceKeywords(content, filename = '') {
+        let processedContent = content;
+        let replacementCount = 0;
+
+        for (const [keyword, value] of Object.entries(config.replaceKeyWords)) {
+            const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            const matches = (content.match(regex) || []).length;
+
+            if (matches > 0) {
+                processedContent = processedContent.replace(regex, value);
+                replacementCount += matches;
+                log(`Replaced ${matches} occurrences of "${keyword}" in ${filename || 'content'}`, 'info');
+            }
+        }
+
+        if (replacementCount > 0 && filename) {
+            this.changeLog.keywordReplacements.count += replacementCount;
+            this.changeLog.keywordReplacements.files.push({
+                filename: filename,
+                replacements: replacementCount,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        return processedContent;
+    }
+
     minifyHTML(tag, html) {
         let minified = html;
+
+        minified = this.replaceKeywords(minified);
 
         minified = minified.replace(/<!--(?!\s*(?:\[if [^\]]+\]|<!|>))[\s\S]*?-->/g, '');
         minified = minified.replace(/>\s+</g, '><');
@@ -214,7 +247,7 @@ class NoSkidBuilder {
                 log(`Copied directory: ${dir}`, 'success');
             }
         }
-        
+
         //add license
         fs.writeFileSync(path.join(this.buildDir, 'LICENSE'), fs.readFileSync("LICENSE", 'utf8'));
         log(`Copied license file`, 'success');
@@ -390,6 +423,8 @@ class NoSkidBuilder {
         this.stats.originalSize += code.length;
 
         let minified = code;
+
+        minified = this.replaceKeywords(minified);
 
         if (this.isCriticalScript(originalName)) {
             const warningMsg = `Skipping minification for critical script: ${originalName}`;
