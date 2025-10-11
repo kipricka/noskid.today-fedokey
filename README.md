@@ -11,11 +11,12 @@ A modern, feature-rich version of [nohello.net](https://nohello.net) with advanc
 ---
 
 ## Introduction
-NoSkid.Today is a PHP-based website designed to prevent skids and provide a variety of hidden, advanced features for verified users. It is heavily inspired by [nohello.net](https://nohello.net) but comes with a modern twist.
+NoSkid.Today is a PHP-based website designed to prevent skids and provide a variety of hidden, advanced features for verified users. It is heavily inspired by [nohello.net](https://nohello.net) but comes with a modern twist.  
+The NoSkid Project is a group of every official tool based or using NoSkid services.
 
-> [!NOTE]
-> New feature!  `@is.notaskid.ong` emails.  
-> Check [>> im.notaskid.ong <<](https://im.notaskid.ong)
+## Structure
+This repository hosts most NoSkid-related projects, as the main website (`website/`), but also other tools & services (`misc/`).
+
 
 ## Sponsor This Project
 Keeping NoSkid.Today online and improving it takes time and resources. Sponsorship helps us cover:  
@@ -28,14 +29,6 @@ If you like what we’re doing, consider supporting us! Every contribution helps
 <div align="center">
 <a href="https://github.com/sponsors/dpipstudio"><img src="https://img.shields.io/badge/⭐-Sponsor-yellow?style=for-the-badge" height=50 /></a></div>
 
-
-
-
-## Features
-- Skid prevention and verification system
-- Rich hidden features accessible via console shortcuts
-- API integration for advanced usage
-- Lightweight PHP server support
 
 > [!TIP]
 > Discover hidden features by opening the console (Shift + ESC).  
