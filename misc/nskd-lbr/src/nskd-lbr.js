@@ -394,6 +394,7 @@ Certificate Details:
                 valid: true,
                 message: 'Certificate verified successfully',
                 data: apiData.data,
+                query: apiData.query || this.verificationKey,
                 cached: apiData.cached || false,
                 strictCheck: this.strictCheck
             };
