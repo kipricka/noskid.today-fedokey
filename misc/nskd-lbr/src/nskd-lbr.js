@@ -2,7 +2,7 @@
  * NoSkid Certificate Library
  * A JavaScript library for working with NoSkid certificates
  *
- * @version 1.1.4
+ * @version 1.1.5
  * @author Douxx <douxx@douxx.tech>
  * @param {string} [options.apiUrl='https://check.noskid.today/'] - Logs debug messages to console
  * @param {boolean} [options.debug=false] - Logs debug messages to console
