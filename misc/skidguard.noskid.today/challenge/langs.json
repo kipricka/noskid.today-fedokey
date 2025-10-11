@@ -1,0 +1,162 @@
+{
+  "en": {
+    "text": "Confirm that you're not a skid.",
+    "loading": "Verifying...",
+    "success": "Success!",
+    "awaiting": "Select your NoSkid certificate...",
+    "error": "Verification failed. Try again.",
+    "poweredby": "Powered by"
+  },
+  "zh": {
+    "text": "确认你不是脚本小子。",
+    "loading": "验证中...",
+    "success": "成功!",
+    "awaiting": "选择你的 NoSkid 证书...",
+    "error": "验证失败。请重试。",
+    "poweredby": "由...驱动"
+  },
+  "hi": {
+    "text": "पुष्टि करें कि आप स्किड नहीं हैं।",
+    "loading": "सत्यापित कर रहे हैं...",
+    "success": "सफलता!",
+    "awaiting": "अपना NoSkid प्रमाणपत्र चुनें...",
+    "error": "सत्यापन विफल रहा। पुनः प्रयास करें।",
+    "poweredby": "द्वारा संचालित"
+  },
+  "es": {
+    "text": "Confirma que no eres un skid.",
+    "loading": "Verificando...",
+    "success": "¡Éxito!",
+    "awaiting": "Selecciona tu certificado NoSkid...",
+    "error": "Verificación fallida. Inténtalo de nuevo.",
+    "poweredby": "Desarrollado por"
+  },
+  "fr": {
+    "text": "Confirmez que vous n'êtes pas un skid.",
+    "loading": "Vérification...",
+    "success": "Succès !",
+    "awaiting": "Sélectionnez votre certificat NoSkid...",
+    "error": "Vérification échouée. Réessayez.",
+    "poweredby": "Propulsé par"
+  },
+  "ar": {
+    "text": "أكد أنك لست سكيد.",
+    "loading": "جارٍ التحقق...",
+    "success": "نجح!",
+    "awaiting": "اختر شهادة NoSkid الخاصة بك...",
+    "error": "فشل التحقق. حاول مرة أخرى.",
+    "poweredby": "مدعوم من"
+  },
+  "bn": {
+    "text": "নিশ্চিত করুন যে আপনি স্কিড নন।",
+    "loading": "যাচাই করা হচ্ছে...",
+    "success": "সফল!",
+    "awaiting": "আপনার NoSkid সার্টিফিকেট নির্বাচন করুন...",
+    "error": "যাচাইকরণ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+    "poweredby": "চালিত"
+  },
+  "pt": {
+    "text": "Confirme que você não é um skid.",
+    "loading": "Verificando...",
+    "success": "Sucesso!",
+    "awaiting": "Selecione seu certificado NoSkid...",
+    "error": "Verificação falhou. Tente novamente.",
+    "poweredby": "Desenvolvido por"
+  },
+  "ru": {
+    "text": "Подтвердите, что вы не скид.",
+    "loading": "Проверка...",
+    "success": "Успешно!",
+    "awaiting": "Выберите ваш сертификат NoSkid...",
+    "error": "Проверка не удалась. Попробуйте снова.",
+    "poweredby": "Работает на"
+  },
+  "ja": {
+    "text": "あなたがスキッドではないことを確認してください。",
+    "loading": "検証中...",
+    "success": "成功!",
+    "awaiting": "NoSkid証明書を選択してください...",
+    "error": "検証に失敗しました。もう一度お試しください。",
+    "poweredby": "提供元"
+  },
+  "pa": {
+    "text": "ਪੁਸ਼ਟੀ ਕਰੋ ਕਿ ਤੁਸੀਂ ਸਕਿੱਡ ਨਹੀਂ ਹੋ।",
+    "loading": "ਪੁਸ਼ਟੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...",
+    "success": "ਸਫਲ!",
+    "awaiting": "ਆਪਣਾ NoSkid ਸਰਟੀਫਿਕੇਟ ਚੁਣੋ...",
+    "error": "ਪੁਸ਼ਟੀ ਅਸਫਲ ਰਹੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "poweredby": "ਦੁਆਰਾ ਚਲਾਇਆ"
+  },
+  "de": {
+    "text": "Bestätigen Sie, dass Sie kein Skid sind.",
+    "loading": "Wird überprüft...",
+    "success": "Erfolg!",
+    "awaiting": "Wählen Sie Ihr NoSkid-Zertifikat aus...",
+    "error": "Überprüfung fehlgeschlagen. Versuchen Sie es erneut.",
+    "poweredby": "Betrieben von"
+  },
+  "jv": {
+    "text": "Konfirmasi yen sampeyan dudu skid.",
+    "loading": "Verifikasi...",
+    "success": "Sukses!",
+    "awaiting": "Pilih sertifikat NoSkid sampeyan...",
+    "error": "Verifikasi gagal. Coba maneh.",
+    "poweredby": "Dipoweri dening"
+  },
+  "ko": {
+    "text": "당신이 스키드가 아님을 확인하세요.",
+    "loading": "확인 중...",
+    "success": "성공!",
+    "awaiting": "NoSkid 인증서를 선택하세요...",
+    "error": "확인 실패. 다시 시도하세요.",
+    "poweredby": "제공"
+  },
+  "te": {
+    "text": "మీరు స్కిడ్ కాదని నిర్ధారించండి.",
+    "loading": "ధృవీకరిస్తోంది...",
+    "success": "విజయం!",
+    "awaiting": "మీ NoSkid సర్టిఫికేట్‌ను ఎంచుకోండి...",
+    "error": "ధృవీకరణ విఫలమైంది. మళ్లీ ప్రయత్నించండి.",
+    "poweredby": "చే తయారు చేయబడింది"
+  },
+  "tr": {
+    "text": "Skid olmadığınızı onaylayın.",
+    "loading": "Doğrulanıyor...",
+    "success": "Başarılı!",
+    "awaiting": "NoSkid sertifikanızı seçin...",
+    "error": "Doğrulama başarısız oldu. Tekrar deneyin.",
+    "poweredby": "Tarafından desteklenmektedir"
+  },
+  "mr": {
+    "text": "तुम्ही स्किड नाही याची पुष्टी करा.",
+    "loading": "पडताळणी करत आहे...",
+    "success": "यशस्वी!",
+    "awaiting": "तुमचे NoSkid प्रमाणपत्र निवडा...",
+    "error": "पडताळणी अयशस्वी झाली. पुन्हा प्रयत्न करा.",
+    "poweredby": "द्वारे चालित"
+  },
+  "vi": {
+    "text": "Xác nhận rằng bạn không phải là skid.",
+    "loading": "Đang xác minh...",
+    "success": "Thành công!",
+    "awaiting": "Chọn chứng chỉ NoSkid của bạn...",
+    "error": "Xác minh thất bại. Thử lại.",
+    "poweredby": "Được cung cấp bởi"
+  },
+  "it": {
+    "text": "Conferma di non essere uno skid.",
+    "loading": "Verifica in corso...",
+    "success": "Successo!",
+    "awaiting": "Seleziona il tuo certificato NoSkid...",
+    "error": "Verifica fallita. Riprova.",
+    "poweredby": "Alimentato da"
+  },
+  "ta": {
+    "text": "நீங்கள் ஸ்கிட் அல்ல என்பதை உறுதிப்படுத்தவும்.",
+    "loading": "சரிபார்க்கப்படுகிறது...",
+    "success": "வெற்றி!",
+    "awaiting": "உங்கள் NoSkid சான்றிதழைத் தேர்ந்தெடுக்கவும்...",
+    "error": "சரிபார்ப்பு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
+    "poweredby": "மூலம் இயக்கப்படுகிறது"
+  }
+}

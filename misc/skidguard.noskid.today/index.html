@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkidGuard - Certificate-Based CAPTCHA</title>
+    <script src="https://skidguard.noskid.today/skidguard.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #d4a574;
+            --bg: #0a0a0a;
+            --bg-alt: #141414;
+            --border: #2a2a2a;
+            --text: #e0e0e0;
+            --muted: #a0a0a0;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            display: block;
+            padding: 100px 0;
+            text-align: left;
+            margin: 0 50px;
+        }
+
+        .hero .container {
+            text-align: left;
+            padding-left: 0;
+            max-width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 20px;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .demo-section {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            width: 100%;
+            max-width: 370px;
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--bg);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #e0b585;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--bg);
+        }
+
+        .features {
+            padding: 80px 0;
+            background: #0f0f0f;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #fff;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--muted);
+        }
+
+        .integration {
+            padding: 80px 0;
+        }
+
+        .code-block {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text);
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-tag {
+            color: #569cd6;
+        }
+
+        .code-attr {
+            color: #9cdcfe;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: #6a6a6a;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SkidGuard</div>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#integration">Integration</a></li>
+                    <li><a href="https://noskid.today" target="_blank">Get Certificate</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Certificate-Based CAPTCHA</h1>
+            <p>Modern <i>bot</i> prevention powered by verified NoSkid certificates. Simple and secure; no
+                image puzzles or tracking.</p>
+
+            <div class="demo-section">
+                <div class="demo-title">Try SkidGuard</div>
+                <div id="captcha-demo"></div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#integration" class="btn btn-primary">Get Started</a>
+                <a href="https://noskid.today" target="_blank" class="btn btn-secondary">Get Certificate</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why SkidGuard?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="ri-shield-keyhole-line feature-icon"></i>
+                    <h3>Certificate-Based</h3>
+                    <p>Leverages cryptographic NoSkid certificates instead of weak image recognition challenges.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ri-flashlight-line feature-icon"></i>
+                    <h3>Fast & Lightweight</h3>
+                    <p>Minimal script footprint. Instant load through an iframe-based architecture.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ri-palette-line feature-icon"></i>
+                    <h3>Customizable</h3>
+                    <p>Choose from multiple themes, sizes, and 18+ languages.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ri-lock-2-line feature-icon"></i>
+                    <h3>Hardly bypassable</h3>
+                    <p>A NoSkid certificate cant be falsified, making the captcha bypass impossible.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ri-smartphone-line feature-icon"></i>
+                    <h3>Responsive</h3>
+                    <p>Works seamlessly on desktop, tablet, and mobile devices.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ri-tools-line feature-icon"></i>
+                    <h3>Easy Integration</h3>
+                    <p>Simple JavaScript API with full callback support for success, error, and expiry.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="integration" class="integration">
+        <div class="container">
+            <h2 class="section-title">Integration Guide</h2>
+            <p style="color: var(--muted); max-width: 700px;">Add SkidGuard to your site in under 2 minutes. Once
+                verified, send the returned <code>token</code> to your backend and verify it using NoSkid’s API.</p>
+
+            <div class="code-block">
+                <pre><span class="code-comment">&lt;!-- Include SkidGuard --&gt;</span>
+<span class="code-tag">&lt;script</span> <span class="code-attr">src</span>=<span class="code-string">"https://skidguard.noskid.today/skidguard.js"</span><span class="code-tag">&gt;&lt;/script&gt;</span>
+
+<span class="code-comment">&lt;!-- CAPTCHA container --&gt;</span>
+<span class="code-tag">&lt;div</span> <span class="code-attr">id</span>=<span class="code-string">"captcha"</span><span class="code-tag">&gt;&lt;/div&gt;</span>
+
+<span class="code-comment">&lt;!-- Render CAPTCHA --&gt;</span>
+<span class="code-tag">&lt;script&gt;</span>
+const widgetId = skidguard.render('#captcha', {
+  callback: token => {
+    fetch('/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: token })
+    })
+    .then(r => r.json())
+    .then(res => console.log('Server verified:', res))
+    .catch(console.error);
+  },
+  theme: 'auto',
+  size: 'normal',
+  language: 'en'
+});
+<span class="code-tag">&lt;/script&gt;</span>
+</pre>
+            </div>
+
+            <h3 style="margin-top: 40px; color: var(--primary); font-size: 22px;">Server-side verification example
+                (Node.js)</h3>
+            <div class="code-block">
+                <pre><span class="code-comment">// verify.js</span>
+import express from 'express';
+import fetch from 'node-fetch';
+
+const app = express();
+app.use(express.json());
+
+app.post('/verify', async (req, res) => {
+  const { key } = req.body;
+  if (!key) return res.status(400).json({ success: false, message: 'Missing key' });
+
+  const checkUrl = `https://check.noskid.today/?key=${key}`;
+  const response = await fetch(checkUrl);
+  const data = await response.json();
+
+  if (data.success) {
+    <span class="code-comment">// do additional operations</span>
+    res.json({ valid: true, user: data.data });
+  } else {
+    res.status(401).json({ valid: false, message: data.message });
+  }
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Powered by <a href="https://noskid.today" target="_blank">NoSkid</a> Certificates</p>
+            <p style="margin-top: 8px;">DPIP.lol &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        const widgetId = skidguard.render('#captcha-demo', {
+            callback: token => console.log('Verified!', token),
+            errorCallback: msg => console.error('Verification failed:', msg),
+            theme: 'auto',
+            size: 'normal',
+            language: 'en'
+        });
+    </script>
+</body>
+
+</html>
