@@ -45,7 +45,7 @@ Create a container where you want the CAPTCHA to appear:
       document.querySelector('#token').value = token;
     },
     errorCallback: (err) => {
-      console.error('❌ Verification error:', err);
+      console.error('[ERR] Verification error:', err);
     }
   });
 </script>
