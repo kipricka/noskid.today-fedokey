@@ -303,6 +303,22 @@ $colors = $themes[$theme];
             allowAchievements: true
         });
 
+        function setCookie(name, value, days = 365) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; Secure; SameSite=None`;
+        }
+
+        function getCookie(name) {
+            return document.cookie.split('; ').reduce((r, v) => {
+                const parts = v.split('=');
+                return parts[0] === name ? decodeURIComponent(parts[1]) : r
+            }, '');
+        }
+
+        function deleteCookie(name) {
+            document.cookie = `${name}=; Max-Age=0; path=/; Secure; SameSite=None`;
+        }
+
         function setState(newState, message = '') {
             state = newState;
             errorMessage = message;
@@ -341,7 +357,7 @@ $colors = $themes[$theme];
         }
 
         async function autoVerify() {
-            const storedKey = localStorage.getItem(STORAGE_KEY);
+            const storedKey = getCookie(STORAGE_KEY);
             if (!storedKey) return false;
 
             setState(STATES.LOADING);
@@ -351,28 +367,26 @@ $colors = $themes[$theme];
 
                 if (result.valid && result.data) {
                     const token = storedKey;
-
                     setState(STATES.CHECKED);
-
                     window.parent.postMessage({
                         type: 'success',
                         widgetId: WIDGET_ID,
                         token: token,
                         certificateData: result.data
                     }, '*');
-
                     return true;
                 } else {
-                    localStorage.removeItem(STORAGE_KEY);
+                    deleteCookie(STORAGE_KEY);
                     setState(STATES.UNCHECKED);
                     return false;
                 }
             } catch (error) {
-                localStorage.removeItem(STORAGE_KEY);
+                deleteCookie(STORAGE_KEY);
                 setState(STATES.UNCHECKED);
                 return false;
             }
         }
+
 
         fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
@@ -390,7 +404,7 @@ $colors = $themes[$theme];
                     const certKey = result.query;
                     const token = certKey;
 
-                    localStorage.setItem(STORAGE_KEY, certKey);
+                    setCookie(STORAGE_KEY, certKey);
 
                     setState(STATES.CHECKED);
 
@@ -452,7 +466,7 @@ $colors = $themes[$theme];
                 setState(data.state, data.message || '');
             } else if (data.type === 'reset') {
                 setState(STATES.UNCHECKED);
-                localStorage.removeItem(STORAGE_KEY);
+                deleteCookie(STORAGE_KEY);
                 noskid.reset();
             } else if (data.type === 'execute') {
                 if (state === STATES.UNCHECKED || state === STATES.ERROR) {
