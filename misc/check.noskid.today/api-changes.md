@@ -9,6 +9,7 @@
 - **Username**: Now returns clean first word only (alphanumeric + underscore)
 - **Nickname**: New field with original full username
 - **Cached**: New field indicating if result is from cache
+- **query**: New field with provided query / key
 
 ## Example Response Difference
 ```json
@@ -18,5 +19,6 @@
 // Recommended  
 "username": "John",
 "nickname": "John Doe (Admin)",
-"cached": true
+"cached": true,
+"query": "a425..."
 ```

@@ -16,10 +16,12 @@ if (!isset($_GET['key']) || empty($_GET['key'])) {
     echo json_encode([
         'success' => false,
         'message' => 'Missing verification key parameter',
-        'cached' => false
+        'cached' => false,
+        'query' => isset($_GET['key']) ? $_GET['key'] : null
     ], JSON_PRETTY_PRINT);
     exit;
 }
+
 
 $key = trim($_GET['key']);
 
@@ -29,10 +31,12 @@ if ($mysqli->connect_error) {
     echo json_encode([
         'success' => false,
         'message' => 'Database connection error',
-        'cached' => false
+        'cached' => false,
+        'query' => $key
     ], JSON_PRETTY_PRINT);
     exit;
 }
+
 
 $stmt = $mysqli->prepare("SELECT * FROM cert_cache WHERE verification_key = ? AND (is_valid = 1 OR (is_valid = 0 AND cached_at > DATE_SUB(NOW(), INTERVAL 1 DAY)))");
 
@@ -40,10 +44,12 @@ if (!$stmt) {
     echo json_encode([
         'success' => false,
         'message' => 'Database query preparation failed',
-        'cached' => false
+        'cached' => false,
+        'query' => $key
     ], JSON_PRETTY_PRINT);
     exit;
 }
+
 
 $stmt->bind_param("s", $key);
 $stmt->execute();
@@ -67,16 +73,19 @@ if ($result->num_rows > 0) {
                 'country' => $cached_cert['country'],
                 'countryCode' => $cached_cert['country_code']
             ],
-            'cached' => true
+            'cached' => true,
+            'query' => $key
         ];
         echo json_encode($response, JSON_PRETTY_PRINT);
     } else {
         echo json_encode([
             'success' => false,
             'message' => 'Certificate not found or invalid verification key',
-            'cached' => true
+            'cached' => true,
+            'query' => $key
         ], JSON_PRETTY_PRINT);
     }
+
     $mysqli->close();
     exit;
 }
@@ -104,7 +113,8 @@ if (curl_errno($ch)) {
         'message' => 'API unavailable',
         'status_code' => $statusCode !== 0 ? $statusCode : null,
         'error' => $errorMessage,
-        'cached' => false
+        'cached' => false,
+        'query' => $key
     ], JSON_PRETTY_PRINT);
     $mysqli->close();
     exit;
@@ -118,8 +128,10 @@ if ($apiData === null) {
     echo json_encode([
         'success' => false,
         'message' => 'Invalid response from verification service',
-        'cached' => false
+        'cached' => false,
+        'query' => $key
     ], JSON_PRETTY_PRINT);
+
     $mysqli->close();
     exit;
 }
@@ -166,6 +178,7 @@ if ($apiData['success']) {
     $apiData['data']['username'] = $cleanedUsername;
     $apiData['data']['nickname'] = $originalUsername;
     $apiData['cached'] = false;
+    $apiData['query'] = $key;
     echo json_encode($apiData, JSON_PRETTY_PRINT);
 } else {
     $insertStmt = $mysqli->prepare("INSERT INTO cert_cache (verification_key, is_valid, cached_at) VALUES (?, 0, NOW()) 
@@ -178,6 +191,7 @@ if ($apiData['success']) {
     }
 
     $apiData['cached'] = false;
+    $apiData['query'] = $key;
     echo json_encode($apiData, JSON_PRETTY_PRINT);
 }
 
