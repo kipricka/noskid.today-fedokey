@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once './config.php';
 
 if (!defined('SHOW_API_HELP') || !SHOW_API_HELP) {
     header('Location: /');
