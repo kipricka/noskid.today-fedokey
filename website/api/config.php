@@ -3,8 +3,9 @@
 define('MIN_PERCENTAGE', 80);
 define('MAX_PERCENTAGE', 100);
 define('MAX_REQUESTS_PER_MINUTE', 3);
-//notifications, only for downcert rn
-define('DISCORD_WEBHOOK_URL', 'WBK_URL');
+
+//notifications, leave empty to disable
+define('NOTIFICATIONS_ENDPOINT', 'NOTIFICATIONS_ENDPOINT_HERE');
 
 // database configuration
 define('DB_HOST', 'localhost');
@@ -22,6 +23,9 @@ define('CACHE_EXPIRY', 86400);
 
 //maintenance toggle and lastest update pwd
 define('ETC_PWD', 'etcpwd');
+
+// define if help page should be displayed on /api/ or not
+define('SHOW_API_HELP', true);
 
 //certificate questions
 $questions = [
