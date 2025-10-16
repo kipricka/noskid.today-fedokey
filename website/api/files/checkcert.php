@@ -2,6 +2,7 @@
 //Be sure of having the database set up before checking if a cert is valid
 
 require_once '../config.php';
+require_once '../files/notifications.php';
 
 
 header('Content-Type: application/json');
@@ -88,7 +89,19 @@ $response = [
     ]
 ];
 
+if (defined('NOTIFICATIONS_ENDPOINT') && !empty(NOTIFICATIONS_ENDPOINT)) {
+
+    sendNotification('cert_checked', [
+        'certificate_number' => $certNumber,
+        'username' => $cert['name'],
+        'percentage' => $cert['percentage'],
+        'boosted' => $boosted,
+        'creationDate' => $creationDate,
+        'country' => $country,
+        'countryCode' => $countryCode
+    ]);
+}
+
 echo json_encode($response, JSON_PRETTY_PRINT);
 
 $mysqli->close();
-?>

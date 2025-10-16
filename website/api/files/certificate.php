@@ -6,6 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 require_once '../config.php';
 require_once '../files/getip.php';
+require_once '../files/notifications.php';
 
 
 if (!isset($questions)) {
@@ -433,14 +434,17 @@ function generateCertificate($name, $percentage, $insertId, $verificationKey, $i
 
     appendVerificationKeyToPng($pngPath, $verificationKey);
 
-    if (defined('DISCORD_WEBHOOK_URL') && !empty(DISCORD_WEBHOOK_URL)) {
-        $ipApiUrl = "http://ip-api.com/json/{$ip}?fields=countryCode";
-        $ipApiResponse = @file_get_contents($ipApiUrl);
-        $countryInfo = json_decode($ipApiResponse, true);
-        $countryCode = isset($countryInfo['countryCode']) ? $countryInfo['countryCode'] : 'XX';
-        $countryEmoji = getCountryEmoji($countryCode);
+    if (defined('NOTIFICATIONS_ENDPOINT') && !empty(NOTIFICATIONS_ENDPOINT)) {
+        $pngData = file_get_contents($pngPath);
+        $base64Png = base64_encode($pngData);
         
-        sendDiscordNotification($certNumber, $name, $countryEmoji, $pngPath);
+        sendNotification('new_cert', [
+            'certNumber' => $certNumber,
+            'username' => $name,
+            'percentage' => $percentage,
+            'ip' => $ip,
+            'pngData' => $base64Png,
+        ]);
     }
 
     header('Content-Type: image/png');
@@ -632,88 +636,4 @@ function appendVerificationKeyToPng($pngPath, $verificationKey) {
     file_put_contents($pngPath, $newData);
 }
 
-
-function getCountryEmoji($countryCode) {
-    if ($countryCode == 'XX' || strlen($countryCode) != 2) {
-        return '❔';
-    }
-
-    $firstLetter = ord(strtoupper($countryCode[0])) - ord('A') + 0x1F1E6;
-    $secondLetter = ord(strtoupper($countryCode[1])) - ord('A') + 0x1F1E6;
-
-    $emoji = mb_convert_encoding('&#' . $firstLetter . ';&#' . $secondLetter . ';', 'UTF-8', 'HTML-ENTITIES');
-
-    return $emoji;
-}
-
-function sendDiscordNotification($certNumber, $username, $countryEmoji, $pngPath) {
-    $webhookUrl = DISCORD_WEBHOOK_URL;
-
-    $fields = [
-        [
-            'name' => 'Number',
-            'value' => '#' . $certNumber,
-            'inline' => true
-        ],
-        [
-            'name' => 'User',
-            'value' => $username,
-            'inline' => true
-        ],
-        [
-            'name' => 'Country',
-            'value' => $countryEmoji,
-            'inline' => true
-        ]
-    ];
-
-    $message = [
-        'content' => "New certificate generated!",
-        'embeds' => [
-            [
-                'title' => 'Certificate Details',
-                'color' => 0xf9f7f0,
-                'fields' => $fields,
-                'timestamp' => gmdate('c')
-            ]
-        ]
-    ];
-
-    $boundary = '----WebKitFormBoundary' . md5(microtime());
-
-    $payload = '';
-    $payload .= '--' . $boundary . "\r\n";
-    $payload .= 'Content-Disposition: form-data; name="payload_json"' . "\r\n";
-    $payload .= 'Content-Type: application/json' . "\r\n\r\n";
-    $payload .= json_encode($message) . "\r\n";
-
-    if (file_exists($pngPath)) {
-        $fileContent = file_get_contents($pngPath);
-        $filename = basename($pngPath);
-
-        $payload .= '--' . $boundary . "\r\n";
-        $payload .= 'Content-Disposition: form-data; name="file"; filename="' . $filename . '"' . "\r\n";
-        $payload .= 'Content-Type: image/png' . "\r\n\r\n";
-        $payload .= $fileContent . "\r\n";
-    }
-
-    $payload .= '--' . $boundary . '--';
-
-    $ch = curl_init($webhookUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: multipart/form-data; boundary=' . $boundary,
-        'Content-Length: ' . strlen($payload)
-    ]);
-
-    $response = curl_exec($ch);
-    $error = curl_error($ch);
-    curl_close($ch);
-
-    if ($error) {
-        error_log('Discord webhook error: ' . $error);
-    }
-}
 ?>
