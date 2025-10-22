@@ -12,8 +12,6 @@ if (!defined('SHOW_API_HELP') || !SHOW_API_HELP) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>NoSkid API Documentation</title>
-    <link rel="apple-touch-icon" href="https://noskid.today/assets/img/noskid-icon.png" />
-    <link rel="shortcut icon" href="https://noskid.today/assets/img/noskid-icon.png" type="image/x-icon" />
     <style>
         * {
             margin: 0;
