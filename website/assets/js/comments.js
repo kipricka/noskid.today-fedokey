@@ -1,4 +1,4 @@
-//Comments.js | Comment system for noskid with enhanced CSS
+//Comments.js | Comment system for noskid with threaded replies
 
 function spawnCommentSystem(event) {
     event.preventDefault();
@@ -50,9 +50,9 @@ function addCommentSystemStyles() {
     style.id = 'comment-system-styles';
     style.textContent = `
         .comments-container {
-            padding: 15px;
-            background: #1a1a1a;
-            color: #e0e0e0;
+            padding: 20px;
+            background: var(--primary);
+            color: var(--text);
             height: 100%;
             overflow-y: auto;
             box-sizing: border-box;
@@ -64,14 +64,14 @@ function addCommentSystemStyles() {
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: #888;
+            color: var(--subtext);
         }
 
         .loading-spinner {
             width: 24px;
             height: 24px;
-            border: 2px solid #333;
-            border-top: 2px solid #007acc;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid var(--secondary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 10px;
@@ -83,18 +83,16 @@ function addCommentSystemStyles() {
         }
 
         .comment {
-            background: #2d2d2d;
-            border: 1px solid #404040;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 12px;
-            transition: all 0.2s ease;
-            position: relative;
+            background: var(--box);
+            border: var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s ease;
         }
 
         .comment:hover {
-            border-color: #007acc;
-            box-shadow: 0 2px 8px rgba(0, 122, 204, 0.2);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .comment-header {
@@ -103,136 +101,141 @@ function addCommentSystemStyles() {
             align-items: center;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #404040;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .comment-author {
-            font-weight: bold;
-            color: #007acc;
-            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 13px;
         }
 
         .comment-date {
-            color: #888;
-            font-size: 12px;
+            color: var(--subtext);
+            font-size: 11px;
+            opacity: 0.7;
         }
 
         .comment-content {
             line-height: 1.5;
-            margin: 12px 0;
-            color: #e0e0e0;
+            margin: 10px 0;
+            color: var(--text);
             word-wrap: break-word;
+            font-size: 14px;
         }
 
-        .comment-reactions {
+        .comment-actions {
             display: flex;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
             padding-top: 8px;
-            border-top: 1px solid #404040;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
         }
 
-        .reaction-btn {
-            background: #404040;
-            border: 1px solid #555;
-            color: #e0e0e0;
-            padding: 6px 12px;
-            border-radius: 4px;
+        .reaction-btn, .reply-btn, .toggle-replies-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--subtext);
+            padding: 4px 10px;
+            margin: 0;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             transition: all 0.2s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
         }
 
-        .reaction-btn:hover {
-            background: #4a4a4a;
-            border-color: #666;
+        .reaction-btn:hover, .reply-btn:hover, .toggle-replies-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .reaction-btn.like-btn {
-            border-color: #28a745;
+        .reaction-btn.active {
+            background: rgba(137, 180, 250, 0.15);
+            border-color: var(--secondary);
+            color: var(--secondary);
         }
 
-        .reaction-btn.dislike-btn {
-            border-color: #dc3545;
-        }
-
-        .reaction-btn.like-btn.active {
-            background: #28a745;
-            color: white;
-        }
-
-        .reaction-btn.dislike-btn.active {
-            background: #dc3545;
-            color: white;
-        }
-
-        .reaction-btn:disabled {
-            opacity: 0.5;
+        .reaction-btn:disabled, .reply-btn:disabled, .toggle-replies-btn:disabled {
+            opacity: 0.3;
             cursor: not-allowed;
+        }
+
+        .toggle-replies-btn {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .comment-replies {
+            margin-top: 12px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .comment-replies .comment {
+            margin-bottom: 8px;
+        }
+
+        .comment-replies .comment:last-child {
+            margin-bottom: 0;
         }
 
         .no-comments {
             text-align: center;
-            color: #888;
-            padding: 40px 20px;
+            color: var(--subtext);
+            padding: 60px 20px;
             font-style: italic;
         }
 
-        .no-comments .icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-            opacity: 0.5;
-        }
-
         .error-message {
-            background: #4a1a1a;
-            border: 1px solid #8b0000;
+            background: rgba(255, 102, 102, 0.1);
+            border: 1px solid rgba(255, 102, 102, 0.3);
             border-radius: 4px;
             padding: 15px;
-            color: #ff6b6b;
+            color: #ff6666;
             text-align: center;
         }
 
         .retry-btn {
-            background: #007acc;
+            background: var(--secondary);
             border: none;
-            color: white;
+            color: #1a1a1a;
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             margin-top: 10px;
             transition: background 0.2s ease;
+            font-weight: 600;
         }
 
         .retry-btn:hover {
-            background: #0056b3;
+            background: color-mix(in srgb, var(--secondary) 70%, black 30%);
         }
 
         .footer-text {
-            padding: 5px 0;
+            padding: 8px 0;
             text-align: center;
-            color: #ccc;
+            color: var(--text);
             font-size: 13px;
         }
 
         .new-comment-link {
-            color: #007acc;
+            color: var(--secondary);
             text-decoration: none;
             transition: color 0.2s ease;
         }
 
         .new-comment-link:hover {
-            color: #0056b3;
-            text-decoration: underline;
+            color: var(--text);
         }
 
         .comment-form {
             padding: 20px;
-            background: #1a1a1a;
-            color: #e0e0e0;
+            background: var(--primary);
+            color: var(--text);
         }
 
         .form-group {
@@ -241,33 +244,35 @@ function addCommentSystemStyles() {
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #ccc;
-            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 13px;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 10px;
-            background: #2d2d2d;
-            border: 1px solid #404040;
+            background: var(--box);
+            border: var(--border);
             border-radius: 4px;
-            color: #e0e0e0;
+            color: var(--text);
             font-family: inherit;
             box-sizing: border-box;
+            font-size: 14px;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #007acc;
-            box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+            border-color: var(--secondary);
+            background: rgba(137, 180, 250, 0.05);
         }
 
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         .form-actions {
@@ -282,26 +287,27 @@ function addCommentSystemStyles() {
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             transition: all 0.2s ease;
+            margin: 0;
         }
 
         .form-btn.primary {
-            background: #007acc;
-            color: white;
+            background: var(--secondary);
+            color: #1a1a1a;
         }
 
         .form-btn.primary:hover {
-            background: #0056b3;
+            background: color-mix(in srgb, var(--secondary) 70%, black 30%);
         }
 
         .form-btn.secondary {
-            background: #6c757d;
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
         }
 
         .form-btn.secondary:hover {
-            background: #545b62;
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .form-btn:disabled {
@@ -309,21 +315,35 @@ function addCommentSystemStyles() {
             cursor: not-allowed;
         }
 
+        .reply-info {
+            background: rgba(137, 180, 250, 0.1);
+            border: 1px solid rgba(137, 180, 250, 0.3);
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .reply-info strong {
+            color: var(--secondary);
+        }
+
         .comments-container::-webkit-scrollbar {
             width: 8px;
         }
 
         .comments-container::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: var(--primary);
         }
 
         .comments-container::-webkit-scrollbar-thumb {
-            background: #404040;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
         }
 
         .comments-container::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: rgba(255, 255, 255, 0.15);
         }
     `;
 
@@ -366,6 +386,51 @@ function loadComments(commentwin) {
         });
 }
 
+function renderComment(comment, parentAuthor = null) {
+    const userLiked = comment.user_reaction === 'like';
+    const userDisliked = comment.user_reaction === 'dislike';
+    const hasReplies = comment.replies && comment.replies.length > 0;
+    
+    const displayAuthor = parentAuthor 
+        ? `${comment.author || 'Anonymous'} → ${parentAuthor}`
+        : (comment.author || 'Anonymous');
+
+    let html = `
+        <div class="comment" data-id="${comment.id}">
+            <div class="comment-header">
+                <span class="comment-author">${displayAuthor}</span>
+                <span class="comment-date">${formatDate(comment.date)}</span>
+            </div>
+            <div class="comment-content">${comment.content}</div>
+            <div class="comment-actions">
+                <button class="reaction-btn ${userLiked ? 'active' : ''}" 
+                        onclick="handleReaction(${comment.id}, '${userLiked ? 'none' : 'like'}')">
+                    ↑ ${comment.likes || 0}
+                </button>
+                <button class="reaction-btn ${userDisliked ? 'active' : ''}" 
+                        onclick="handleReaction(${comment.id}, '${userDisliked ? 'none' : 'dislike'}')">
+                    ↓ ${comment.dislikes || 0}
+                </button>
+                <button class="reply-btn" onclick="spawnReplyForm(${comment.id}, '${(comment.author || 'Anonymous').replace(/'/g, "\\'")}')">
+                    Reply
+                </button>
+                ${hasReplies ? `
+                    <button class="toggle-replies-btn" onclick="toggleReplies(${comment.id})">
+                        ${comment.replies.length} ${comment.replies.length === 1 ? 'reply' : 'replies'} ▼
+                    </button>
+                ` : ''}
+            </div>
+            ${hasReplies ? `
+                <div class="comment-replies" id="replies-${comment.id}" style="display: none;">
+                    ${comment.replies.map(reply => renderComment(reply, comment.author || 'Anonymous')).join('')}
+                </div>
+            ` : ''}
+        </div>
+    `;
+
+    return html;
+}
+
 function displayComments(window, comments) {
     const container = document.createElement('div');
     container.className = 'comments-container';
@@ -380,34 +445,23 @@ function displayComments(window, comments) {
         return;
     }
 
-    const commentsHTML = comments.map(comment => {
-        const userLiked = comment.user_reaction === 'like';
-        const userDisliked = comment.user_reaction === 'dislike';
-
-        return `
-        <div class="comment" data-id="${comment.id}">
-            <div class="comment-header">
-                <span class="comment-author">${comment.author || 'Anonymous'}</span>
-                <span class="comment-date">${formatDate(comment.date)}</span>
-            </div>
-            <div class="comment-content">${comment.content}</div>
-            <div class="comment-reactions">
-                <button class="reaction-btn like-btn ${userLiked ? 'active' : ''}" 
-                        onclick="handleReaction(${comment.id}, '${userLiked ? 'none' : 'like'}')">
-                    + ${comment.likes || 0}
-                </button>
-                <button class="reaction-btn dislike-btn ${userDisliked ? 'active' : ''}" 
-                        onclick="handleReaction(${comment.id}, '${userDisliked ? 'none' : 'dislike'}')">
-                    - ${comment.dislikes || 0}
-                </button>
-            </div>
-        </div>
-        `;
-    }).join('');
-
+    const commentsHTML = comments.map(comment => renderComment(comment)).join('');
     container.innerHTML = commentsHTML;
     updateComments(window, container);
     log('Comments loaded successfully', 'success');
+}
+
+function toggleReplies(commentId) {
+    const repliesContainer = document.getElementById(`replies-${commentId}`);
+    const toggleBtn = document.querySelector(`.comment[data-id="${commentId}"] .toggle-replies-btn`);
+    
+    if (repliesContainer.style.display === 'none') {
+        repliesContainer.style.display = 'block';
+        toggleBtn.innerHTML = toggleBtn.innerHTML.replace('▼', '▲');
+    } else {
+        repliesContainer.style.display = 'none';
+        toggleBtn.innerHTML = toggleBtn.innerHTML.replace('▲', '▼');
+    }
 }
 
 function updateComments(window, content) {
@@ -437,12 +491,8 @@ function handleReaction(commentId, reactionType) {
     const commentElement = document.querySelector(`.comment[data-id="${commentId}"]`);
     if (!commentElement) return;
 
-    const likeBtn = commentElement.querySelector('.like-btn');
-    const dislikeBtn = commentElement.querySelector('.dislike-btn');
-
-    // Disable buttons during request
-    likeBtn.disabled = true;
-    dislikeBtn.disabled = true;
+    const buttons = commentElement.querySelectorAll('.reaction-btn, .reply-btn, .toggle-replies-btn');
+    buttons.forEach(btn => btn.disabled = true);
 
     fetch(`/api/comments/?action=${reactionType}&id=${commentId}`)
         .then(response => {
@@ -454,8 +504,12 @@ function handleReaction(commentId, reactionType) {
             return response.json();
         })
         .then(data => {
-            likeBtn.innerHTML = `+ ${data.likes || 0}`;
-            dislikeBtn.innerHTML = `- ${data.dislikes || 0}`;
+            const likeBtns = commentElement.querySelectorAll('.reaction-btn');
+            const likeBtn = likeBtns[0];
+            const dislikeBtn = likeBtns[1];
+
+            likeBtn.innerHTML = `↑ ${data.likes || 0}`;
+            dislikeBtn.innerHTML = `↓ ${data.dislikes || 0}`;
 
             likeBtn.classList.toggle('active', data.user_reaction === 'like');
             dislikeBtn.classList.toggle('active', data.user_reaction === 'dislike');
@@ -470,22 +524,28 @@ function handleReaction(commentId, reactionType) {
             log('Error handling reaction: ' + error.message, 'error');
         })
         .finally(() => {
-            // Re-enable buttons
-            likeBtn.disabled = false;
-            dislikeBtn.disabled = false;
+            buttons.forEach(btn => btn.disabled = false);
         });
 }
 
-function spawnNewCommentForm() {
+function spawnNewCommentForm(replyTo = null, replyToAuthor = null) {
+    const isReply = replyTo !== null;
+    const title = isReply ? 'Reply to Comment' : 'New Comment';
+
     const newCommentWin = ClassicWindow.createWindow({
-        title: 'New Comment',
-        width: 400,
-        height: 300,
-        x: Math.round((window.innerWidth - 400) / 2),
-        y: Math.round((window.innerHeight - 300) / 2),
+        title: title,
+        width: 450,
+        height: isReply ? 340 : 300,
+        x: Math.round((window.innerWidth - 450) / 2),
+        y: Math.round((window.innerHeight - (isReply ? 340 : 300)) / 2),
         content: `
             <div class="comment-form">
                 <form>
+                    ${isReply ? `
+                        <div class="reply-info">
+                            Replying to <strong>${replyToAuthor}</strong>
+                        </div>
+                    ` : ''}
                     <div class="form-group">
                         <label for="author">Your name:</label>
                         <input type="text" id="author" placeholder="Anonymous">
@@ -496,20 +556,20 @@ function spawnNewCommentForm() {
                     </div>
                     <div class="form-actions">
                         <button type="button" class="form-btn secondary cancel">Cancel</button>
-                        <button type="submit" class="form-btn primary">Send Comment</button>
+                        <button type="submit" class="form-btn primary">${isReply ? 'Send Reply' : 'Send Comment'}</button>
                     </div>
                 </form>
             </div>
         `,
         theme: 'dark',
         resizable: false,
-        statusText: 'Writing a new comment',
+        statusText: isReply ? 'Writing a reply' : 'Writing a new comment',
     });
 
     const form = newCommentWin.querySelector('form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        submitComment(form, newCommentWin);
+        submitComment(form, newCommentWin, replyTo);
     });
 
     const cancelBtn = newCommentWin.querySelector('.cancel');
@@ -520,7 +580,11 @@ function spawnNewCommentForm() {
     return newCommentWin;
 }
 
-function submitComment(form, commentWindow) {
+function spawnReplyForm(commentId, parentAuthor) {
+    spawnNewCommentForm(commentId, parentAuthor);
+}
+
+function submitComment(form, commentWindow, replyTo = null) {
     const author = form.querySelector('#author').value.trim() || 'Anonymous';
     const content = form.querySelector('#content').value.trim();
 
@@ -540,6 +604,7 @@ function submitComment(form, commentWindow) {
             y: Math.round((window.innerHeight - 300) / 2),
         });
 
+        const buttons = form.querySelectorAll('button');
         buttons.forEach(btn => btn.disabled = false);
         return;
     }
@@ -551,6 +616,10 @@ function submitComment(form, commentWindow) {
         author: author,
         content: content
     };
+
+    if (replyTo !== null) {
+        commentData.reply_to = replyTo;
+    }
 
     fetch('/api/comments/index.php', {
         method: 'POST',

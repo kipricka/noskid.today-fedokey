@@ -1,55 +1,5 @@
 <?php
 
-/*
-=============================
-DB SETUP
-=============================
-
--- posts
-CREATE TABLE IF NOT EXISTS comments_posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    author VARCHAR(100) NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_fingerprint VARCHAR(255) NOT NULL,
-    likes INT DEFAULT 0,
-    dislikes INT DEFAULT 0,
-    ip_address VARCHAR(45) NOT NULL DEFAULT '0.0.0.0'
-);
-
--- like/dislike
-CREATE TABLE IF NOT EXISTS comments_reactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    comment_id INT NOT NULL,
-    user_fingerprint VARCHAR(255) NOT NULL,
-    reaction_type ENUM('like', 'dislike') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (comment_id) REFERENCES comments_posts(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_reaction (comment_id, user_fingerprint)
-);
-
--- uses
-CREATE TABLE IF NOT EXISTS comments_users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_fingerprint VARCHAR(255) NOT NULL,
-    last_comment_date DATE NOT NULL,
-    ip_address VARCHAR(45) NOT NULL DEFAULT '0.0.0.0',
-    UNIQUE KEY unique_user (user_fingerprint)
-);
-
--- bl ip
-CREATE TABLE IF NOT EXISTS comments_blocked_ips (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ip_address VARCHAR(45) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_ip (ip_address)
-);
-*/
-
-// =============================
-// HEADERS AND INCLUDES
-// =============================
-
 header('Content-Type: application/json');
 
 require_once '../config.php';
@@ -65,44 +15,6 @@ if ($conn->connect_error) {
 }
 
 // utility
-
-function getBadWords() {
-    $badWordsFile = './bw.txt';
-    if (!file_exists($badWordsFile)) {
-        return [];
-    }
-
-    $content = file_get_contents($badWordsFile);
-    if ($content === false) {
-        return [];
-    }
-
-    $badWords = array_filter(array_map('trim', explode("\n", $content)));
-    return $badWords;
-}
-
-function censorBadWords($text) {
-    $badWords = getBadWords();
-    if (empty($badWords)) {
-        return $text;
-    }
-
-    $words = preg_split('/\s+/', $text);
-    foreach ($words as &$word) {
-        $lowerWord = strtolower($word);
-        foreach ($badWords as $badWord) {
-            if (strlen($badWord) > 3 && levenshtein($lowerWord, $badWord) <= 1) {
-                $word = str_repeat('#', strlen($word));
-                break;
-            } elseif ($lowerWord === $badWord) {
-                $word = str_repeat('#', strlen($word));
-                break;
-            }
-        }
-    }
-
-    return implode(' ', $words);
-}
 
 function getUserFingerprint() {
     $ip = getRequesterIp();
@@ -127,7 +39,7 @@ function blockIp($conn, $ip) {
     $stmt->execute();
 }
 
-function sendDiscordNotification($content, $username) {
+function sendDiscordNotification($content, $username, $replyTo = null) {
     $webhookUrl = DISCORD_WEBHOOK_URL;
 
     $fields = [
@@ -142,6 +54,14 @@ function sendDiscordNotification($content, $username) {
             'inline' => false
         ]
     ];
+
+    if ($replyTo) {
+        $fields[] = [
+            'name' => 'Reply To',
+            'value' => 'Comment #' . $replyTo,
+            'inline' => false
+        ];
+    }
 
     $message = [
         'content' => "",
@@ -185,12 +105,34 @@ function sendDiscordNotification($content, $username) {
 
 // api funcs
 
+function buildCommentTree($comments) {
+    $tree = [];
+    $lookup = [];
+
+    foreach ($comments as $comment) {
+        $comment['replies'] = [];
+        $lookup[$comment['id']] = $comment;
+    }
+
+    foreach ($lookup as $id => $comment) {
+        if ($comment['reply_to'] === null) {
+            $tree[] = &$lookup[$id];
+        } else {
+            if (isset($lookup[$comment['reply_to']])) {
+                $lookup[$comment['reply_to']]['replies'][] = &$lookup[$id];
+            }
+        }
+    }
+
+    return $tree;
+}
+
 function getComments($conn, $userFingerprint) {
     $sql = "SELECT cp.id, cp.author, cp.content, cp.created_at as date,
-            cp.likes, cp.dislikes,
+            cp.likes, cp.dislikes, cp.reply_to,
             (SELECT reaction_type FROM comments_reactions WHERE comment_id = cp.id AND user_fingerprint = ?) as user_reaction
             FROM comments_posts cp
-            ORDER BY cp.created_at DESC";
+            ORDER BY cp.created_at ASC";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $userFingerprint);
@@ -210,7 +152,8 @@ function getComments($conn, $userFingerprint) {
         $comments[] = $row;
     }
 
-    echo json_encode($comments);
+    $commentTree = buildCommentTree($comments);
+    echo json_encode($commentTree);
 }
 
 function addComment($conn, $userFingerprint, $ip) {
@@ -238,13 +181,27 @@ function addComment($conn, $userFingerprint, $ip) {
     $author = isset($data['author']) && !empty(trim($data['author'])) ?
               trim($data['author']) : 'Anonymous';
 
-    // Censorship yeaahhh
-    $content = censorBadWords(trim($data['content']));
-    $author = censorBadWords(trim($author));
+    $content = trim($data['content']);
+    $replyTo = isset($data['reply_to']) && !empty($data['reply_to']) ? intval($data['reply_to']) : null;
 
-    $sql = "INSERT INTO comments_posts (author, content, user_fingerprint, ip_address) VALUES (?, ?, ?, ?)";
+    // Validate reply_to exists if provided
+    if ($replyTo !== null) {
+        $sql = "SELECT id FROM comments_posts WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $replyTo);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Parent comment not found']);
+            return;
+        }
+    }
+
+    $sql = "INSERT INTO comments_posts (author, content, user_fingerprint, ip_address, reply_to) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $author, $content, $userFingerprint, $ip);
+    $stmt->bind_param("ssssi", $author, $content, $userFingerprint, $ip, $replyTo);
 
     if ($stmt->execute()) {
         $comment_id = $stmt->insert_id;
@@ -256,16 +213,17 @@ function addComment($conn, $userFingerprint, $ip) {
         $stmt->bind_param("sssss", $userFingerprint, $today, $ip, $today, $ip);
         $stmt->execute();
 
-        $sql = "SELECT id, author, content, created_at as date, likes, dislikes, NULL as user_reaction
+        $sql = "SELECT id, author, content, created_at as date, likes, dislikes, reply_to, NULL as user_reaction
                 FROM comments_posts WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $comment_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $comment = $result->fetch_assoc();
+        $comment['replies'] = [];
 
         if (defined('DISCORD_WEBHOOK_URL') && !empty(DISCORD_WEBHOOK_URL)) {
-            sendDiscordNotification($content, $author);
+            sendDiscordNotification($content, $author, $replyTo);
         }
 
         http_response_code(201);
