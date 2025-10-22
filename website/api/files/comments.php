@@ -124,6 +124,21 @@ function buildCommentTree($comments) {
         }
     }
 
+    function sortReplies(&$comment) {
+        if (!empty($comment['replies'])) {
+            usort($comment['replies'], function($a, $b) {
+                return strtotime($b['date']) - strtotime($a['date']);
+            });
+            foreach ($comment['replies'] as &$reply) {
+                sortReplies($reply);
+            }
+        }
+    }
+
+    foreach ($tree as &$comment) {
+        sortReplies($comment);
+    }
+
     return $tree;
 }
 
@@ -132,7 +147,7 @@ function getComments($conn, $userFingerprint) {
             cp.likes, cp.dislikes, cp.reply_to,
             (SELECT reaction_type FROM comments_reactions WHERE comment_id = cp.id AND user_fingerprint = ?) as user_reaction
             FROM comments_posts cp
-            ORDER BY cp.created_at ASC";
+            ORDER BY cp.created_at DESC";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $userFingerprint);
